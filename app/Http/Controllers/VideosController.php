@@ -108,7 +108,8 @@ class VideosController extends Controller
             'description' => $request->description,
         ]);
 
-        if (!Storage::disk('dropbox')->has($oldPath)) {
+        // Update the file name if we need to
+        if (Storage::disk('dropbox')->has($oldPath)) {
             Storage::disk('dropbox')->rename($oldPath, $video->cloudVideoPath());
         }
 
