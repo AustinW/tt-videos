@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Video;
+use Coconut\Coconut_Job;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -48,7 +49,7 @@ class TranscodeVideo implements ShouldQueue
                 ]
             ];
 
-            $job = \Coconut_Job::create($config);
+            $job = Coconut_Job::create($config);
 
             Log::info('Job created', ['job' => $job, 'config' => $config]);
 

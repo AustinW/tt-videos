@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c497a80b9041d4f4caa7b28ad6d33fc4",
+    "content-hash": "fe78b725ba0eb28dfc9ae04e00533369",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -692,16 +692,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.4.14",
+            "version": "v5.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "b4f9e2b7d146d677e8c360df02beaa9391da1fb1"
+                "reference": "ecc6468b8af30b77566a8519ce8898740ef691d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/b4f9e2b7d146d677e8c360df02beaa9391da1fb1",
-                "reference": "b4f9e2b7d146d677e8c360df02beaa9391da1fb1",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/ecc6468b8af30b77566a8519ce8898740ef691d7",
+                "reference": "ecc6468b8af30b77566a8519ce8898740ef691d7",
                 "shasum": ""
             },
             "require": {
@@ -817,7 +817,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-03-01T15:59:14+00:00"
+            "time": "2017-03-02T14:41:40+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -1433,16 +1433,16 @@
         },
         {
             "name": "opencoconut/coconut",
-            "version": "2.2.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/opencoconut/coconutphp.git",
-                "reference": "6b0c4a0433fe12d85bd3b11344171e4dee87f980"
+                "url": "https://github.com/Jasper9041/coconutphp.git",
+                "reference": "46933228b9a1e5cc662db9a7a03c14932b0e6f7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opencoconut/coconutphp/zipball/6b0c4a0433fe12d85bd3b11344171e4dee87f980",
-                "reference": "6b0c4a0433fe12d85bd3b11344171e4dee87f980",
+                "url": "https://api.github.com/repos/Jasper9041/coconutphp/zipball/46933228b9a1e5cc662db9a7a03c14932b0e6f7c",
+                "reference": "46933228b9a1e5cc662db9a7a03c14932b0e6f7c",
                 "shasum": ""
             },
             "require-dev": {
@@ -1450,11 +1450,10 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "": "src/"
+                "psr-4": {
+                    "Coconut\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1475,7 +1474,10 @@
                 "video",
                 "web service"
             ],
-            "time": "2016-02-16T14:13:38+00:00"
+            "support": {
+                "source": "https://github.com/Jasper9041/coconutphp/tree/master"
+            },
+            "time": "2017-02-25T15:23:56+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -3197,27 +3199,27 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "v1.6.2",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "6c52c2722f8460122f96f86346600e1077ce22cb"
+                "reference": "93d39f1f7f9326d746203c7c056f300f7f126073"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/6c52c2722f8460122f96f86346600e1077ce22cb",
-                "reference": "6c52c2722f8460122f96f86346600e1077ce22cb",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/93d39f1f7f9326d746203c7c056f300f7f126073",
+                "reference": "93d39f1f7f9326d746203c7c056f300f7f126073",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.0.2",
                 "php": "^5.3|^7.0",
                 "phpdocumentor/reflection-docblock": "^2.0|^3.0.2",
-                "sebastian/comparator": "^1.1",
-                "sebastian/recursion-context": "^1.0|^2.0"
+                "sebastian/comparator": "^1.1|^2.0",
+                "sebastian/recursion-context": "^1.0|^2.0|^3.0"
             },
             "require-dev": {
-                "phpspec/phpspec": "^2.0",
+                "phpspec/phpspec": "^2.5|^3.2",
                 "phpunit/phpunit": "^4.8 || ^5.6.5"
             },
             "type": "library",
@@ -3256,7 +3258,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2016-11-21T14:58:47+00:00"
+            "time": "2017-03-02T20:05:34+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3509,16 +3511,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.14",
+            "version": "5.7.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4906b8faf23e42612182fd212eb6f4c0f2954b57"
+                "reference": "b99112aecc01f62acf3d81a3f59646700a1849e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4906b8faf23e42612182fd212eb6f4c0f2954b57",
-                "reference": "4906b8faf23e42612182fd212eb6f4c0f2954b57",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b99112aecc01f62acf3d81a3f59646700a1849e5",
+                "reference": "b99112aecc01f62acf3d81a3f59646700a1849e5",
                 "shasum": ""
             },
             "require": {
@@ -3587,7 +3589,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-02-19T07:22:16+00:00"
+            "time": "2017-03-02T15:22:43+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -4269,7 +4271,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "opencoconut/coconut": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

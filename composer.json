@@ -11,13 +11,19 @@
         "laravel/tinker": "~1.0",
         "league/flysystem-dropbox": "^1.0",
         "nao-pon/flysystem-google-drive": "~1.1",
-        "opencoconut/coconut": "^2.2"
+        "opencoconut/coconut": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~5.7"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Jasper9041/coconutphp"
+        }
+    ],
     "autoload": {
         "classmap": [
             "database"
