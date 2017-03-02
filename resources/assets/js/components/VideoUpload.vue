@@ -9,7 +9,7 @@
 
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" v-model="name">
+                            <input type="text" class="form-control" v-model="name" :disabled="window.Laravel.user.authenticated">
                         </div>
 
                         <div class="form-group">

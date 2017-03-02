@@ -20,7 +20,7 @@
             'user' => [
                 'id' => Auth::check() ? Auth::user()->id : 'null',
                 'name' => Auth::check() ? Auth::user()->name : '',
-                'authenticated' => Auth::check() ? 'true' : 'false'
+                'authenticated' => Auth::check() ? true : false
             ],
         ]) !!};
     </script>

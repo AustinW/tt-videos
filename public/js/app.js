@@ -31885,7 +31885,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "type": "text"
+      "type": "text",
+      "disabled": _vm.window.Laravel.user.authenticated
     },
     domProps: {
       "value": (_vm.name)
