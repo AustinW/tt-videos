@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\VideoFormRequest;
 use App\Video;
-use Auth, Storage, File;
+use Auth, Storage, File, Session, Cache, Response;
 
 class VideosController extends Controller
 {
@@ -23,6 +23,8 @@ class VideosController extends Controller
             $videos = Auth::user()->videos()->get();
         } else if ($request->name) {
             $videos = Video::where('name', $request->name)->get();
+        } else if (\Session::has('athlete_name')) {
+            $videos = Video::where('name', \Session::get('athlete_name'))->get();
         }
 
         return view('videos.index', ['videos' => $videos]);
@@ -57,6 +59,10 @@ class VideosController extends Controller
             'description' => $request->description,
             'video_filename' => $unique_id . "." . $request->extension,
         ]);
+
+        if (!Auth::check()) {
+            Session::put('athlete_name', $request->name);
+        }
 
         return response()->json([
             'data' => [
@@ -139,5 +145,21 @@ class VideosController extends Controller
         } else {
             return abort(404);
         }
+    }
+
+    public function thumbnail(Video $video) {
+        $path = $video->cloudThumbnailPath();
+
+        $mime = \Storage::disk('dropbox')->getMimetype($path);
+
+        $data = Cache::remember($video->cloudThumbnailPath(), 3600, function() use($video) {
+            return \Storage::disk('dropbox')->read($video->cloudThumbnailPath());
+        });
+
+        $response = Response::make($data, 200);
+
+        $response->header('Content-Type', $mime);
+
+        return $response;
     }
 }

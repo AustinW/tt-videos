@@ -18,11 +18,7 @@ Route::get('/', function () {
 Route::resource('upload', 'UploadController');
 Route::resource('videos', 'VideosController');
 
-Route::get('test', function() {
-    $video = \App\Video::find(1);
-    $video->coconut_id = 1234;
-    $video->save();
-});
+Route::get('thumbnail/{video}', 'VideosController@thumbnail')->name('thumbnail');
 
 Route::post('webhook', 'WebhookController@inbound');
 Route::post('webhook/receive-video', 'WebhookController@receiveVideo');
@@ -32,3 +28,7 @@ Route::get('/video-src/{file}', 'VideosController@serve');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::get('test', function() {
+    \Session::put('athlete_name', 'Austin White');
+});

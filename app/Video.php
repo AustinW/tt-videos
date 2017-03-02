@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Video extends Model
 {
+    use Notifiable;
 
     protected $fillable = [
         'unique_id',
@@ -17,6 +19,10 @@ class Video extends Model
         'video_filename',
         'cloud_file',
         'processed',
+    ];
+
+    protected $events = [
+        'updated' => VideoUpdated::class
     ];
 
     public function getRouteKeyName() {
@@ -45,5 +51,9 @@ class Video extends Model
 
     public function cloudThumbnailPath() {
         return 'thumbnails/' . $this->unique_id . '_t.jpg';
+    }
+
+    public function getThumbnail() {
+        return route('thumbnail', $this);
     }
 }
