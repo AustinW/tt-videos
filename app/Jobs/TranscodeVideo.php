@@ -9,7 +9,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-use Coconut_Job;
 use Log;
 
 class TranscodeVideo implements ShouldQueue
@@ -49,7 +48,7 @@ class TranscodeVideo implements ShouldQueue
                 ]
             ];
 
-            $job = Coconut_Job::create($config);
+            $job = \Coconut_Job::create($config);
 
             Log::info('Job created', ['job' => $job, 'config' => $config]);
 
