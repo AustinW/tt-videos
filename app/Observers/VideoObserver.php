@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Video;
+use Cache, Storage;
 
 class VideoObserver
 {
@@ -14,7 +15,7 @@ class VideoObserver
      */
     public function updated(Video $video)
     {
-        Cache::put($video->cloudThumbnailPath(), \Storage::disk('dropbox')->read($video->cloudThumbnailPath()));
+        Cache::put($video->cloudThumbnailPath(), Storage::disk('dropbox')->read($video->cloudThumbnailPath()));
     }
 
 
