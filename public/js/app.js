@@ -12141,6 +12141,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             failed: false,
             saveStatus: null,
             fileProgress: 0,
+            authenticated: window.Laravel.user.authenticated,
 
             // Video model
             id: null,
@@ -31886,7 +31887,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "type": "text",
-      "disabled": _vm.window.Laravel.user.authenticated
+      "disabled": _vm.authenticated
     },
     domProps: {
       "value": (_vm.name)

@@ -9,7 +9,7 @@
 
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" v-model="name" :disabled="window.Laravel.user.authenticated">
+                            <input type="text" class="form-control" v-model="name" :disabled="authenticated">
                         </div>
 
                         <div class="form-group">
@@ -68,6 +68,7 @@
                 failed: false,
                 saveStatus: null,
                 fileProgress: 0,
+                authenticated: window.Laravel.user.authenticated,
 
                 // Video model
                 id: null,
