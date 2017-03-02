@@ -12145,7 +12145,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // Video model
             id: null,
             title: 'Untitled',
-            name: '',
+            name: window.Laravel.user.name,
             event: 'trampoline',
             description: null,
             extension: null

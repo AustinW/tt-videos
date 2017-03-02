@@ -72,7 +72,7 @@
                 // Video model
                 id: null,
                 title: 'Untitled',
-                name: '',
+                name: window.Laravel.user.name,
                 event: 'trampoline',
                 description: null,
                 extension: null,
