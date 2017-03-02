@@ -71,7 +71,7 @@
                 authenticated: window.Laravel.user.authenticated,
 
                 // Video model
-                id: null,
+                unique_id: null,
                 title: 'Untitled',
                 name: window.Laravel.user.name,
                 event: 'trampoline',
@@ -90,7 +90,7 @@
                     var form = new FormData();
 
                     form.append('video', this.file);
-                    form.append('id', this.id);
+                    form.append('unique_id', this.unique_id);
 
                     this.$http.post('/upload', form, {
                         progress: (e) => {
@@ -118,13 +118,13 @@
                     event: this.event,
                     extension: this.extension,
                 }).then(Vue.getJson).then((response) => {
-                    this.id = response.data.id;
+                    this.unique_id = response.data.unique_id;
                 });
             },
             update() {
                 this.saveStatus = 'Saving changes.';
 
-                return this.$http.put('/videos/' + this.id, {
+                return this.$http.put('/videos/' + this.unique_id, {
                     title: this.title,
                     description: this.description,
                     name: this.name,
@@ -148,7 +148,7 @@
         },
         computed: {
             videoUrl: function() {
-                return this.$root.url + '/videos/' + this.id;
+                return this.$root.url + '/videos/' + this.unique_id;
             }
         },
         mounted() {

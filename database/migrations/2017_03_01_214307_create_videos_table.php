@@ -15,14 +15,16 @@ class CreateVideosTable extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('unique_id');
             $table->integer('user_id')->unsigned()->nullable();
-            $table->string('google_id')->nullable()->index();
+            $table->integer('coconut_id')->unsigned()->nullable();
             $table->string('name');
             $table->enum('event', ['trampoline', 'double mini', 'tumbling']);
             $table->string('title');
             $table->text('description')->nullable();
             $table->boolean('processed')->default(false);
             $table->string('video_filename')->nullable();
+            $table->string('cloud_file')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

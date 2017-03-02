@@ -19,8 +19,15 @@ Route::resource('upload', 'UploadController');
 Route::resource('videos', 'VideosController');
 
 Route::get('test', function() {
-    Storage::disk('google')->put('test.txt', 'Hello World');
+    $video = \App\Video::find(1);
+    $video->coconut_id = 1234;
+    $video->save();
 });
+
+Route::post('webhook', 'WebhookController@inbound');
+Route::post('webhook/receive-video', 'WebhookController@receiveVideo');
+
+Route::get('/video-src/{file}', 'VideosController@serve');
 
 Auth::routes();
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\TranscodeVideo;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\UploadFormRequest;
@@ -39,11 +40,11 @@ class UploadController extends Controller
      */
     public function store(UploadFormRequest $request)
     {
-        $video = Video::find($request->id);
+        $video = Video::where('unique_id', $request->unique_id)->firstOrFail();
 
         $request->file('video')->move(storage_path() . '/uploads', $video->video_filename);
 
-        $this->dispatch(new UploadVideo($video));
+        $this->dispatch(new TranscodeVideo($video));
 
         return response()->json(null, 200);
     }

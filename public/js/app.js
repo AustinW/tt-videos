@@ -12144,7 +12144,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             authenticated: window.Laravel.user.authenticated,
 
             // Video model
-            id: null,
+            unique_id: null,
             title: 'Untitled',
             name: window.Laravel.user.name,
             event: 'trampoline',
@@ -12166,7 +12166,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var form = new FormData();
 
                 form.append('video', _this.file);
-                form.append('id', _this.id);
+                form.append('unique_id', _this.unique_id);
 
                 _this.$http.post('/upload', form, {
                     progress: function progress(e) {
@@ -12195,7 +12195,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 event: this.event,
                 extension: this.extension
             }).then(Vue.getJson).then(function (response) {
-                _this2.id = response.data.id;
+                _this2.unique_id = response.data.unique_id;
             });
         },
         update: function update() {
@@ -12203,7 +12203,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.saveStatus = 'Saving changes.';
 
-            return this.$http.put('/videos/' + this.id, {
+            return this.$http.put('/videos/' + this.unique_id, {
                 title: this.title,
                 description: this.description,
                 name: this.name,
@@ -12226,7 +12226,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {
         videoUrl: function videoUrl() {
-            return this.$root.url + '/videos/' + this.id;
+            return this.$root.url + '/videos/' + this.unique_id;
         }
     },
     mounted: function mounted() {

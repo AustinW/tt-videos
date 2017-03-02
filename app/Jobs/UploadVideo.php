@@ -36,10 +36,23 @@ class UploadVideo implements ShouldQueue
      */
     public function handle()
     {
-        $file = storage_path() . '/uploads/' . $this->video->video_filename;
+        $filePath = storage_path() . '/transcoded/' . $this->video->video_filename;
+        $thumbnailPath = storage_path() . '/transcoded/' . $this->video->unique_id . '_t.jpg';
 
-        if (Storage::disk('dropbox')->writeStream($this->video->getPath(), fopen($file, 'r+'))) {
-            File::delete($file);
+        $cloudVideoPath = $this->video->cloudVideoPath();
+        $cloudThumbnailPath = $this->video->cloudThumbnailPath();
+
+        if (!Storage::disk('dropbox')->has($cloudVideoPath)) {
+            if (Storage::disk('dropbox')->writeStream($cloudVideoPath, fopen($filePath, 'r+'))) {
+                $this->video->update(['cloud_path' => $cloudVideoPath]);
+                File::delete($filePath);
+            }
+        }
+
+        if (!Storage::disk('dropbox')->has($cloudThumbnailPath)) {
+            if (Storage::disk('dropbox')->writeStream($cloudThumbnailPath, fopen($thumbnailPath, 'r+'))) {
+                File::delete($thumbnailPath);
+            }
         }
     }
 }
