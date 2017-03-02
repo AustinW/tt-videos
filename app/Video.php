@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Observers\VideoObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -22,7 +23,7 @@ class Video extends Model
     ];
 
     protected $events = [
-        'updated' => VideoUpdated::class
+        'updated' => VideoObserver::class
     ];
 
     public function getRouteKeyName() {
