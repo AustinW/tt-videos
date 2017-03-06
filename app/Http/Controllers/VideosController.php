@@ -187,9 +187,13 @@ class VideosController extends Controller
      */
     public function showEvent(Request $request, $event) {
 
+        if (!$request->user()) {
+            return redirect()->route('login');
+        }
+
         $event = str_replace('double-mini', 'double mini', $event);
 
-        $videos = $request->user()->videos->where('event', $event);
+        $videos = $request->user()->videos()->where('event', $event)->orderBy('created_at', 'desc')->get();
 
         $header = 'Your ' . ucwords($event) . ' Videos';
 
