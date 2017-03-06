@@ -6,7 +6,6 @@
  */
 
 require('./bootstrap');
-var VueResource = require('vue-resource');
 import Vue2Filters from 'vue2-filters';
 
 /**
@@ -16,12 +15,14 @@ import Vue2Filters from 'vue2-filters';
  */
 
 Vue.component('video-upload', require('./components/VideoUpload.vue'));
+Vue.component('multiple-video-upload', require('./components/MultipleVideoUpload.vue'));
 Vue.component('video-player', require('./components/VideoPlayer.vue'));
 Vue.component('video-voting', require('./components/VideoVoting.vue'));
 Vue.component('video-comments', require('./components/VideoComments.vue'));
 
-Vue.use(VueResource);
+Vue.use(require('vue-resource'));
 Vue.use(Vue2Filters);
+Vue.use(require('@websanova/vue-upload'));
 
 var getJson = {
     install: (Vue, options) => {

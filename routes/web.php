@@ -44,6 +44,8 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('upload', 'UploadController');
+    Route::post('upload/multiple', 'UploadController@storeMultiple')->name('upload.multiple');
+
     Route::resource('videos', 'VideosController', [
         'names' => [
             'index' => 'videos.index',

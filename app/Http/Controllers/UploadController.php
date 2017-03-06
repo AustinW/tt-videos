@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UploadMultipleFormRequest;
 use App\Jobs\TranscodeVideo;
 use Illuminate\Http\Request;
 
@@ -47,6 +48,32 @@ class UploadController extends Controller
         $this->dispatch(new TranscodeVideo($video));
 
         return response()->json(null, 200);
+    }
+
+    public function storeMultiple(UploadMultipleFormRequest $request) {
+
+        $file = $request->file('file');
+
+        $title = ucwords(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+        $unique_id = uniqid(true);
+
+        $video = $request->user()->videos()->create([
+            'title' => $title,
+            'description' => '',
+            'event' => $request->get('event', 'trampoline'),
+
+            'user_id' => $request->user()->id,
+            'unique_id' => $unique_id,
+
+            'video_filename' => $unique_id . "." . $file->extension(),
+            'visibility' => 'private',
+            'allow_votes' => false,
+            'allow_comments' => true,
+        ]);
+
+        return response()->json([
+            'data' => $video
+        ], 200);
     }
 
     /**

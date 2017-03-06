@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <video-upload></video-upload>
+    <multiple-video-upload></multiple-video-upload>
 @endsection

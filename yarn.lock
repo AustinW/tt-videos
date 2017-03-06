@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@websanova/vue-upload@^0.2.6-beta":
+  version "0.2.6-beta"
+  resolved "https://registry.yarnpkg.com/@websanova/vue-upload/-/vue-upload-0.2.6-beta.tgz#547589f15a7a65883c3851f0340c4e52f9cee7d2"
+
 abbrev@1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"
