@@ -91,7 +91,7 @@ class UserController extends Controller
                 $c->upsize();
             })->save(storage_path() . '/app/public/profiles/' . $fileId . '.png');
 
-            if (Storage::disk('public')->has('/profiles/' . $user->image_file)) {
+            if ($user->image_file && Storage::disk('public')->has('/profiles/' . $user->image_file)) {
                 Storage::disk('public')->delete('/profiles/' . $user->image_file);
             }
 

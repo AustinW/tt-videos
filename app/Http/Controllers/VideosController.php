@@ -189,7 +189,7 @@ class VideosController extends Controller
 
         $event = str_replace('double-mini', 'double mini', $event);
 
-        $videos = $request->user()->videos->where('event', $event);
+        $videos = $request->user()->videos->where('event', $event)->get();
 
         $header = 'Your ' . ucwords($event) . ' Videos';
 
