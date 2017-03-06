@@ -9,7 +9,7 @@ use App\Http\Requests\CreateVoteRequest;
 
 class VideoVoteController extends Controller
 {
-    public function create(CreateVoteRequest $request, Video $video) {
+    public function store(CreateVoteRequest $request, Video $video) {
         $this->authorize('vote', $video);
 
         $video->voteFromUser($request->user())->delete();

@@ -19,7 +19,7 @@ class VideoCommentController extends Controller
         );
     }
 
-    public function create(CreateVideoCommentRequest $request, Video $video) {
+    public function store(CreateVideoCommentRequest $request, Video $video) {
         $this->authorize('comment', $video);
 
         $comment = $video->comments()->create([
