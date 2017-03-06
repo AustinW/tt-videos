@@ -17,16 +17,16 @@
         <ul class="media-list">
             <li class="media" v-for="comment in comments">
 
-                <!-- Channel image -->
+                <!-- User image -->
                 <div class="media-left">
-                    <a :href="channelUrl(comment)">
-                        <img v-bind:src="comment.channel.data.image" :alt="comment.channel.data.name" class="media-object">
+                    <a :href="userUrl(comment)">
+                        <img v-bind:src="comment.user.data.image" :alt="comment.user.data.name" class="media-object img-avatar">
                     </a>
                 </div>
 
                 <!-- Comment -->
                 <div class="media-body">
-                    <a :href="channelUrl(comment)">{{ comment.channel.data.name }}</a> {{ comment.created_at_human }}
+                    <a :href="userUrl(comment)">{{ comment.user.data.name }}</a> {{ comment.created_at_human }}
 
                     <span v-if="comment.replies.data.length">({{ comment.replies.data.length }}  {{ comment.replies.data.length | pluralize('reply', 'replies') }})</span>
 
@@ -59,16 +59,16 @@
                     <!-- Replies to comment -->
                     <div class="media" v-for="reply in comment.replies.data">
 
-                        <!-- Channel image -->
+                        <!-- User image -->
                         <div class="media-left">
-                            <a :href="channelUrl(reply)">
-                                <img v-bind:src="reply.channel.data.image" :alt="reply.channel.data.name" class="media-object">
+                            <a :href="userUrl(reply)">
+                                <img v-bind:src="reply.user.data.image" :alt="reply.user.data.name" class="media-object img-avatar">
                             </a>
                         </div>
 
                         <!-- Reply body -->
                         <div class="media-body">
-                            <a :href="channelUrl(reply)">{{ reply.channel.data.name }}</a> {{ reply.created_at_human }}
+                            <a :href="userUrl(reply)">{{ reply.user.data.name }}</a> {{ reply.created_at_human }}
 
                             <p>{{ reply.body }}</p>
 
@@ -101,7 +101,7 @@
             }
         },
         props: {
-            videoUid: null
+            videoUniqueId: null
         },
         methods: {
             deleteComment(commentId) {
@@ -109,7 +109,7 @@
 
                 this.deleting = commentId;
 
-                this.$http.delete('/videos/' + this.videoUid + '/comments/' + commentId).then(Vue.getJson).then((response) => {
+                this.$http.delete('/videos/' + this.videoUniqueId + '/comments/' + commentId).then(Vue.getJson).then((response) => {
                     this.deleteById(commentId);
                     this.deleting = null;
                 });
@@ -142,7 +142,7 @@
             createReply(commentId) {
                 this.replying = true;
 
-                this.$http.post('/videos/' + this.videoUid + '/comments', {
+                this.$http.post('/videos/' + this.videoUniqueId + '/comments', {
                     body: this.replyBody,
                     reply_id: commentId
                 }).then(Vue.getJson).then((response) => {
@@ -165,7 +165,7 @@
             createComment() {
                 this.posting = true;
 
-                this.$http.post('/videos/' + this.videoUid + '/comments', {
+                this.$http.post('/videos/' + this.videoUniqueId + '/comments', {
                     body: this.body
                 }).then(Vue.getJson).then((response) => {
                     this.comments.unshift(response.data);
@@ -177,12 +177,12 @@
                 });
             },
             getComments() {
-                this.$http.get('/videos/' + this.videoUid + '/comments').then(Vue.getJson).then((response) => {
+                this.$http.get('/videos/' + this.videoUniqueId + '/comments').then(Vue.getJson).then((response) => {
                     this.comments = response.data;
                 })
             },
-            channelUrl(comment) {
-                return '/channel/' + comment.channel.data.slug;
+            userUrl(comment) {
+                return '/user/' + comment.user.data.id;
             }
         },
         mounted() {

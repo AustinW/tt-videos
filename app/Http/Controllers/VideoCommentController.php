@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateVideoCommentRequest;
-use App\Models\Comment;
+use App\Comment;
 use App\Transformers\CommentTransformer;
 use Illuminate\Http\Request;
-use  App\Models\Video;
+use App\Video;
 
 class VideoCommentController extends Controller
 {
     public function index(Video $video) {
         return response()->json(
             fractal()->collection($video->comments()->latestFirst()->get())
-                ->parseIncludes(['channel', 'replies', 'replies.channel'])
+                ->parseIncludes(['user', 'replies', 'replies.user'])
                 ->transformWith(new CommentTransformer)
                 ->toArray()
         );
@@ -30,7 +30,7 @@ class VideoCommentController extends Controller
 
         return response()->json(
             fractal()->item($comment)
-                ->parseIncludes(['channel', 'replies'])
+                ->parseIncludes(['user', 'replies'])
                 ->transformWith(new CommentTransformer())
                 ->toArray()
         );

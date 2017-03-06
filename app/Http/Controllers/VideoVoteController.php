@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Video;
-use App\Http\Requests;
 use App\Http\Requests\CreateVoteRequest;
 
 class VideoVoteController extends Controller

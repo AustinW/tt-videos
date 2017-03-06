@@ -37,6 +37,6 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken;
 
 const app = new Vue({
     el: '#app',
-    data: window.codetube
+    data: window.Laravel
 });
 

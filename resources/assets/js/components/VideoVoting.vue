@@ -21,14 +21,14 @@
             }
         },
         props: {
-            videoUid: null
+            videoUniqueId: null
         },
         mounted() {
             this.getVotes();
         },
         methods: {
             getVotes() {
-                this.$http.get('/videos/' + this.videoUid + '/votes').then(Vue.getJson).then((response) => {
+                this.$http.get('/videos/' + this.videoUniqueId + '/votes').then(Vue.getJson).then((response) => {
                     this.up = response.data.up;
                     this.down = response.data.down;
                     this.userVote = response.data.user_vote;
@@ -54,10 +54,10 @@
                 this.createVote(type);
             },
             deleteVote(type) {
-                this.$http.delete('/videos/' + this.videoUid + '/votes', {type});
+                this.$http.delete('/videos/' + this.videoUniqueId + '/votes', {type});
             },
             createVote(type) {
-                this.$http.post('/videos/' + this.videoUid + '/votes', {type});
+                this.$http.post('/videos/' + this.videoUniqueId + '/votes', {type});
             }
         }
     }

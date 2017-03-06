@@ -38,7 +38,7 @@
                             {{ $video->viewCount() }} {{ str_plural('view', $video->viewCount()) }}
 
                             @if ($video->votesAllowed())
-                                <video-voting video-uid="{{ $video->unique_id  }}"></video-voting>
+                                <video-voting video-unique-id="{{ $video->unique_id  }}"></video-voting>
                             @endif
                         </div>
                     </div>
@@ -67,7 +67,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     @if ($video->commentsAllowed())
-                        <video-comments video-uid="{{ $video->uid }}"></video-comments>
+                        <video-comments video-unique-id="{{ $video->unique_id }}"></video-comments>
                     @else
                         Comments are disabled
                     @endif

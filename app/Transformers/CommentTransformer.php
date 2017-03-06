@@ -2,13 +2,13 @@
 
 namespace App\Transformers;
 
-use App\Models\Comment;
+use App\Comment;
 use League\Fractal\TransformerAbstract;
 
 class CommentTransformer extends TransformerAbstract
 {
     protected $availableIncludes = [
-        'channel', 'replies',
+        'user', 'replies',
     ];
 
     public function transform(Comment $comment) {
@@ -22,8 +22,8 @@ class CommentTransformer extends TransformerAbstract
         ];
     }
 
-    public function includeChannel(Comment $comment) {
-        return $this->item($comment->user->channel->first(), new ChannelTransformer());
+    public function includeUser(Comment $comment) {
+        return $this->item($comment->user, new UserTransformer());
     }
 
     public function includeReplies(Comment $comment) {
