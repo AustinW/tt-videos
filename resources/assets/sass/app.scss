@@ -5,8 +5,35 @@
 // Variables
 @import "variables";
 
+// Components
+@import "components/video";
+
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
-// Font Awesome
-@import "node_modules/font-awesome/scss/font-awesome";
+// Vendor
+@import "vendor";
+
+.glyphicon.spinning {
+  animation: spin 1s infinite linear;
+  -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+  from { transform: scale(1) rotate(0deg); }
+  to { transform: scale(1) rotate(360deg); }
+}
+
+@-webkit-keyframes spin2 {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); }
+}
+
+.video-result {
+  margin: 20px 0;
+}
+
+.profile-img {
+  max-width:100px;
+  max-height:100px;
+}

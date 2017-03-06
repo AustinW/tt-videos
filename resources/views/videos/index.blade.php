@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Videos</div>
+                    <div class="panel-heading">{{ $header or 'Videos' }}</div>
                     
                     <div class="panel-body">
                         @if ($videos->count())
@@ -14,7 +14,7 @@
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <a href="/videos/{{ $video->unique_id }}">
-                                                <img src="{{ $video->getThumbnail() }}" alt="{{ $video->title }}" class="img-responsive" />
+                                                <img src="{{ $video->thumbnailUrl() }}" alt="{{ $video->title }}" class="img-responsive" />
                                             </a>
                                         </div>
                                         <div class="col-sm-9">
@@ -25,7 +25,7 @@
                                                         @if (!$video->isProcessed())
                                                             Processing
                                                         @else
-                                                            <span>{{ $video->created_at->toDateTimeString() }}</span>
+                                                            <span>{{ $video->created_at->diffForHumans() }}</span>
                                                         @endif
                                                     </p>
                                                     
@@ -43,7 +43,7 @@
                             @endforeach
                             
                         @else
-                            <p>You have no videos.</p>
+                            <p>No videos to display...</p>
                         @endif
                     </div>
                 </div>

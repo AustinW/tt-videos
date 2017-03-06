@@ -16,7 +16,7 @@ class CreateVideosTable extends Migration
         Schema::create('videos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('unique_id');
-            $table->integer('user_id')->unsigned()->nullable();
+            $table->integer('user_id')->unsigned();
             $table->integer('coconut_id')->unsigned()->nullable();
             $table->string('name');
             $table->enum('event', ['trampoline', 'double mini', 'tumbling']);
@@ -25,6 +25,9 @@ class CreateVideosTable extends Migration
             $table->boolean('processed')->default(false);
             $table->string('video_filename')->nullable();
             $table->string('cloud_file')->nullable();
+            $table->enum('visibility', ['public', 'unlisted', 'private']);
+            $table->boolean('allow_votes')->default(false);
+            $table->boolean('allow_comments')->default(false);
             $table->softDeletes();
             $table->timestamps();
 

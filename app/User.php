@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Thomaswelton\LaravelGravatar\Facades\Gravatar;
 
 class User extends Authenticatable
 {
@@ -15,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'image_file'
     ];
 
     /**
@@ -29,5 +30,13 @@ class User extends Authenticatable
 
     public function videos() {
         return $this->hasMany('App\Video');
+    }
+
+    public function getImage() {
+        if ($this->image_file) {
+            return asset('storage/profiles/' . $this->image_file);
+        } else {
+            return Gravatar::src($this->email, 200);
+        }
     }
 }

@@ -15,9 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('upload', 'UploadController');
-Route::resource('videos', 'VideosController');
-
 Route::get('thumbnail/{video}', 'VideosController@thumbnail')->name('thumbnail');
 
 Route::post('webhook', 'WebhookController@inbound');
@@ -25,10 +22,35 @@ Route::post('webhook/receive-video', 'WebhookController@receiveVideo');
 
 Route::get('/video-src/{file}', 'VideosController@serve');
 
-Auth::routes();
-
 Route::get('/home', 'HomeController@index');
 
-Route::get('test', function() {
-    \Session::put('athlete_name', 'Austin White');
+Route::post('/videos/{video}/views', 'VideoViewController@create');
+
+Route::get('/search', 'SearchController@index');
+
+Route::get('/videos/{video}/comments', 'VideoCommentController@index');
+
+Route::get('/videos/{video}/votes', 'VideoVoteController@show');
+
+Auth::routes();
+
+Route::get('/videos/event/{event}', 'VideosController@showEvent')->name('videos.showEvent');
+
+Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
+    Route::get('/', 'UserController@show')->name('show');
+    Route::get('edit', 'UserController@edit')->name('edit');
+    Route::put('update', 'UserController@update')->name('update');
+});
+
+Route::group(['middleware' => ['auth']], function() {
+    Route::resource('upload', 'UploadController');
+    Route::resource('videos', 'VideosController', [
+        'names' => [
+            'index' => 'videos.index',
+            'show' => 'videos.show',
+            'edit' => 'videos.edit',
+            'update' => 'videos.update',
+        ]
+    ]);
+
 });

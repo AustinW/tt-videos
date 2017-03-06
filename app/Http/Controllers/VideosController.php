@@ -17,14 +17,14 @@ class VideosController extends Controller
      */
     public function index(Request $request)
     {
-        $videos = [];
-
         if (Auth::check()) {
             $videos = Auth::user()->videos()->get();
         } else if ($request->name) {
             $videos = Video::where('name', $request->name)->get();
         } else if (\Session::has('athlete_name')) {
             $videos = Video::where('name', \Session::get('athlete_name'))->get();
+        } else {
+            $videos = collect();
         }
 
         return view('videos.index', ['videos' => $videos]);
@@ -50,7 +50,7 @@ class VideosController extends Controller
     {
         $unique_id = uniqid(true);
 
-        $video = Video::create([
+        $request->user()->videos()->create([
             'user_id' => (Auth::guest()) ? null : $request->user()->id,
             'unique_id' => $unique_id,
             'title' => $request->title,
@@ -58,11 +58,10 @@ class VideosController extends Controller
             'event' => $request->event,
             'description' => $request->description,
             'video_filename' => $unique_id . "." . $request->extension,
+            'visibility' => 'private',
+            'allow_votes' => false,
+            'allow_comments' => true,
         ]);
-
-        if (!Auth::check()) {
-            Session::put('athlete_name', $request->name);
-        }
 
         return response()->json([
             'data' => [
@@ -74,23 +73,29 @@ class VideosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Video $video
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function show($id)
+    public function show(Video $video)
     {
-        //
+        return view('videos.show', ['video' => $video]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Video $video
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function edit($id)
+    public function edit(Video $video)
     {
-        //
+        $this->authorize('edit', $video);
+
+        return view('videos.edit', [
+            'video' => $video
+        ]);
     }
 
     /**
@@ -104,7 +109,7 @@ class VideosController extends Controller
      */
     public function update(VideoFormRequest $request, Video $video)
     {
-        $oldPath = $video->cloudVideoPath();
+        $this->authorize('update', $video);
 
         $video->update([
             'user_id' => (Auth::guest()) ? null : $request->user()->id,
@@ -112,16 +117,23 @@ class VideosController extends Controller
             'name' => $request->name,
             'event' => $request->event,
             'description' => $request->description,
+            'visibility' => $request->get('visibility', 'private'),
+            'allow_votes' => $request->has('allow_votes'),
+            'allow_comments' => $request->has('allow_comments'),
         ]);
 
-        // Update the file name if we need to
-        if (Storage::disk('dropbox')->has($oldPath)) {
-            Storage::disk('dropbox')->rename($oldPath, $video->cloudVideoPath());
+        if ($request->ajax()) {
+            return response()->json([
+                'data' => [
+                    'unique_id' => $video->unique_id,
+                ]
+            ]);
         }
 
-        return response()->json([
-            'data' => [
-                'unique_id' => $video->unique_id,
+        return redirect()->back()->with([
+            'message' => [
+                'class' => 'success',
+                'body' => 'Video updated.',
             ]
         ]);
     }
@@ -129,12 +141,17 @@ class VideosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Video $video
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function destroy($id)
+    public function destroy(Video $video)
     {
-        //
+        $this->authorize('delete', $video);
+
+        $video->delete();
+
+        return redirect()->back();
     }
 
     public function serve($filename) {
@@ -161,5 +178,21 @@ class VideosController extends Controller
         $response->header('Content-Type', $mime);
 
         return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param $event
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showEvent(Request $request, $event) {
+
+        $event = str_replace('double-mini', 'double mini', $event);
+
+        $videos = $request->user()->videos->where('event', $event);
+
+        $header = 'Your ' . ucwords($event) . ' Videos';
+
+        return view('videos.index', compact('videos', 'header'));
     }
 }

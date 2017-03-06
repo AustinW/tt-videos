@@ -7,6 +7,7 @@
 
 require('./bootstrap');
 var VueResource = require('vue-resource');
+import Vue2Filters from 'vue2-filters';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -15,8 +16,12 @@ var VueResource = require('vue-resource');
  */
 
 Vue.component('video-upload', require('./components/VideoUpload.vue'));
+Vue.component('video-player', require('./components/VideoPlayer.vue'));
+Vue.component('video-voting', require('./components/VideoVoting.vue'));
+Vue.component('video-comments', require('./components/VideoComments.vue'));
 
 Vue.use(VueResource);
+Vue.use(Vue2Filters);
 
 var getJson = {
     install: (Vue, options) => {

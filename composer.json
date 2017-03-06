@@ -6,12 +6,18 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
+        "algolia/algoliasearch-client-php": "^1.16",
         "barryvdh/laravel-debugbar": "^2.3",
+        "doctrine/dbal": "^2.5",
+        "intervention/image": "^2.3",
         "laravel/framework": "5.4.*",
+        "laravel/scout": "^3.0",
         "laravel/tinker": "~1.0",
         "league/flysystem-dropbox": "^1.0",
         "nao-pon/flysystem-google-drive": "~1.1",
-        "opencoconut/coconut": "dev-master"
+        "opencoconut/coconut": "dev-master",
+        "spatie/laravel-fractal": "^3.5",
+        "thomaswelton/laravel-gravatar": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -48,6 +48,15 @@
                                 <textarea class="form-control" v-model="description"></textarea>
                             </div>
 
+                            <div class="form-group">
+                                <label for="visibility">Visibility</label>
+                                <select class="form-control" v-model="visibility">
+                                    <option value="private">Private</option>
+                                    <option value="unlisted">Unlisted</option>
+                                    <option value="public">Public</option>
+                                </select>
+                            </div>
+
                             <span class="help-block pull-right">{{ saveStatus }}</span>
                             <button type="submit" class="btn btn-default" @click.prevent="update">Save Changes</button>
 
@@ -72,9 +81,11 @@
 
                 // Video model
                 unique_id: null,
+                user_id: window.Laravel.user.id,
                 title: 'Untitled',
                 name: window.Laravel.user.name,
                 event: 'trampoline',
+                visibility: 'private',
                 description: null,
                 extension: null,
             }
@@ -112,11 +123,13 @@
                 this.extension = this.file.name.split('.').pop();
 
                 return this.$http.post('/videos', {
+                    user_id: this.user_id,
                     title: this.title,
                     description: this.description,
                     name: this.name,
                     event: this.event,
                     extension: this.extension,
+                    visibility: this.visibility,
                 }).then(Vue.getJson).then((response) => {
                     this.unique_id = response.data.unique_id;
                 });
@@ -130,6 +143,7 @@
                     name: this.name,
                     event: this.event,
                     extension: this.extension,
+                    visibility: this.visibility,
                 }).then((response) => {
                     this.saveStatus = 'Changes saved.';
 

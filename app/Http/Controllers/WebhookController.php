@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\DownloadVideo;
 use App\Jobs\UploadVideo;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\App;
 use Log;
 use App\Video;
 
@@ -41,6 +43,10 @@ class WebhookController extends Controller
             'video_filename' => $transcodedFilename . '.mp4'
         ]);
 
-        $this->dispatch(new UploadVideo($video));
+        if (App::environment('local')) {
+            $this->dispatch(new DownloadVideo($video));
+        }
+
+        //$this->dispatch(new UploadVideo($video));
     }
 }
