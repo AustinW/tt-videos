@@ -20,25 +20,29 @@ Vue.component('video-player', require('./components/VideoPlayer.vue'));
 Vue.component('video-voting', require('./components/VideoVoting.vue'));
 Vue.component('video-comments', require('./components/VideoComments.vue'));
 Vue.component('competition-form', require('./components/CompetitionForm.vue'));
+Vue.component('trampoline-score', require('./components/scores/TrampolineScore.vue'));
+Vue.component('dmt-score', require('./components/scores/DoubleMiniScore.vue'));
+Vue.component('tumbling-score', require('./components/scores/TumblingScore.vue'));
 
 Vue.use(require('vue-resource'));
 Vue.use(Vue2Filters);
 Vue.use(require('@websanova/vue-upload'));
 
-var getJson = {
+window.Event = new Vue();
+
+Vue.use({
     install: (Vue, options) => {
         Vue.getJson = (response) => {
             return response.json();
         }
     }
-};
-Vue.use(getJson);
+});
 
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken;
 
 const app = new Vue({
     el: '#app',
-    data: window.Laravel
+    data: window.Laravel,
 });
 
