@@ -42,3 +42,15 @@
   max-width: 50px;
   max-height: 50px
 }
+
+.event-selection {
+  label {
+    display:block;
+  }
+
+  .score-tile {
+    border: 2px solid #cddbe6;
+    border-radius: 5px;
+    padding: 5px;
+  }
+}

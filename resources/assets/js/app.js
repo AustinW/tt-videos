@@ -19,6 +19,7 @@ Vue.component('multiple-video-upload', require('./components/MultipleVideoUpload
 Vue.component('video-player', require('./components/VideoPlayer.vue'));
 Vue.component('video-voting', require('./components/VideoVoting.vue'));
 Vue.component('video-comments', require('./components/VideoComments.vue'));
+Vue.component('competition-form', require('./components/CompetitionForm.vue'));
 
 Vue.use(require('vue-resource'));
 Vue.use(Vue2Filters);

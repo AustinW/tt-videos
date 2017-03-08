@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Thomaswelton\LaravelGravatar\Facades\Gravatar;
+use App\Competition;
 
 class User extends Authenticatable
 {
@@ -38,5 +39,9 @@ class User extends Authenticatable
         } else {
             return Gravatar::src($this->email, 200);
         }
+    }
+
+    public function competitions() {
+        return $this->hasMany(Competition::class);
     }
 }

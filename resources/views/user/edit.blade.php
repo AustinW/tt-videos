@@ -11,15 +11,7 @@
                 <div class="panel-heading">{{ $user->name }}</div>
 
                 <div class="panel-body">
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                    @include('layouts.partials._errors')
                     
                     <form action="{{ route('user.update') }}" method="post" enctype="multipart/form-data">
                         
