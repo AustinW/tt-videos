@@ -17,7 +17,7 @@ class CreateTrampolineScoresTable extends Migration
             $table->increments('id');
             $table->integer('competition_id')->unsigned();
             $table->integer('video_id')->unsigned()->nullable();
-            $table->enum('routine', ['prelim_compulsory', 'prelim_optional', 'semi_final_optional', 'final_optional', 'team_final']);
+            $table->enum('routine', ['prelim_compulsory', 'prelim_optional', 'semi_final_optional', 'final_optional']);
             $table->float('execution')->nullable();
             $table->float('neutral_deduction')->nullable();
             $table->float('difficulty')->nullable();

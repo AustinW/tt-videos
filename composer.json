@@ -10,6 +10,7 @@
         "barryvdh/laravel-debugbar": "^2.3",
         "doctrine/dbal": "^2.5",
         "intervention/image": "^2.3",
+        "laracasts/flash": "^2.0",
         "laravel/framework": "5.4.*",
         "laravel/scout": "^3.0",
         "laravel/tinker": "~1.0",

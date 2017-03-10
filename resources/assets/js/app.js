@@ -7,6 +7,7 @@
 
 require('./bootstrap');
 import Vue2Filters from 'vue2-filters';
+import VeeValidate from 'vee-validate';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -27,6 +28,7 @@ Vue.component('tumbling-score', require('./components/scores/TumblingScore.vue')
 Vue.use(require('vue-resource'));
 Vue.use(Vue2Filters);
 Vue.use(require('@websanova/vue-upload'));
+Vue.use(VeeValidate);
 
 window.Event = new Vue();
 

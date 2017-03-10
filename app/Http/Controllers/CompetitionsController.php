@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\TrampolineScore;
 use App\DoubleMiniScore;
 use App\TumblingScore;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Auth;
 
 class CompetitionsController extends Controller
 {
@@ -17,7 +17,9 @@ class CompetitionsController extends Controller
      */
     public function index()
     {
-        //
+        $competitions = Auth::user()->competitions()->with('trampolineScores', 'doubleMiniScores', 'tumblingScores')->orderBy('created_at', 'desc')->get();
+
+        return view('competitions.index', compact('competitions'));
     }
 
     /**
@@ -38,8 +40,6 @@ class CompetitionsController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request->input('doubleMiniPasses.prelim_pass_1.nd'));
-
         $competition = $request->user()->competitions()->create([
             'title' => $request->title,
             'location' => $request->location,

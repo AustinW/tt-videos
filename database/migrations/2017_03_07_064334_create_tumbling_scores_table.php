@@ -17,7 +17,7 @@ class CreateTumblingScoresTable extends Migration
             $table->increments('id');
             $table->integer('competition_id')->unsigned();
             $table->integer('video_id')->unsigned()->nullable();
-            $table->enum('routine', ['prelim_pass_1', 'prelim_pass_2', 'final_pass_3', 'final_pass_4', 'team_final']);
+            $table->enum('routine', ['prelim_pass_1', 'prelim_pass_2', 'final_pass_3', 'final_pass_4']);
             $table->float('execution')->nullable();
             $table->float('neutral_deduction')->nullable();
             $table->float('difficulty')->nullable();
