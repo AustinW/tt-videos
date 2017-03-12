@@ -1,12 +1,12 @@
 <template>
-    <form>
+    <form @submit.prevent="validateBeforeSubmit">
 
         <!-- Competition title -->
         <div :class="{'form-group': true, 'has-error': errors.has('title')}">
             <label for="title" class="control-label">Competition Title</label>
 
             <p :class="{'control': true}">
-                <input v-validate="'required'" id="title" type="text" class="form-control" v-model="title" name="title">
+                <input v-validate:title.initial="'required'" id="title" type="text" class="form-control" v-model="title" name="title">
                 <span v-show="errors.has('title')" class="help-block">
                     <strong>{{ errors.first('title') }}</strong>
                 </span>
@@ -30,7 +30,7 @@
             <label for="start_date" class="control-label">Start Date</label>
 
             <p :class="{'control': true}">
-                <input v-validate="'date_format:MM/DD/YYYY'" id="start_date" type="date" class="form-control" v-model="start_date" name="start_date">
+                <input v-validate:start_date.initial="'date_format:YYYY-MM-DD'" id="start_date" type="date" class="form-control" v-model="start_date" name="start_date">
                 <span v-show="errors.has('start_date')" class="help-block">
                     <strong>{{ errors.first('start_date') }}</strong>
                 </span>
@@ -42,7 +42,7 @@
             <label for="end_date" class="control-label">Start Date</label>
 
             <p :class="{'control': true}">
-                <input v-validate="'date_format:MM/DD/YYYY'" id="end_date" type="date" class="form-control" v-model="end_date" name="end_date">
+                <input v-validate:end_date.initial="'date_format:YYYY-MM-DD'" id="end_date" type="date" class="form-control" v-model="end_date" name="end_date">
                 <span v-show="errors.has('end_date')" class="help-block">
                     <strong>{{ errors.first('end_date') }}</strong>
                 </span>
@@ -53,7 +53,6 @@
         <div class="event-selection">
             <div class="form-group">
                 <h4>Events</h4>
-                {{ hasTrampolineScore }}
                 <label>
                     <input id="trampoline" type="checkbox" name="trampoline" v-model="trampoline">
                     Trampoline
@@ -125,16 +124,22 @@
                         <tumbling-score title="Pass 4" routine-key="prelim_pass_4" @scorechanged="updateAllScores"></tumbling-score>
                     </div>
                 </div>
-
-
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary" @click.prevent="submitCompetition">Submit Competition</button>
+        <button type="submit" class="btn btn-primary" :disabled="errors.any() || eventsInvalid()">Submit Competition</button>
     </form>
 </template>
 
 <script>
+    import moment from 'moment';
+
+    const disciplineMap = {
+        trampoline: 'trampolineRoutines',
+        dmt: 'doubleMiniPasses',
+        tumbling: 'tumblingPasses',
+    }
+
     export default {
         data() {
             return {
@@ -146,6 +151,12 @@
                 trampoline: false,
                 dmt: false,
                 tumbling: false,
+
+                eventValidations: {
+                    trampoline: false,
+                    dmt: false,
+                    tumbling: false,
+                },
 
                 trampolineRoutines: {
                     showSemiFinal: false,
@@ -159,8 +170,17 @@
                 },
             };
         },
-        props: {
 
+        mounted() {
+            this.$on('video-uploaded', (data) => {
+                let discipline = disciplineMap[data.discipline];
+
+                if (this[discipline][data.routineKey] === undefined) {
+                    this[discipline][data.routineKey] = {};
+                }
+
+                this[discipline][data.routineKey].video_id = data.video.id;
+            });
         },
 
         computed: {
@@ -179,36 +199,20 @@
             tumblingColSize() {
                 return (this.tumblingPasses.showFinal) ? '3' : '6';
             },
-
-            hasTrampolineScore() {
-                if (!this.trampoline) return false;
-
-                let routines = ['prelim_compulsory', 'prelim_optional', 'semi_final_optional', 'final_optional'];
-
-                for (let routine of routines) {
-                    console.log(this.trampolineRoutines.hasOwnProperty(routine), this.trampolineRoutines[routine].hasOwnProperty('total_score'), this.trampolineRoutines[routine].total_score > 0);
-                    if (this.trampolineRoutines.hasOwnProperty(routine) && this.trampolineRoutines[routine].hasOwnProperty('total_score') && this.trampolineRoutines[routine].total_score > 0) {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-
         },
 
         methods: {
+            eventsInvalid() {
+                return (!this.eventValidations.trampoline && !this.eventValidations.dmt && !this.eventValidations.tumbling);
+            },
             updateAllScores(score) {
-                let disciplineMap = {
-                    trampoline: 'trampolineRoutines',
-                    dmt: 'doubleMiniPasses',
-                    tumbling: 'tumblingPasses',
-                }
 
                 let discipline = disciplineMap[score.discipline];
 
                 // this.trampolineRoutines['prelim_compulsory'] = {execution: ..., difficulty: ..., etc.}
                 this[discipline][score.routineKey] = score.components;
+
+                this.checkEvents(score.discipline, this[discipline]);
             },
             submitCompetition() {
                 let attrKeys = ['title', 'location', 'start_date', 'end_date', 'trampoline', 'dmt', 'tumbling', 'trampolineRoutines', 'doubleMiniPasses', 'tumblingPasses'];
@@ -222,6 +226,32 @@
                     window.location = '/competitions';
                 });
             },
+
+            checkEvents(event, scores) {
+                if (!this[event]) return false;
+
+                if (event === 'trampoline') {
+                    var routines = ['prelim_compulsory', 'prelim_optional', 'semi_final_optional', 'final_optional'];
+                } else {
+                    var routines = ['prelim_pass_1', 'prelim_pass_2', 'final_pass_3', 'final_pass_4'];
+                }
+
+                for (let routine of routines) {
+                    if (scores.hasOwnProperty(routine) && scores[routine].hasOwnProperty('total_score') && scores[routine].total_score > 0) {
+                        this.eventValidations[event] = true;
+                        return;
+                    }
+                }
+
+                this.eventValidations[event] = false;
+            },
+            validateBeforeSubmit() {
+                this.$validator.validateAll().then(() => {
+                    this.submitCompetition();
+                }).catch(() => {
+                    alert('Please correct the errors.');
+                });
+            }
         },
     }
 
@@ -231,9 +261,11 @@
             attributes: {
                 title: 'Competition Title',
                 start_date: 'Start Date',
+                end_date: 'End Date',
             }
         },
     };
 
     Validator.updateDictionary(dictionary);
+    Validator.installDateTimeValidators(moment);
 </script>

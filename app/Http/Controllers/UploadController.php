@@ -51,7 +51,6 @@ class UploadController extends Controller
     }
 
     public function storeMultiple(UploadMultipleFormRequest $request) {
-
         $file = $request->file('file');
 
         $title = ucwords(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
@@ -60,16 +59,20 @@ class UploadController extends Controller
         $video = $request->user()->videos()->create([
             'title' => $title,
             'description' => '',
-            'event' => $request->get('event', 'trampoline'),
+            'event' => $request->get('event'),
 
             'user_id' => $request->user()->id,
             'unique_id' => $unique_id,
 
             'video_filename' => $unique_id . "." . $file->extension(),
-            'visibility' => 'private',
+            'visibility' => $request->get('visibility', 'private'),
             'allow_votes' => false,
             'allow_comments' => true,
         ]);
+
+        $request->file('file')->move(storage_path() . '/uploads', $video->video_filename);
+
+//        $this->dispatch(new TranscodeVideo($video));
 
         return response()->json([
             'data' => $video

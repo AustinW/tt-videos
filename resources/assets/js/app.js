@@ -21,6 +21,7 @@ Vue.component('video-player', require('./components/VideoPlayer.vue'));
 Vue.component('video-voting', require('./components/VideoVoting.vue'));
 Vue.component('video-comments', require('./components/VideoComments.vue'));
 Vue.component('competition-form', require('./components/CompetitionForm.vue'));
+Vue.component('routine-video', require('./components/RoutineVideo.vue'));
 Vue.component('trampoline-score', require('./components/scores/TrampolineScore.vue'));
 Vue.component('dmt-score', require('./components/scores/DoubleMiniScore.vue'));
 Vue.component('tumbling-score', require('./components/scores/TumblingScore.vue'));

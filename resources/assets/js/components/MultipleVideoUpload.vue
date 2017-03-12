@@ -9,10 +9,19 @@
 
                         <div class="form-group">
                             <label for="event">Event</label>
-                            <select class="form-control" v-model="event">
+                            <select class="form-control" id="event" v-model="event">
                                 <option value="trampoline">Trampoline</option>
                                 <option value="double mini">Double-mini</option>
                                 <option value="tumbling">Tumbling</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="visibility">Visibility</label>
+                            <select class="form-control" id="visibility" v-model="visibility">
+                                <option value="private">Private</option>
+                                <option value="unlisted">Unlisted</option>
+                                <option value="public">Public</option>
                             </select>
                         </div>
 
@@ -28,7 +37,7 @@
                             Cancel
                         </button>
 
-                        <div class="progress" v-show="$upload.meta('video-upload').status === 'sending'">
+                        <div class="upload-progress progress" v-show="$upload.meta('video-upload').status === 'sending'">
                             <div class="progress-bar" :style="'width: ' + $upload.meta('video-upload').percentComplete + '%;'">
                                 {{ $upload.meta('video-upload').percentComplete }}% Complete
                             </div>
@@ -38,7 +47,7 @@
                             {{ $upload.errors('video-upload')[0].message }}
                         </div>
 
-                        <div>
+                        <div class="upload-result">
 
                             <h3 v-show="$upload.files('video-upload').queued.length > 0">
                                 <div class="label label-default">
@@ -46,8 +55,8 @@
                                 </div>
                                 &nbsp;
                                 <button @click="toggleShowQueued" class="btn btn-default btn-sm">
-                                    <i v-if="showQueuedFiles" class="glyphicon glyphicon-collapse-up"></i>
-                                    <i v-if="!showQueuedFiles" class="glyphicon glyphicon-collapse-down"></i>
+                                    <i v-if="showQueuedFiles" class="glyphicon glyphicon-menu-up"></i>
+                                    <i v-if="!showQueuedFiles" class="glyphicon glyphicon-menu-down"></i>
                                 </button>
                             </h3>
 
@@ -59,14 +68,12 @@
 
                             <div v-for="file in $upload.files('video-upload').complete">
                                 <div v-if="file.errors.length">
-                                    {{ file.name }}
-                                    <br/>
+                                    <span class="label label-danger">{{ file.name }}</span>
                                     {{ file.errors[0].message }}
                                 </div>
 
                                 <div v-if="!file.errors.length">
-                                    {{ file.name }}
-                                    <br/>
+                                    <span class="label label-success">{{ file.name }}</span>
                                     Uploaded successfully.
                                 </div>
                             </div>
@@ -89,6 +96,12 @@
                 multiple: true,
                 maxSizePerFile: 204800, // 200 MB
                 startOnSelect: false,
+                extensions: ['mp4', 'webm', 'avi', 'asf', 'wmv', 'mpegts', 'mov', 'flv', 'mkv', '3gp'],
+                http: (data) => {
+                    data.body.append('visibility', this.visibility);
+                    data.body.append('event', this.event);
+                    return this.$http.post(data.url, data.body, {progress: data.progress}).then(data.success, data.error);
+                },
                 onQueue() {
                     this.showQueuedFiles = true;
                     this.queued = true;
@@ -98,11 +111,10 @@
                     this.showQueuedFiles = false;
                 },
                 onSuccess(res) {
-
+                    window.location = '/videos';
                 },
                 onEnd() {
-                    this.$msgbag.success('File upload complete.');
-                }
+                },
             });
         },
 
@@ -110,8 +122,9 @@
             return {
                 queued: false,
                 showQueuedFiles: false,
+                visibility: 'private',
 
-                event: null,
+                event: 'trampoline',
             }
         },
 

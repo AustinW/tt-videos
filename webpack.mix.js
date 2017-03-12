@@ -15,4 +15,17 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .sourceMaps()
    .sass('resources/assets/sass/app.scss', 'public/css')
    .copy('node_modules/font-awesome/fonts', 'public/fonts')
-   .extract(['vue', 'vue2-filters', 'vue-resource', 'lodash', '@websanova/vue-upload', 'mathjs']);
+   .extract([
+       'vue',
+       'vue2-filters',
+       'vue-resource',
+       'vee-validate',
+       'axios',
+       'bootstrap-sass',
+       'lodash',
+       'moment',
+       'video.js',
+       'jquery',
+       '@websanova/vue-upload',
+       'mathjs'
+   ]);

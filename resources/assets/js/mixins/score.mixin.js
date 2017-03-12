@@ -2,6 +2,7 @@ var math = require('mathjs');
 var _ = require('lodash');
 
 const ScoreMixin = {
+
     props: {
         title: null,
         routineKey: null,
@@ -10,6 +11,10 @@ const ScoreMixin = {
     methods: {
         formId(component) {
             return [this.discipline, this.routineKey, component].join('_');
+        },
+
+        toggleShowQueued() {
+            this.showQueuedFiles = !this.showQueuedFiles;
         },
 
         computeScore() {
@@ -31,7 +36,29 @@ const ScoreMixin = {
                 components: _.mapValues(this.scoreComponents, 'value')
             });
         },
-    }
-}
+
+        mounted() {
+            this.$upload.reset('video-upload', {
+                url: '/upload/multiple',
+                currentFiles: 0,
+                dropzoneId: 'video-upload-dropzone',
+            });
+        },
+
+        computeTotalScore() {
+            Object.keys(this.scoreComponents).forEach((component_key) => {
+                if (component_key !== 'total_score') {
+                    this.scoreComponents[component_key].value = null;
+                }
+            });
+
+            this.$emit('scorechanged', {
+                discipline: this.discipline,
+                routineKey: this.routineKey,
+                components: _.mapValues(this.scoreComponents, 'value')
+            });
+        }
+    },
+};
 
 export default ScoreMixin;

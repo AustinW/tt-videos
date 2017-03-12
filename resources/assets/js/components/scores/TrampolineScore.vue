@@ -2,6 +2,8 @@
     <div class="form-group score-tile">
         <h5>{{ title }}</h5>
 
+        <routine-video :discipline="discipline" :routine-key="routineKey"></routine-video>
+
         <div v-for="component_key in Object.keys(scoreComponents)">
             <div v-if="component_key !== 'total_score'">
                 <label :for="formId(component_key)">{{ scoreComponents[component_key].title }}</label>
@@ -9,7 +11,7 @@
             </div>
             <div v-if="component_key === 'total_score'">
                 <label :for="formId('total_score')">{{ scoreComponents.total_score.title }}</label>
-                <input v-model.number="scoreComponents.total_score.value" :name="formId('total_score')" type="number" class="form-control">
+                <input @change="computeTotalScore" v-model.number="scoreComponents.total_score.value" :name="formId('total_score')" type="number" class="form-control">
             </div>
         </div>
     </div>

@@ -54,7 +54,6 @@ class VideosController extends Controller
             'user_id' => (Auth::guest()) ? null : $request->user()->id,
             'unique_id' => $unique_id,
             'title' => $request->title,
-            'name' => $request->name,
             'event' => $request->event,
             'description' => $request->description,
             'video_filename' => $unique_id . "." . $request->extension,
@@ -114,7 +113,6 @@ class VideosController extends Controller
         $video->update([
             'user_id' => (Auth::guest()) ? null : $request->user()->id,
             'title' => $request->title,
-            'name' => $request->name,
             'event' => $request->event,
             'description' => $request->description,
             'visibility' => $request->get('visibility', 'private'),

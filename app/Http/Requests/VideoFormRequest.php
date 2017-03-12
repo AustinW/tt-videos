@@ -26,8 +26,8 @@ class VideoFormRequest extends FormRequest
         return [
             'title' => 'required|max:255',
             'description' => 'max:2000',
-            'name' => 'required|max:255',
             'event' => 'required|in:trampoline,double mini,tumbling',
+            'visibility' => 'required|in:private,unlisted,public',
         ];
     }
 }

@@ -37,6 +37,7 @@
                         </a>
                         
                         <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ route('competitions.create') }}">Submit Scores</a></li>
                             <li><a href="{{ route('upload.create') }}">Upload a Video</a></li>
                             <li><a href="{{ route('videos.index') }}">Videos</a></li>
                             <li><a href="{{ route('user.show') }}">Profile</a></li>

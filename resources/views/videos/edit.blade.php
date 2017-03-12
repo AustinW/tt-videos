@@ -73,12 +73,6 @@
                         </div>
                         
                         <div class="checkbox">
-                            <label for="allow_votes" class="checkbox-inline">
-                                <input type="checkbox" name="allow_votes" id="allow_votes"{{ $video->votesAllowed() ? ' checked="checked"' : '' }} /> Allow Votes
-                            </label>
-                        </div>
-                        
-                        <div class="checkbox">
                             <label for="allow_comments" class="checkbox-inline">
                                 <input type="checkbox" name="allow_comments" id="allow_comments"{{ $video->commentsAllowed() ? ' checked="checked"' : '' }} /> Allow Comments
                             </label>

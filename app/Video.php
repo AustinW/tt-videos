@@ -87,7 +87,9 @@ class Video extends Model
     }
 
     public function thumbnailUrl() {
-        return asset('storage/videos/' . $this->thumbnailName());
+        return ($this->isProcessed())
+            ? asset('storage/videos/' . $this->thumbnailName())
+            : asset('img/processing.png');
     }
 
     public function thumbnailName() {
