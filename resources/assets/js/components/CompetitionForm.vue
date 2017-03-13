@@ -53,6 +53,7 @@
         <div class="event-selection">
             <div class="form-group">
                 <h4>Events</h4>
+
                 <label>
                     <input id="trampoline" type="checkbox" name="trampoline" v-model="trampoline">
                     Trampoline
@@ -172,15 +173,6 @@
         },
 
         mounted() {
-            this.$on('video-uploaded', (data) => {
-                let discipline = disciplineMap[data.discipline];
-
-                if (this[discipline][data.routineKey] === undefined) {
-                    this[discipline][data.routineKey] = {};
-                }
-
-                this[discipline][data.routineKey].video_id = data.video.id;
-            });
         },
 
         computed: {
@@ -205,12 +197,13 @@
             eventsInvalid() {
                 return (!this.eventValidations.trampoline && !this.eventValidations.dmt && !this.eventValidations.tumbling);
             },
-            updateAllScores(score) {
+            updateAllScores($event) {
 
+                let score = $event.score;
                 let discipline = disciplineMap[score.discipline];
 
                 // this.trampolineRoutines['prelim_compulsory'] = {execution: ..., difficulty: ..., etc.}
-                this[discipline][score.routineKey] = score.components;
+                this[discipline][$event.routineKey] = score;
 
                 this.checkEvents(score.discipline, this[discipline]);
             },
@@ -237,7 +230,7 @@
                 }
 
                 for (let routine of routines) {
-                    if (scores.hasOwnProperty(routine) && scores[routine].hasOwnProperty('total_score') && scores[routine].total_score > 0) {
+                    if (scores.hasOwnProperty(routine) && scores[routine].hasScore()) {
                         this.eventValidations[event] = true;
                         return;
                     }

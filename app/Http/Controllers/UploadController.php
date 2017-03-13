@@ -56,10 +56,15 @@ class UploadController extends Controller
         $title = ucwords(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
         $unique_id = uniqid(true);
 
+        $event = $request->get('event');
+        if ($event === 'dmt') {
+            $event = 'double mini';
+        }
+
         $video = $request->user()->videos()->create([
             'title' => $title,
             'description' => '',
-            'event' => $request->get('event'),
+            'event' => $event,
 
             'user_id' => $request->user()->id,
             'unique_id' => $unique_id,

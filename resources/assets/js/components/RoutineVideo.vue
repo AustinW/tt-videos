@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button v-show="!uploaded" @click="$upload.select('video-upload-'+routineKey)" class="btn btn-default btn-xs" type="button">
+        <button v-show="!uploaded" @click="$upload.select('video-upload-'+routineKey)" :disabled="$upload.meta('video-upload-'+routineKey).status === 'sending'" class="btn btn-default btn-xs" type="button">
             <i class="glyphicon glyphicon-paperclip"></i> Attach Video
         </button>
 
@@ -30,8 +30,6 @@
         },
 
         created() {
-            var _self = this;
-
             this.$upload.new('video-upload-'+this.routineKey, {
                 async: true,
                 maxFiles: 1,
@@ -43,10 +41,8 @@
                     data.body.append('event', this.discipline);
                     return this.$http.post(data.url, data.body, {progress: data.progress}).then(data.success, data.error);
                 },
-                onStart() {
-                },
                 onSuccess(response) {
-                    this.$parent.$parent.$emit('video-uploaded', {
+                    this.$emit('video-uploaded', {
                         video: response.data.data,
                         routineKey: this.routineKey,
                         discipline: this.discipline,
@@ -54,8 +50,6 @@
 
                     this.uploaded = true;
                     this.filename = response.data.data.title;
-                },
-                onEnd() {
                 },
             });
         },

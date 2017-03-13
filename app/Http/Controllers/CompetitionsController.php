@@ -51,6 +51,9 @@ class CompetitionsController extends Controller
             foreach (TrampolineScore::$routineTypes as $routineType) {
                 if (!$this->_routineEmpty('trampolineRoutines.' . $routineType, $request)) {
                     $score = $this->createTrampolineRoutine($routineType, $request);
+                    if ($request->get('trampolineRoutines.' . $routineType . '.video_id')) {
+                        $score->video_id = $request->get('trampolineRoutines.' . $routineType . '.video_id');
+                    }
                     $competition->trampolineScores()->save($score);
                 }
             }
@@ -60,6 +63,9 @@ class CompetitionsController extends Controller
             foreach (DoubleMiniScore::$routineTypes as $routineType) {
                 if (!$this->_routineEmpty('doubleMiniPasses.' . $routineType, $request)) {
                     $score = $this->createDoubleMiniPass($routineType, $request);
+                    if ($request->get('doubleMiniPasses.' . $routineType . '.video_id')) {
+                        $score->video_id = $request->get('doubleMiniPasses.' . $routineType . '.video_id');
+                    }
                     $competition->doubleMiniScores()->save($score);
                 }
             }
@@ -69,8 +75,17 @@ class CompetitionsController extends Controller
             foreach (TumblingScore::$routineTypes as $routineType) {
                 if (!$this->_routineEmpty('tumblingPasses.' . $routineType, $request)) {
                     $score = $this->createTumblingPass($routineType, $request);
+                    if ($request->get('tumblingPasses.' . $routineType . '.video_id')) {
+                        $score->video_id = $request->get('tumblingPasses.' . $routineType . '.video_id');
+                    }
                     $competition->tumblingScores()->save($score);
                 }
+            }
+        }
+
+        if ($request->videos) {
+            foreach ($request->videos as $video) {
+
             }
         }
 
@@ -150,5 +165,11 @@ class CompetitionsController extends Controller
 
     protected function _routineEmpty($key, $request) {
         return (empty($request->input($key . '.total_score')));
+    }
+
+    protected function _attachVideo($videos, $discipline, $score) {
+        foreach ($videos as $video) {
+
+        }
     }
 }
