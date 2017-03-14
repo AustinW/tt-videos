@@ -8,6 +8,7 @@
 require('./bootstrap');
 import Vue2Filters from 'vue2-filters';
 import VeeValidate from 'vee-validate';
+import Vuex from 'vuex';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -32,6 +33,8 @@ Vue.use(Vue2Filters);
 Vue.use(require('@websanova/vue-upload'));
 Vue.use(VeeValidate);
 
+import store from './store';
+
 window.Event = new Vue();
 
 Vue.use({
@@ -48,5 +51,6 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken;
 const app = new Vue({
     el: '#app',
     data: window.Laravel,
+    store
 });
 

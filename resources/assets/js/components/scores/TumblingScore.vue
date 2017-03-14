@@ -2,17 +2,16 @@
     <div class="form-group score-tile">
         <h5>{{ title }}</h5>
 
-        <routine-video :discipline="score.discipline" :routine-key="routineKey" @video-uploaded="videoUploaded"></routine-video>
+        <routine-video :discipline="discipline" :routine-key="routineKey" @video-uploaded="videoUploaded"></routine-video>
 
-        <div v-for="component_key in score.scoreKeys()">
-            <div v-if="component_key !== 'total_score'">
-                <label :for="formId(component_key)" :title="score.getTitle(component_key)">{{ score.getLabel(component_key) }}</label>
-                <input @change="computeScore" v-model.number="score.attrs[component_key].value" :name="formId(component_key)" type="number" step="any" class="form-control">
-            </div>
-            <div v-if="component_key === 'total_score'">
-                <label :for="formId('total_score')" :title="score.getTitle(component_key)">{{ score.getLabel('total_score') }}</label>
-                <input @change="computeTotalScore" v-model.number="score.attrs.total_score.value" :name="formId('total_score')" type="number" step="any" class="form-control">
-            </div>
+        <div>
+            <label :for="formId('execution')" title="Execution">Execution</label>
+            <input @change="computeScore" v-model.number="execution" :name="formId('execution')" type="number" step="any" class="form-control">
+        </div>
+
+        <div>
+            <label :for="formId('total_score')" title="Total Score">Total Score</label>
+            <input @change="computeTotalScore" v-model.number="total_score" :name="formId('total_score')" type="number" step="any" class="form-control">
         </div>
     </div>
 </template>
@@ -22,14 +21,18 @@
     import TumblingScore from '../../TumblingScore';
 
     export default {
+
         data() {
             return {
-                score: null,
+                discipline: 'tumbling'
             }
         },
 
-        created() {
-            this.score = new TumblingScore();
+        computed: {
+            execution: {
+                get() { return this.$store.state.tumblingPasses[this.routineKey].execution.value },
+                set(value) {  }
+            }
         },
 
         mixins: [ScoreMixin]

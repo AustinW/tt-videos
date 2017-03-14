@@ -147,11 +147,6 @@
     export default {
         data() {
             return {
-                title: null,
-                location: null,
-                start_date: null,
-                end_date: null,
-
                 trampoline: false,
                 dmt: false,
                 tumbling: false,
@@ -181,31 +176,37 @@
 
         mounted() {
             if (this.competitionId) {
-                this.$http.get('/competitions/' + this.competitionId).then(Vue.getJson).then((response) => {
-                    var competition = response.data;
-                    console.log(competition);
-
-                    this.title = competition.title;
-                    this.location = competition.location;
-                    this.start_date = moment(competition.start_date.date).format('YYYY-MM-DD');
-                    this.end_date = moment(competition.end_date.date).format('YYYY-MM-DD');
-
-                    if (competition.trampolineScores.data.length) {
-                        this.initTrampolineScores(competition.trampolineScores.data);
-                    }
-
-                    if (competition.doubleMiniScores.data.length) {
-                        this.initDoubleMiniScores(competition.doubleMiniScores.data);
-                    }
-
-                    if (competition.tumblingScores.data.length) {
-                        this.initTumblingScores(competition.tumblingScores.data);
-                    }
-                });
+                this.$store.dispatch('LOAD_COMPETITION', this.competitionId);
             }
         },
 
         computed: {
+            trampolineRoutines() {
+                return this.$store.state.trampolineRoutines
+            },
+            doubleMiniPasses() {
+                return this.$store.state.doubleMiniPasses
+            },
+            tumblingPasses() {
+                return this.$store.state.tumblingPasses
+            },
+            title: {
+                get() { return this.$store.state.title; },
+                set(value) { this.$store.commit('SET_TITLE', value) }
+            },
+            location: {
+                get() { return this.$store.state.location; },
+                set(value) { this.$store.commit('SET_LOCATION', value) }
+            },
+            start_date: {
+                get() { return this.$store.state.start_date; },
+                set(value) { this.$store.commit('SET_START_DATE', value) }
+            },
+            end_date: {
+                get() { return this.$store.state.end_date; },
+                set(value) { this.$store.commit('SET_END_DATE', value) }
+            },
+
             trampColSize() {
                 if (this.trampolineRoutines.showFinal && this.trampolineRoutines.showSemiFinal) {
                     return '3';
@@ -267,21 +268,6 @@
                 }
 
                 this.eventValidations[event] = false;
-            },
-
-            initTumblingScores(scores) {
-                scores.forEach((score) => {
-                    let tumblingScore = new TumblingScore();
-                    tumblingScore.updateAttributes({
-                        execution: score.execution,
-                        difficulty: score.difficulty,
-                        neutral_deduction: score.neutral_deduction,
-                        total_score: score.total_score,
-                    });
-                    tumblingScore.setVideoId(score.video_id);
-                    this.tumblingPasses[score.routine] = tumblingScore;
-                });
-                this.tumbling = true;
             },
 
             validateBeforeSubmit() {
