@@ -38,7 +38,7 @@ class Score {
 
     updateAttributes(attributes) {
         Object.keys(attributes).forEach((key) => {
-            this.attrs[key] = attributes[key];
+            this.attrs[key].value = attributes[key];
         });
     }
 

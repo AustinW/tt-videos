@@ -134,6 +134,9 @@
 
 <script>
     import moment from 'moment';
+    import TrampolineScore from '../TrampolineScore';
+    import DoubleMiniScore from '../DoubleMiniScore';
+    import TumblingScore from '../TumblingScore';
 
     const disciplineMap = {
         trampoline: 'trampolineRoutines',
@@ -172,7 +175,34 @@
             };
         },
 
+        props: {
+            competitionId: null
+        },
+
         mounted() {
+            if (this.competitionId) {
+                this.$http.get('/competitions/' + this.competitionId).then(Vue.getJson).then((response) => {
+                    var competition = response.data;
+                    console.log(competition);
+
+                    this.title = competition.title;
+                    this.location = competition.location;
+                    this.start_date = moment(competition.start_date.date).format('YYYY-MM-DD');
+                    this.end_date = moment(competition.end_date.date).format('YYYY-MM-DD');
+
+                    if (competition.trampolineScores.data.length) {
+                        this.initTrampolineScores(competition.trampolineScores.data);
+                    }
+
+                    if (competition.doubleMiniScores.data.length) {
+                        this.initDoubleMiniScores(competition.doubleMiniScores.data);
+                    }
+
+                    if (competition.tumblingScores.data.length) {
+                        this.initTumblingScores(competition.tumblingScores.data);
+                    }
+                });
+            }
         },
 
         computed: {
@@ -238,13 +268,29 @@
 
                 this.eventValidations[event] = false;
             },
+
+            initTumblingScores(scores) {
+                scores.forEach((score) => {
+                    let tumblingScore = new TumblingScore();
+                    tumblingScore.updateAttributes({
+                        execution: score.execution,
+                        difficulty: score.difficulty,
+                        neutral_deduction: score.neutral_deduction,
+                        total_score: score.total_score,
+                    });
+                    tumblingScore.setVideoId(score.video_id);
+                    this.tumblingPasses[score.routine] = tumblingScore;
+                });
+                this.tumbling = true;
+            },
+
             validateBeforeSubmit() {
                 this.$validator.validateAll().then(() => {
                     this.submitCompetition();
                 }).catch(() => {
                     alert('Please correct the errors.');
                 });
-            }
+            },
         },
     }
 

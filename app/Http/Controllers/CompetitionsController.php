@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\TrampolineScore;
 use App\DoubleMiniScore;
+use App\Transformers\CompetitionTransformer;
 use App\TumblingScore;
 use Illuminate\Http\Request;
 use Auth;
@@ -89,13 +90,30 @@ class CompetitionsController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param Request $request
      * @param Competition $competition
      * @return \Illuminate\Http\Response
      * @internal param int $id
      */
-    public function show(Competition $competition)
+    public function show(Request $request, Competition $competition)
     {
         $this->authorize('show', $competition);
+
+        if ($request->ajax() || true) {
+            return response()->json(
+                fractal()->item($competition)
+                    ->parseIncludes([
+                        'trampolineScores',
+                        'trampolineScores.video',
+                        'doubleMiniScores',
+                        'doubleMiniScores.video',
+                        'tumblingScores',
+                        'tumblingScores.video',
+                    ])
+                    ->transformWith(new CompetitionTransformer())
+                    ->toArray()
+            );
+        }
 
         return view('competitions.show', compact('competition'));
     }
@@ -108,7 +126,7 @@ class CompetitionsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('competitions.edit', ['competitionId' => $id]);
     }
 
     /**

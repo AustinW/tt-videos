@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\TrampolineScore;
 use App\DoubleMiniScore;
 use App\TumblingScore;
+use App\User;
 
 class Competition extends Model
 {
@@ -21,6 +22,10 @@ class Competition extends Model
         'start_date',
         'end_date',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 
     public function trampolineScores() {
         return $this->hasMany(TrampolineScore::class);

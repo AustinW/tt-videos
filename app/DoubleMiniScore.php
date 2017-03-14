@@ -4,8 +4,9 @@ namespace App;
 
 use App\Traits\ScoreableTrait;
 use Illuminate\Database\Eloquent\Model;
+use App\Score;
 
-class DoubleMiniScore extends Model
+class DoubleMiniScore extends Score
 {
     use ScoreableTrait;
 
@@ -33,8 +34,4 @@ class DoubleMiniScore extends Model
         'difficulty',
         'total_score',
     ];
-
-    public function video() {
-        return $this->belongsTo(Video::class);
-    }
 }

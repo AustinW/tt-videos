@@ -5,8 +5,9 @@ namespace App;
 use App\Traits\ScoreableTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Video;
+use App\Score;
 
-class TumblingScore extends Model
+class TumblingScore extends Score
 {
     use ScoreableTrait;
 

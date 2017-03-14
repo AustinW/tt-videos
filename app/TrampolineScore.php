@@ -4,8 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\ScoreableTrait;
+use App\Score;
 
-class TrampolineScore extends Model
+class TrampolineScore extends Score
 {
     use ScoreableTrait;
 
@@ -37,8 +38,4 @@ class TrampolineScore extends Model
         'difficulty',
         'total_score',
     ];
-
-    public function video() {
-        return $this->belongsTo(Video::class);
-    }
 }
