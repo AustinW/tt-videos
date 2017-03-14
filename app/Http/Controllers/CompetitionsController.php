@@ -7,6 +7,7 @@ use App\DoubleMiniScore;
 use App\TumblingScore;
 use Illuminate\Http\Request;
 use Auth;
+use App\Competition;
 
 class CompetitionsController extends Controller
 {
@@ -51,9 +52,8 @@ class CompetitionsController extends Controller
             foreach (TrampolineScore::$routineTypes as $routineType) {
                 if (!$this->_routineEmpty('trampolineRoutines.' . $routineType, $request)) {
                     $score = $this->createTrampolineRoutine($routineType, $request);
-                    if ($request->get('trampolineRoutines.' . $routineType . '.video_id')) {
-                        $score->video_id = $request->get('trampolineRoutines.' . $routineType . '.video_id');
-                    }
+                    $score->video_id = $request->input('trampolineRoutines.' . $routineType . '.video_id');
+
                     $competition->trampolineScores()->save($score);
                 }
             }
@@ -63,9 +63,8 @@ class CompetitionsController extends Controller
             foreach (DoubleMiniScore::$routineTypes as $routineType) {
                 if (!$this->_routineEmpty('doubleMiniPasses.' . $routineType, $request)) {
                     $score = $this->createDoubleMiniPass($routineType, $request);
-                    if ($request->get('doubleMiniPasses.' . $routineType . '.video_id')) {
-                        $score->video_id = $request->get('doubleMiniPasses.' . $routineType . '.video_id');
-                    }
+                    $score->video_id = $request->input('doubleMiniPasses.' . $routineType . '.video_id');
+
                     $competition->doubleMiniScores()->save($score);
                 }
             }
@@ -75,32 +74,30 @@ class CompetitionsController extends Controller
             foreach (TumblingScore::$routineTypes as $routineType) {
                 if (!$this->_routineEmpty('tumblingPasses.' . $routineType, $request)) {
                     $score = $this->createTumblingPass($routineType, $request);
-                    if ($request->get('tumblingPasses.' . $routineType . '.video_id')) {
-                        $score->video_id = $request->get('tumblingPasses.' . $routineType . '.video_id');
-                    }
+                    $score->video_id = $request->input('tumblingPasses.' . $routineType . '.video_id');
+
                     $competition->tumblingScores()->save($score);
                 }
             }
         }
 
-        if ($request->videos) {
-            foreach ($request->videos as $video) {
-
-            }
-        }
-
-        return response()->json(compact('competition'), 200);
+        return response()->json([
+            'competition' => $competition->with(['trampolineScores', 'doubleMiniScores', 'tumblingScores'])
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Competition $competition
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function show($id)
+    public function show(Competition $competition)
     {
-        //
+        $this->authorize('show', $competition);
+
+        return view('competitions.show', compact('competition'));
     }
 
     /**
@@ -145,7 +142,7 @@ class CompetitionsController extends Controller
         $class = new \ReflectionClass($routineClass);
 
         foreach ($class->getStaticPropertyValue('scoreParts') as $scorePart) {
-            $attributes[$scorePart] = $request->input(implode('.', $key) . "." . $scorePart);
+            $attributes[$scorePart] = $request->input(implode('.', $key) . '.attrs.' . $scorePart . '.value');
         }
 
         return new $routineClass($attributes);
@@ -159,17 +156,11 @@ class CompetitionsController extends Controller
         return $this->createRoutine(['doubleMiniPasses', $key], $request, 'App\\DoubleMiniScore');
     }
 
-    public function createTumblingRoutine($key, Request $request) {
-        return $this->createRoutine(['tumblingPasses', $key], $request, 'App\\TumblingPass');
+    public function createTumblingPass($key, Request $request) {
+        return $this->createRoutine(['tumblingPasses', $key], $request, 'App\\TumblingScore');
     }
 
     protected function _routineEmpty($key, $request) {
-        return (empty($request->input($key . '.total_score')));
-    }
-
-    protected function _attachVideo($videos, $discipline, $score) {
-        foreach ($videos as $video) {
-
-        }
+        return (empty($request->input($key . '.attrs.total_score')));
     }
 }

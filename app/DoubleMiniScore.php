@@ -23,8 +23,8 @@ class DoubleMiniScore extends Model
     public static $routineTypes = [
         'prelim_pass_1',
         'prelim_pass_2',
-        'prelim_pass_3',
-        'prelim_pass_4',
+        'final_pass_3',
+        'final_pass_4',
     ];
 
     public static $scoreParts = [

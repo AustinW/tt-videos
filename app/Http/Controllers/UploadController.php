@@ -77,7 +77,7 @@ class UploadController extends Controller
 
         $request->file('file')->move(storage_path() . '/uploads', $video->video_filename);
 
-//        $this->dispatch(new TranscodeVideo($video));
+        $this->dispatch(new TranscodeVideo($video));
 
         return response()->json([
             'data' => $video

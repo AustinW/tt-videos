@@ -25,6 +25,7 @@ Vue.component('routine-video', require('./components/RoutineVideo.vue'));
 Vue.component('trampoline-score', require('./components/scores/TrampolineScore.vue'));
 Vue.component('dmt-score', require('./components/scores/DoubleMiniScore.vue'));
 Vue.component('tumbling-score', require('./components/scores/TumblingScore.vue'));
+Vue.component('small-video', require('./components/SmallVideo.vue'));
 
 Vue.use(require('vue-resource'));
 Vue.use(Vue2Filters);

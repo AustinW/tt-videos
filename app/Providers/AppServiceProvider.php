@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Video;
+use Blade;
 use App\Observers\VideoObserver;
 
 use Illuminate\Support\ServiceProvider;
@@ -20,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         Video::observe(VideoObserver::class);
+
+        Blade::directive('routineTitle', function($expression) {
+            return "<?php echo ucwords(str_replace('_', ' ', $expression)); ?>";
+        });
     }
 
     /**
