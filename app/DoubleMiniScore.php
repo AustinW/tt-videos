@@ -33,4 +33,8 @@ class DoubleMiniScore extends Model
         'difficulty',
         'total_score',
     ];
+
+    public function video() {
+        return $this->belongsTo(Video::class);
+    }
 }
