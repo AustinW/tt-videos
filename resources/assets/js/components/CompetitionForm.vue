@@ -67,16 +67,16 @@
 
                 <div v-show="trampoline" class="row">
                     <div :class="'col-md-' + trampColSize">
-                        <trampoline-score title="Compulsory" routine-key="prelim_compulsory" @scorechanged="updateAllScores"></trampoline-score>
+                        <trampoline-score title="Compulsory" routine-key="prelim_compulsory"></trampoline-score>
                     </div>
                     <div :class="'col-md-' + trampColSize">
-                        <trampoline-score title="Prelim Optional" routine-key="prelim_optional" @scorechanged="updateAllScores"></trampoline-score>
+                        <trampoline-score title="Prelim Optional" routine-key="prelim_optional"></trampoline-score>
                     </div>
                     <div :class="'col-md-' + trampColSize" v-show="trampolineRoutines.showSemiFinal">
-                        <trampoline-score title="Semi-Final" routine-key="semi_final_optional" @scorechanged="updateAllScores"></trampoline-score>
+                        <trampoline-score title="Semi-Final" routine-key="semi_final_optional"></trampoline-score>
                     </div>
                     <div :class="'col-md-' + trampColSize" v-show="trampolineRoutines.showFinal">
-                        <trampoline-score title="Final Optional" routine-key="final_optional" @scorechanged="updateAllScores"></trampoline-score>
+                        <trampoline-score title="Final Optional" routine-key="final_optional"></trampoline-score>
                     </div>
                 </div>
 
@@ -90,16 +90,16 @@
 
                 <div v-show="dmt" class="row">
                     <div :class="'col-md-' + dmtColSize">
-                        <dmt-score title="Pass 1" routine-key="prelim_pass_1" @scorechanged="updateAllScores"></dmt-score>
+                        <dmt-score title="Pass 1" routine-key="prelim_pass_1"></dmt-score>
                     </div>
                     <div :class="'col-md-' + dmtColSize">
-                        <dmt-score title="Pass 2" routine-key="prelim_pass_2" @scorechanged="updateAllScores"></dmt-score>
+                        <dmt-score title="Pass 2" routine-key="prelim_pass_2"></dmt-score>
                     </div>
                     <div :class="'col-md-' + dmtColSize" v-show="doubleMiniPasses.showFinal">
-                        <dmt-score title="Pass 3" routine-key="prelim_pass_3" @scorechanged="updateAllScores"></dmt-score>
+                        <dmt-score title="Pass 3" routine-key="final_pass_3"></dmt-score>
                     </div>
                     <div :class="'col-md-' + dmtColSize" v-show="doubleMiniPasses.showFinal">
-                        <dmt-score title="Pass 4" routine-key="prelim_pass_4" @scorechanged="updateAllScores"></dmt-score>
+                        <dmt-score title="Pass 4" routine-key="final_pass_4"></dmt-score>
                     </div>
                 </div>
 
@@ -113,22 +113,22 @@
 
                 <div v-show="tumbling" class="row">
                     <div :class="'col-md-' + tumblingColSize">
-                        <tumbling-score title="Pass 1" routine-key="prelim_pass_1" @scorechanged="updateAllScores"></tumbling-score>
+                        <tumbling-score title="Pass 1" routine-key="prelim_pass_1"></tumbling-score>
                     </div>
                     <div :class="'col-md-' + tumblingColSize">
-                        <tumbling-score title="Pass 2" routine-key="prelim_pass_2" @scorechanged="updateAllScores"></tumbling-score>
+                        <tumbling-score title="Pass 2" routine-key="prelim_pass_2"></tumbling-score>
                     </div>
                     <div :class="'col-md-' + tumblingColSize" v-show="tumblingPasses.showFinal">
-                        <tumbling-score title="Pass 3" routine-key="prelim_pass_3" @scorechanged="updateAllScores"></tumbling-score>
+                        <tumbling-score title="Pass 3" routine-key="final_pass_3"></tumbling-score>
                     </div>
                     <div :class="'col-md-' + tumblingColSize" v-show="tumblingPasses.showFinal">
-                        <tumbling-score title="Pass 4" routine-key="prelim_pass_4" @scorechanged="updateAllScores"></tumbling-score>
+                        <tumbling-score title="Pass 4" routine-key="final_pass_4"></tumbling-score>
                     </div>
                 </div>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary" :disabled="errors.any() || eventsInvalid()">Submit Competition</button>
+        <button type="submit" class="btn btn-primary" :disabled="errors.any() || !eventsValid">Submit Competition</button>
     </form>
 </template>
 
@@ -137,12 +137,6 @@
     import TrampolineScore from '../TrampolineScore';
     import DoubleMiniScore from '../DoubleMiniScore';
     import TumblingScore from '../TumblingScore';
-
-    const disciplineMap = {
-        trampoline: 'trampolineRoutines',
-        dmt: 'doubleMiniPasses',
-        tumbling: 'tumblingPasses',
-    }
 
     export default {
         data() {
@@ -176,7 +170,11 @@
 
         mounted() {
             if (this.competitionId) {
-                this.$store.dispatch('LOAD_COMPETITION', this.competitionId);
+                this.$store.dispatch('LOAD_COMPETITION', this.competitionId).then((response) => {
+                    this.trampoline = this.$store.getters.eventChecked('trampolineRoutines');
+                    this.dmt = this.$store.getters.eventChecked('doubleMiniPasses');
+                    this.tumbling = this.$store.getters.eventChecked('tumblingPasses');
+                });
             }
         },
 
@@ -207,6 +205,14 @@
                 set(value) { this.$store.commit('SET_END_DATE', value) }
             },
 
+            eventsValid() {
+                return (
+                    this.$store.getters.eventChecked('trampolineRoutines') ||
+                    this.$store.getters.eventChecked('doubleMiniPasses') ||
+                    this.$store.getters.eventChecked('tumblingPasses')
+                );
+            },
+
             trampColSize() {
                 if (this.trampolineRoutines.showFinal && this.trampolineRoutines.showSemiFinal) {
                     return '3';
@@ -225,55 +231,24 @@
         },
 
         methods: {
-            eventsInvalid() {
-                return (!this.eventValidations.trampoline && !this.eventValidations.dmt && !this.eventValidations.tumbling);
-            },
-            updateAllScores($event) {
-
-                let score = $event.score;
-                let discipline = disciplineMap[score.discipline];
-
-                // this.trampolineRoutines['prelim_compulsory'] = {execution: ..., difficulty: ..., etc.}
-                this[discipline][$event.routineKey] = score;
-
-                this.checkEvents(score.discipline, this[discipline]);
-            },
             submitCompetition() {
-                let attrKeys = ['title', 'location', 'start_date', 'end_date', 'trampoline', 'dmt', 'tumbling', 'trampolineRoutines', 'doubleMiniPasses', 'tumblingPasses'];
-                let attrs = {};
 
-                attrKeys.forEach((key) => {
-                    attrs[key] = this[key];
+                let data = this.$store.getters.allData;
+
+                let xhr = (this.$store.state.competition_id)
+                    ? this.$http.put('/competitions/' + this.$store.state.competition_id, data)
+                    : this.$http.post('/competitions', data);
+
+                xhr.then(Vue.getJson).then((response) => {
+                    window.location = '/competitions/' + response.competition.id;
                 });
-
-                this.$http.post('/competitions', attrs).then(Vue.getJson).then((response) => {
-                    window.location = '/competitions';
-                });
-            },
-
-            checkEvents(event, scores) {
-                if (!this[event]) return false;
-
-                if (event === 'trampoline') {
-                    var routines = ['prelim_compulsory', 'prelim_optional', 'semi_final_optional', 'final_optional'];
-                } else {
-                    var routines = ['prelim_pass_1', 'prelim_pass_2', 'final_pass_3', 'final_pass_4'];
-                }
-
-                for (let routine of routines) {
-                    if (scores.hasOwnProperty(routine) && scores[routine].hasScore()) {
-                        this.eventValidations[event] = true;
-                        return;
-                    }
-                }
-
-                this.eventValidations[event] = false;
             },
 
             validateBeforeSubmit() {
                 this.$validator.validateAll().then(() => {
                     this.submitCompetition();
-                }).catch(() => {
+                }).catch((err) => {
+                    console.error(err);
                     alert('Please correct the errors.');
                 });
             },

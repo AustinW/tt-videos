@@ -14,4 +14,9 @@ class CompetitionPolicy
     {
         return $user->id === $competition->user_id;
     }
+
+    public function update(User $user, Competition $competition)
+    {
+        return $user->id === $competition->user_id;
+    }
 }

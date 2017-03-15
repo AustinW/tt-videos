@@ -45,7 +45,15 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('upload', 'UploadController');
 
-    Route::resource('competitions', 'CompetitionsController');
+    Route::resource('competitions', 'CompetitionsController', [
+        'names' => [
+            'index' => 'competitions.index',
+            'show' => 'competitions.show',
+            'edit' => 'competitions.edit',
+            'update' => 'competitions.update',
+            'delete' => 'competitions.delete',
+        ]
+    ]);
 
     Route::post('upload/multiple', 'UploadController@storeMultiple')->name('upload.multiple');
 

@@ -11,15 +11,11 @@ class TrampolineScore extends Score {
 
         this.attrs.time_of_flight = {
             order: 10,
-            label: 'TOF',
-            title: 'Time of Flight',
             value: null
         };
 
         this.attrs.horizontal_displacement = {
             order: 11,
-            label: 'HD',
-            title: 'Horizontal Displacement',
             value: null
         };
 

@@ -6,12 +6,22 @@
 
         <div>
             <label :for="formId('execution')" title="Execution">Execution</label>
-            <input @change="computeScore" v-model.number="execution" :name="formId('execution')" type="number" step="any" class="form-control">
+            <input v-model.number="execution" :name="formId('execution')" type="number" step="any" class="form-control">
+        </div>
+
+        <div>
+            <label :for="formId('difficulty')" title="Difficulty">Difficulty</label>
+            <input v-model.number="difficulty" :name="formId('difficulty')" type="number" step="any" class="form-control">
+        </div>
+
+        <div>
+            <label :for="formId('neutral_deduction')" title="Neutral Deduction">ND</label>
+            <input v-model.number="neutral_deduction" :name="formId('neutral_deduction')" type="number" step="any" class="form-control">
         </div>
 
         <div>
             <label :for="formId('total_score')" title="Total Score">Total Score</label>
-            <input @change="computeTotalScore" v-model.number="total_score" :name="formId('total_score')" type="number" step="any" class="form-control">
+            <input v-model.number="total_score" :name="formId('total_score')" type="number" step="any" class="form-control">
         </div>
     </div>
 </template>
@@ -24,14 +34,8 @@
 
         data() {
             return {
-                discipline: 'tumbling'
-            }
-        },
-
-        computed: {
-            execution: {
-                get() { return this.$store.state.tumblingPasses[this.routineKey].execution.value },
-                set(value) {  }
+                discipline: 'tumbling',
+                routines: 'tumblingPasses',
             }
         },
 

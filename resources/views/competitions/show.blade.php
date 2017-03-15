@@ -5,7 +5,13 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">{{ $competition->title }}</div>
+                    <div class="panel-heading">
+                        {{ $competition->title }}
+                        @if ($competition->user_id === Auth::user()->id)
+                            <a href="{{ route('competitions.edit', $competition->id) }}"
+                               class="btn btn-default btn-xs">Edit</a>
+                        @endif
+                    </div>
                     
                     <div class="panel-body">
                         <div class="row">

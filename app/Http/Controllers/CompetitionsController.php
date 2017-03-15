@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Score;
 use App\TrampolineScore;
 use App\DoubleMiniScore;
 use App\Transformers\CompetitionTransformer;
@@ -99,7 +100,7 @@ class CompetitionsController extends Controller
     {
         $this->authorize('show', $competition);
 
-        if ($request->ajax() || true) {
+        if ($request->ajax()) {
             return response()->json(
                 fractal()->item($competition)
                     ->parseIncludes([
@@ -132,13 +133,61 @@ class CompetitionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param $competition
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Competition $competition)
     {
-        //
+        $this->authorize('update', $competition);
+
+        $competition->update([
+            'title' => $request->title,
+            'location' => $request->location,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+        ]);
+
+        if ($request->trampoline) {
+            foreach (TrampolineScore::$routineTypes as $routineType) {
+                if (!$this->_routineEmpty('trampolineRoutines.' . $routineType, $request)) {
+                    $score = TrampolineScore::findOrFail($request->input('trampolineRoutines.' . $routineType . '.id'));
+                    $score->video_id = $request->input('trampolineRoutines.' . $routineType . '.video_id');
+
+                    $attributes = $this->updateRoutine(['trampolineRoutines', $routineType], $request, $score);
+                    $score->update($attributes);
+                }
+            }
+        }
+
+        if ($request->dmt) {
+            foreach (DoubleMiniScore::$routineTypes as $routineType) {
+                if (!$this->_routineEmpty('doubleMiniPasses.' . $routineType, $request)) {
+                    $score = DoubleMiniScore::findOrFail($request->input('doubleMiniPasses.' . $routineType . '.id'));
+                    $score->video_id = $request->input('doubleMiniPasses.' . $routineType . '.video_id');
+
+                    $attributes = $this->updateRoutine(['doubleMiniPasses', $routineType], $request, $score);
+                    $score->update($attributes);
+                }
+            }
+        }
+
+        if ($request->tumbling) {
+            foreach (TumblingScore::$routineTypes as $routineType) {
+                if (!$this->_routineEmpty('tumblingPasses.' . $routineType, $request)) {
+                    $score = TumblingScore::findOrFail($request->input('tumblingPasses.' . $routineType . '.id'));
+                    $score->video_id = $request->input('tumblingPasses.' . $routineType . '.video_id');
+
+                    $attributes = $this->updateRoutine(['tumblingPasses', $routineType], $request, $score);
+                    $score->update($attributes);
+                }
+            }
+        }
+
+        return response()->json([
+            'competition' => $competition
+        ], 200);
     }
 
     /**
@@ -164,6 +213,18 @@ class CompetitionsController extends Controller
         }
 
         return new $routineClass($attributes);
+    }
+
+    public function updateRoutine(array $key, Request $request, Score $score) {
+        $attributes = [];
+
+        $class = new \ReflectionClass(get_class($score));
+
+        foreach ($class->getStaticPropertyValue('scoreParts') as $scorePart) {
+            $attributes[$scorePart] = $request->input(implode('.', $key) . '.attrs.' . $scorePart . '.value');
+        }
+
+        return $attributes;
     }
 
     public function createTrampolineRoutine($key, Request $request) {

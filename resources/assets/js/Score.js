@@ -1,39 +1,38 @@
 'use strict';
 
+import math from 'mathjs';
+
 class Score {
     constructor() {
         this.attrs = {
             execution: {
                 order: 1,
-                label: 'Execution',
-                title: 'Execution',
                 value: null
             },
             difficulty: {
                 order: 2,
-                label: 'Difficulty',
-                title: 'Difficulty',
                 value: null
             },
             neutral_deduction: {
                 order: 20,
-                label: 'ND',
-                title: 'Neutral Deduction',
                 value: null
             },
             total_score: {
                 order: 100,
-                label: 'Total Score',
-                title: 'Total Score',
                 value: null
             },
         };
 
         this.video_id = null;
+        this.id = null;
     }
 
-    setVideoId(id) {
-        this.video_id = id;
+    setId(id) {
+        this.id = id;
+    }
+
+    setVideoId(videoId) {
+        this.video_id = videoId;
     }
 
     updateAttributes(attributes) {
@@ -46,16 +45,36 @@ class Score {
         return Object.keys(this.attrs).sort((a, b) => { return this.attrs[a].order - this.attrs[b].order; });
     }
 
-    getLabel(key) {
-        return this.attrs[key].label;
-    }
-
-    getTitle(key) {
-        return this.attrs[key].title;
-    }
-
     hasScore() {
-        return this.attrs.total_score.value !== null && this.attrs.total_score.value > 0;
+        (this.attrs.total_score.value !== null && this.attrs.total_score.value > 0);
+    }
+
+    attribute(key) {
+        this.attrs[key].value;
+    }
+
+    computeTotal() {
+        let sum = 0;
+
+        this.scoreKeys().forEach((component_key) => {
+            if (component_key === 'neutral_deduction') {
+                sum = (this.attrs.neutral_deduction.value) ? math.subtract(sum, this.attrs.neutral_deduction.value) : sum;
+            } else if (component_key !== 'total_score') {
+                sum = (this.attrs[component_key].value) ? math.add(sum, this.attrs[component_key].value) : sum;
+            }
+        });
+
+        this.attrs.total_score.value = math.round(sum, 3);
+    }
+
+    setTotal(value) {
+        this.scoreKeys().forEach((component_key) => {
+            if (component_key !== 'total_score') {
+                this.attrs[component_key].value = null;
+            }
+        });
+
+        this.attrs.total_score.value = (value !== '') ? math.round(value, 3) : '';
     }
 }
 
