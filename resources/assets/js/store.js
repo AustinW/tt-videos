@@ -143,6 +143,10 @@ const store = new Vuex.Store({
                 scoreInstance.updateAttributes(scoreMap);
                 scoreInstance.setId(score.id);
                 scoreInstance.setVideoId(score.video_id);
+                if (score.video.data.hasOwnProperty('title')) {
+                    scoreInstance.setVideoFilename(score.video.data.title);
+                }
+                console.log(scoreInstance.videoFilename);
                 state.tumblingPasses[score.routine] = scoreInstance;
             });
         },
@@ -176,6 +180,18 @@ const store = new Vuex.Store({
                 scores,
                 scoreClass: TumblingScore
             });
+        },
+
+        REMOVE_ATTACHMENT: (state, { routines, routineKey }) => {
+            state[routines][routineKey].setVideoId(null);
+            state[routines][routineKey].setVideoFilename(null);
+
+        },
+
+        ATTACH_VIDEO: (state, { routines, routineKey, video }) => {
+            state[routines][routineKey].setVideoId(video.id);
+            state[routines][routineKey].setVideoFilename(video.title);
+
         },
     },
 

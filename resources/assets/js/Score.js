@@ -24,6 +24,7 @@ class Score {
         };
 
         this.video_id = null;
+        this.videoFilename = null;
         this.id = null;
     }
 
@@ -33,6 +34,14 @@ class Score {
 
     setVideoId(videoId) {
         this.video_id = videoId;
+    }
+
+    setVideoFilename(videoFilename) {
+        this.videoFilename = videoFilename;
+    }
+
+    hasVideo() {
+        return !! this.video_id;
     }
 
     updateAttributes(attributes) {

@@ -2,7 +2,7 @@
     <div class="form-group score-tile">
         <h5>{{ title }}</h5>
 
-        <routine-video :discipline="discipline" :routine-key="routineKey" @video-uploaded="videoUploaded"></routine-video>
+        <routine-video :routines="routines" :discipline="discipline" :routine-key="routineKey"></routine-video>
 
         <div>
             <label :for="formId('execution')" title="Execution">Execution</label>

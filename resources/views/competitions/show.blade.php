@@ -31,7 +31,11 @@
                                                     <div class="col-md-12">
                                                         <strong>@routineTitle($score->routine)</strong>
                                                         @if ($video = $score->video()->first())
-                                                            <small-video title="{{ $video->title }}" src="{{ $video->getStreamUrl() }}" img="{{ $video->thumbnailUrl() }}" video-id="{{ $video->unique_id }}"></small-video>
+                                                            @if ($video->isProcessed())
+                                                                <small-video title="{{ $video->title }}" src="{{ $video->getStreamUrl() }}" img="{{ $video->thumbnailUrl() }}" video-id="{{ $video->unique_id }}"></small-video>
+                                                            @else
+                                                                <i class="glyphicon glyphicon-refresh"></i> Video processing...
+                                                            @endif
                                                         @endif
                                                         <table class="table table-bordered">
                                                             <tr>
