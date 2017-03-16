@@ -77,15 +77,27 @@ const store = new Vuex.Store({
                 store.commit('SET_COMPETITION_FIELDS', { fields: competition });
 
                 if (competition.trampolineScores.data.length) {
-                    store.commit('SET_TRAMPOLINE_SCORES', {scores: competition.trampolineScores.data});
+                    store.commit('SET_SCORES', {
+                        scores: competition.trampolineScores.data,
+                        scoreClass: TrampolineScore,
+                        stateIndex: 'trampolineRoutines',
+                    });
                 }
 
                 if (competition.doubleMiniScores.data.length) {
-                    store.commit('SET_DOUBLE_MINI_SCORES', {scores: competition.doubleMiniScores.data});
+                    store.commit('SET_SCORES', {
+                        scores: competition.doubleMiniScores.data,
+                        scoreClass: DoubleMiniScore,
+                        stateIndex: 'doubleMiniPasses',
+                    });
                 }
 
                 if (competition.tumblingScores.data.length) {
-                    store.commit('SET_TUMBLING_SCORES', {scores: competition.tumblingScores.data});
+                    store.commit('SET_SCORES', {
+                        scores: competition.tumblingScores.data,
+                        scoreClass: TumblingScore,
+                        stateIndex: 'tumblingPasses',
+                    });
                 }
             });
         }
@@ -131,7 +143,7 @@ const store = new Vuex.Store({
             state.end_date = end_date;
         },
 
-        SET_SCORES: (state, { scores, scoreClass}) => {
+        SET_SCORES: (state, { scores, scoreClass, stateIndex}) => {
             scores.forEach((score) => {
                 let scoreInstance = new scoreClass();
                 let scoreMap = {};
@@ -143,11 +155,12 @@ const store = new Vuex.Store({
                 scoreInstance.updateAttributes(scoreMap);
                 scoreInstance.setId(score.id);
                 scoreInstance.setVideoId(score.video_id);
+
                 if (score.video.data.hasOwnProperty('title')) {
                     scoreInstance.setVideoFilename(score.video.data.title);
                 }
-                console.log(scoreInstance.videoFilename);
-                state.tumblingPasses[score.routine] = scoreInstance;
+
+                state[stateIndex][score.routine] = scoreInstance;
             });
         },
 
@@ -159,27 +172,6 @@ const store = new Vuex.Store({
             } else {
                 state[discipline][routineKey].setTotal(value);
             }
-        },
-
-        SET_TRAMPOLINE_SCORES: (state, { scores }) => {
-            return store.commit('SET_SCORES', {
-                scores,
-                scoreClass: TrampolineScore
-            });
-        },
-
-        SET_DOUBLE_MINI_SCORES: (state, { scores }) => {
-            return store.commit('SET_SCORES', {
-                scores,
-                scoreClass: DoubleMiniScore
-            });
-        },
-
-        SET_TUMBLING_SCORES: (state, { scores }) => {
-            return store.commit('SET_SCORES', {
-                scores,
-                scoreClass: TumblingScore
-            });
         },
 
         REMOVE_ATTACHMENT: (state, { routines, routineKey }) => {
