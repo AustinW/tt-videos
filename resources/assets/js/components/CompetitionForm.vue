@@ -241,6 +241,9 @@
 
                 xhr.then(Vue.getJson).then((response) => {
                     window.location = '/competitions/' + response.competition.id;
+                }).catch((err) => {
+                    console.error(err);
+                    alert('There was an error submitting the scores.');
                 });
             },
 
