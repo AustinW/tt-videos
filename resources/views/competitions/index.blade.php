@@ -27,15 +27,21 @@
                                         
                                         <div>
                                             @if ($competition->trampolineScores->count())
-                                                <span class="label label-primary">Trampoline</span>
+                                                <span class="label discipline-tra">Trampoline</span>
                                             @endif
                                             @if ($competition->doubleMiniScores->count())
                                                 <span class="label discipline-dmt">Double Mini</span>
                                             @endif
                                             @if ($competition->tumblingScores->count())
-                                                <span class="label label-danger">Tumbling</span>
+                                                <span class="label discipline-tum">Tumbling</span>
                                             @endif
                                         </div>
+                                        
+                                        {{--@if ($videoCount = $competition->videoCount())--}}
+                                            {{--<div>--}}
+                                                {{--<i class="glyphicon glyphicon-facetime-video"></i> {{ $videoCount }} {{ str_plural('video', $videoCount) }}--}}
+                                            {{--</div>--}}
+                                        {{--@endif--}}
                                         
                                         <div class="row">
                                             <div class="col-sm-6">

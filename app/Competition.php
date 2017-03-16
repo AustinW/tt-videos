@@ -39,6 +39,22 @@ class Competition extends Model
         return $this->hasMany(TumblingScore::class);
     }
 
+    public function videoCount() {
+        $sum = 0;
+
+        $sumExpr = function($score) use($sum) {
+            $sum += ($score->video) ? 1 : 0;
+        };
+
+        $this->trampolineScores()->get()->each($sumExpr);
+
+        $this->doubleMiniScores()->get()->each($sumExpr);
+
+        $this->tumblingScores()->get()->each($sumExpr);
+
+        return $sum;
+    }
+
     public function dateSpan() {
         if (!$this->start_date && !$this->end_date) {
             return '';

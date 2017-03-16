@@ -19,9 +19,13 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
-                <li><a href="{{ route('videos.showEvent', 'trampoline') }}">Trampoline</a></li>
-                <li><a href="{{ route('videos.showEvent', 'double-mini') }}">Double Mini</a></li>
-                <li><a href="{{ route('videos.showEvent', 'tumbling') }}">Tumbling</a></li>
+                @if (!Auth::guest())
+                    <li><a href="{{ route('videos.showEvent', 'trampoline') }}">Trampoline</a></li>
+                    <li><a href="{{ route('videos.showEvent', 'double-mini') }}">Double Mini</a></li>
+                    <li><a href="{{ route('videos.showEvent', 'tumbling') }}">Tumbling</a></li>
+                    <li><a href="{{ route('videos.index') }}">Videos</a></li>
+                    <li><a href="{{ route('competitions.index') }}">Scores</a></li>
+                @endif
             </ul>
             
             <!-- Right Side Of Navbar -->
@@ -39,7 +43,6 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="{{ route('competitions.create') }}">Submit Scores</a></li>
                             <li><a href="{{ route('upload.create') }}">Upload a Video</a></li>
-                            <li><a href="{{ route('videos.index') }}">Videos</a></li>
                             <li><a href="{{ route('user.show') }}">Profile</a></li>
                             <li><a href="{{ route('user.edit') }}">Edit Profile</a></li>
                             <li>

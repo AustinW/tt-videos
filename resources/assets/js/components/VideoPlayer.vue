@@ -3,7 +3,7 @@
             id="video"
             class="video-js vjs-default-skin vjs-big-play-centered vjs-16-9"
             controls preload="auto"
-            data-setup='{"fluid": true, "preload": "auto"}'
+            data-setup='{"fluid": true, "preload": "auto", "playbackRates": [0.25, 0.33, 1, 2]}'
             v-bind:poster="thumbnailUrl"
     >
         <source type="video/mp4" v-bind:src="videoUrl" />

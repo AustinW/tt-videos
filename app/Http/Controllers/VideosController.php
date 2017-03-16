@@ -18,11 +18,11 @@ class VideosController extends Controller
     public function index(Request $request)
     {
         if (Auth::check()) {
-            $videos = Auth::user()->videos()->get();
+            $videos = Auth::user()->videos()->orderBy('created_at', 'desc')->get();
         } else if ($request->name) {
-            $videos = Video::where('name', $request->name)->get();
+            $videos = Video::where('name', $request->name)->orderBy('created_at', 'desc')->get();
         } else if (\Session::has('athlete_name')) {
-            $videos = Video::where('name', \Session::get('athlete_name'))->get();
+            $videos = Video::where('name', \Session::get('athlete_name'))->orderBy('created_at', 'desc')->get();
         } else {
             $videos = collect();
         }

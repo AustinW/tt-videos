@@ -1,7 +1,7 @@
 <template>
     <div style="display:block !important">
         <a v-show="!showVideo" href="#" @click.prevent="playVideo">
-            <i class="glyphicon glyphicon-play"></i>
+            <i class="glyphicon glyphicon-facetime-video"></i>
             Play Video
         </a>
         <a v-show="showVideo" href="#" @click.prevent="hideVideo">
