@@ -12,7 +12,7 @@
             :id="'video-' + videoId"
             class="video-js vjs-default-skin vjs-big-play-centered vjs-16-9 vjs-hidden"
             controls
-            data-setup='{"fluid": true}'
+            data-setup='{"fluid": true, "playbackRates": [0.25, 0.33, 1, 2] }'
             :poster="img"
             :width="width"
             :height="height"
