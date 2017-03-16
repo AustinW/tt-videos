@@ -5,7 +5,13 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">{{ $header or 'Videos' }}</div>
+                    <div class="panel-heading">
+                        {{ $header or 'Videos' }}
+                        <a href="/upload/create" class="btn btn-default btn-xs">
+                            <i class="glyphicon glyphicon-plus-sign"></i>
+                            Upload Videos
+                        </a>
+                    </div>
                     
                     <div class="panel-body">
                         @if ($videos->count())

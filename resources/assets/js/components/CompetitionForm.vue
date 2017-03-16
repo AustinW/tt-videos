@@ -39,7 +39,7 @@
 
         <!-- Competition End Date -->
         <div :class="{'form-group': true, 'has-error': errors.has('end_date')}">
-            <label for="end_date" class="control-label">Start Date</label>
+            <label for="end_date" class="control-label">End Date</label>
 
             <p :class="{'control': true}">
                 <input v-validate:end_date.initial="'date_format:YYYY-MM-DD'" id="end_date" type="date" class="form-control" v-model="end_date" name="end_date">

@@ -62,6 +62,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        if (file_exists(app_path() . '/test.php')) {
+            include(app_path() . '/test.php');
+        }
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

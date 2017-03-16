@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth']], function() {
             'show' => 'videos.show',
             'edit' => 'videos.edit',
             'update' => 'videos.update',
+            'upload' => 'videos.upload',
         ]
     ]);
 

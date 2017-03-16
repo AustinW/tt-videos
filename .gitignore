@@ -6,6 +6,7 @@
 /storage/transcoded
 /vendor
 /.idea
+/app/test.php
 Homestead.json
 Homestead.yaml
 .env
