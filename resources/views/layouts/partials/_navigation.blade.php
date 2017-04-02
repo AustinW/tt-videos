@@ -23,7 +23,7 @@
                     <li><a href="{{ route('videos.showEvent', 'trampoline') }}">Trampoline</a></li>
                     <li><a href="{{ route('videos.showEvent', 'double-mini') }}">Double Mini</a></li>
                     <li><a href="{{ route('videos.showEvent', 'tumbling') }}">Tumbling</a></li>
-                    <li><a href="{{ route('videos.index') }}">Videos</a></li>
+                    <li><a href="{{ route('videos.index') }}">All Videos</a></li>
                     <li><a href="{{ route('competitions.index') }}">Scores</a></li>
                 @endif
             </ul>

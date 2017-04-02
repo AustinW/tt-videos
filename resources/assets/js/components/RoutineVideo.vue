@@ -1,6 +1,11 @@
 <template>
     <div>
-        <button v-show="!uploaded && !hasAttachment" @click="$upload.select('video-upload' + routines + '-' + routineKey)" :disabled="$upload.meta('video-upload' + routines + '-' + routineKey).status === 'sending'" class="btn btn-default btn-xs" type="button">
+        <div v-if="$upload.files(uniqueId).error.length" class="alert alert-danger">
+            <strong>{{ $upload.files(uniqueId).error[0].name }}</strong>
+            {{ $upload.files(uniqueId).error[0].errors[0].message }}
+        </div>
+
+        <button v-show="!uploaded && !hasAttachment" @click="$upload.select(uniqueId)" :disabled="$upload.meta(uniqueId).status === 'sending'" class="btn btn-default btn-xs" type="button">
             <i class="glyphicon glyphicon-paperclip"></i> Attach Video
         </button>
 
@@ -9,9 +14,9 @@
             <a href="#" @click.prevent="removeAttachment" class="remove-attachment"><i class="glyphicon glyphicon-remove-sign"></i></a>
         </span>
 
-        <div class="upload-progress progress" v-show="$upload.meta('video-upload' + routines + '-' + routineKey).status === 'sending'">
-            <div class="progress-bar" :style="'width: ' + $upload.meta('video-upload' + routines + '-' + routineKey).percentComplete + '%;'">
-                {{ $upload.meta('video-upload' + routines + '-' + routineKey).percentComplete }}% Complete
+        <div class="upload-progress progress" v-show="$upload.meta(uniqueId).status === 'sending'">
+            <div class="progress-bar" :style="'width: ' + $upload.meta(uniqueId).percentComplete + '%;'">
+                {{ $upload.meta(uniqueId).percentComplete }}% Complete
             </div>
         </div>
     </div>
@@ -38,7 +43,11 @@
             },
             filename() {
                 return this.$store.state[this.routines][this.routineKey].videoFilename;
+            },
+            uniqueId() {
+                return 'video-upload' + this.routines + '-' + this.routineKey;
             }
+
         },
 
         methods: {
@@ -50,16 +59,12 @@
 
                 this.uploaded = false;
             },
-
-            uniqueId() {
-                return 'video-upload' + this.routines + '-' + this.routineKey;
-            }
         },
 
         created() {
             var _self = this;
 
-            this.$upload.new('video-upload' + this.routines + '-' + this.routineKey, {
+            this.$upload.new(this.uniqueId, {
                 async: true,
                 maxFiles: 1,
                 multiple: false,
@@ -83,7 +88,7 @@
         },
 
         mounted() {
-            this.$upload.reset('video-upload' + this.routines + '-' + this.routineKey, {
+            this.$upload.reset(this.uniqueId, {
                 url: '/upload/multiple',
                 currentFiles: 0,
                 dropzoneId: 'video-upload-dropzone',
@@ -91,7 +96,7 @@
         },
 
         beforeDestroy() {
-            this.$upload.reset('video-upload' + this.routines + '-' + this.routineKey, {
+            this.$upload.reset(this.uniqueId, {
                 dropzoneId: null
             });
         },

@@ -83,9 +83,7 @@ class CompetitionsController extends Controller
             }
         }
 
-        return response()->json([
-            'competition' => $competition->with(['trampolineScores', 'doubleMiniScores', 'tumblingScores'])
-        ], 200);
+        return response()->json(compact('competition'), 200);
     }
 
     /**
