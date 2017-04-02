@@ -18,7 +18,14 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div><i class="glyphicon glyphicon-calendar"></i> {{ $competition->dateSpan() }}</div>
+                                        <div>
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                            @if ($competition->dateSpan())
+                                                {{ $competition->dateSpan() }}
+                                            @else
+                                                <i>No date set.</i>
+                                            @endif
+                                        </div>
                                         <div><i class="glyphicon glyphicon-map-marker"></i> {{ $competition->location }}</div>
                                     </div>
                                 </div>
