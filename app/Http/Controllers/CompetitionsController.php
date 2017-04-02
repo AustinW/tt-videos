@@ -191,12 +191,17 @@ class CompetitionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Competition $competition
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function destroy($id)
+    public function destroy(Competition $competition)
     {
-        //
+        $this->authorize('delete', $competition);
+
+        $competition->delete();
+
+        return redirect()->back();
     }
 
     public function createRoutine(array $key, Request $request, $routineClass) {

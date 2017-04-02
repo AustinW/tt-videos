@@ -2,27 +2,28 @@
 
 namespace App\Policies;
 
+use App\Traits\OwnershipTrait;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use App\Video;
 
 class VideoPolicy
 {
-    use HandlesAuthorization;
+    use HandlesAuthorization, OwnershipTrait;
 
     public function update(User $user, Video $video)
     {
-        return $user->id === $video->user_id;
+        return $this->ownership($user, $video);
     }
 
     public function edit(User $user, Video $video)
     {
-        return $user->id === $video->user_id;
+        return $this->ownership($user, $video);
     }
 
     public function delete(User $user, Video $video)
     {
-        return $user->id === $video->user_id;
+        return $this->ownership($user, $video);
     }
 
     public function vote(User $user, Video $video)

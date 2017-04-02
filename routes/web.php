@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth']], function() {
             'show' => 'competitions.show',
             'edit' => 'competitions.edit',
             'update' => 'competitions.update',
-            'delete' => 'competitions.delete',
+            'destroy' => 'competitions.delete',
         ]
     ]);
 

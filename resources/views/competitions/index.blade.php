@@ -49,7 +49,7 @@
                                                     <span>{{ $competition->dateSpan() }}</span>
                                                 </p>
                                                 
-                                                <form action="{{ route('competitions.index', $competition->id) }}" method="post">
+                                                <form action="{{ route('competitions.delete', $competition->id) }}" method="post">
                                                     <a href="{{ route('competitions.edit', $competition->id) }}" class="btn btn-default btn-xs">Edit</a>
                                                     <button type="submit" class="btn btn-default btn-xs">Delete</button>
                                                     {{ csrf_field() }}
