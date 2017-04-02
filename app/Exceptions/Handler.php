@@ -38,14 +38,78 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param  \Illuminate\Http\Request $request
+     * @param Exception $e
      * @return \Illuminate\Http\Response
+     * @internal param Exception $exception
      */
-    public function render($request, Exception $exception)
+    public function render($request, Exception $e)
+    {
+
+        // Render full exception details in debug mode
+        if(config('app.debug')) {
+            return parent::render($request, $e);
+        }
+
+        // Redirect if token mismatch error
+        // Usually because user stayed on the same page too long and his session expired
+        if ($e instanceof TokenMismatchException) {
+
+            // if it's ajax request send back "unauthorized" status response
+            // then in js/jQuery you catch and redirect all those 401 responses:
+            // $.ajaxSetup({ statusCode: { 401: function() { window.location.href = '/your_login_page'; } } });
+            if ($request->ajax()){
+                return response('Token Mismatch Exception', 401);
+            }
+
+            // redirect to login page
+            return redirect()->route('auth.login.get');
+        }
+
+        // Model not found
+        if ($e instanceof ModelNotFoundException) {
+
+            // it could be useful to get not founded model name and pass it to 404 error page:
+            // $model = $e->getModel();
+            // $baseModel = new $model;
+            // $resourceNotFounded = class_basename($baseModel);
+            // return response()->view('app.errors.404', compact('resourceNotFounded'), 404);
+
+
+            // or simply redirect to not found page
+            return response()->view('app.errors.404', [], 404);
+        }
+
+        // Http exceptions
+        if ($this->isHttpException($e))
+        {
+            // redirect to login if not authenticated
+            // I don't want to let unauthenticated users to see error pages
+            if( ! \Auth::check() ){
+                return redirect()->route('auth.login.get');
+            }
+
+
+            // try to find right error page for this exception
+            // I have prepared 4 most common errors: 403,404, 500 and 503
+            $exception = FlattenException::create($e);
+            $statusCode = $exception->getStatusCode($exception);
+
+            if (in_array($statusCode, array(403, 404, 500, 503))){
+                return response()->view('app.errors.' . $statusCode, compact('exception'), $statusCode);
+            }
+        }
+
+        // uncomment line below if you want 500 error page for all other errors
+        // I prefer to use default behavior for them
+        //return response()->view('app.errors.500', [], 500);
+
+        return parent::render($request, $e);
+    }
+    /*public function render($request, Exception $exception)
     {
         return parent::render($request, $exception);
-    }
+    }*/
 
     /**
      * Convert an authentication exception into an unauthenticated response.
