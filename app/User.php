@@ -6,10 +6,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Thomaswelton\LaravelGravatar\Facades\Gravatar;
 use App\Competition;
+use Backpack\Base\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use EntrustUserTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -43,5 +46,16 @@ class User extends Authenticatable
 
     public function competitions() {
         return $this->hasMany(Competition::class);
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

@@ -7,6 +7,9 @@
     "require": {
         "php": ">=5.6.4",
         "algolia/algoliasearch-client-php": "^1.16",
+        "backpack/base": "^0.7.16",
+        "backpack/crud": "^3.2",
+        "backpack/settings": "^2.0",
         "barryvdh/laravel-debugbar": "^2.3",
         "doctrine/dbal": "^2.5",
         "intervention/image": "^2.3",
@@ -19,10 +22,13 @@
         "nao-pon/flysystem-google-drive": "~1.1",
         "opencoconut/coconut": "dev-master",
         "spatie/laravel-fractal": "^3.5",
-        "thomaswelton/laravel-gravatar": "^1.1"
+        "thomaswelton/laravel-gravatar": "^1.1",
+        "zizaco/entrust": "^1.7"
     },
     "require-dev": {
+        "backpack/generators": "^1.1",
         "fzaninotto/faker": "~1.4",
+        "laracasts/generators": "dev-master as 1.1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~5.7"
     },

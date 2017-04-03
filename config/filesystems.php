@@ -86,6 +86,11 @@ return [
             'prefix' => env('DROPBOX_FOLDER_PREFIX', '')
         ],
 
+        'uploads' => [
+            'driver' => 'local',
+            'root' => public_path('uploads'),
+        ],
+
     ],
 
 ];

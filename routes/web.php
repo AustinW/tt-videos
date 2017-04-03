@@ -36,6 +36,32 @@ Auth::routes();
 
 Route::get('/videos/event/{event}', 'VideosController@showEvent')->name('videos.showEvent');
 
+Route::get('entrust', function() {
+    $owner = new App\Role();
+    $owner->name         = 'owner';
+    $owner->display_name = 'Project Owner'; // optional
+    $owner->description  = 'User is the owner of a given project'; // optional
+    $owner->save();
+
+    $admin = new App\Role();
+    $admin->name         = 'admin';
+    $admin->display_name = 'User Administrator'; // optional
+    $admin->description  = 'User is allowed to manage and edit other users'; // optional
+    $admin->save();
+});
+
+Route::get('entrust-set-owner', function() {
+    $user = App\User::findOrFail(1);
+
+    $owner = App\Role::findOrFail(1);
+
+// role attach alias
+    $user->attachRole($owner); // parameter can be an Role object, array, or id
+
+// or eloquent's original technique
+    $user->roles()->attach($owner->id); // id only
+});
+
 Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
     Route::get('/', 'UserController@show')->name('show');
     Route::get('edit', 'UserController@edit')->name('edit');

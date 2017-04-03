@@ -174,6 +174,10 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Backpack\Base\BaseServiceProvider::class,
+        Backpack\CRUD\CrudServiceProvider::class,
+        Backpack\Settings\SettingsServiceProvider::class,
+        Zizaco\Entrust\EntrustServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -243,6 +247,8 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
 
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+
+        'Entrust' => Zizaco\Entrust\EntrustFacade::class,
 
     ],
 
