@@ -5,14 +5,16 @@ namespace App;
 use App\Observers\VideoObserver;
 use App\Traits\OrderableTrait;
 use App\Traits\VoteableTrait;
+use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\File;
 use Laravel\Scout\Searchable;
 
 class Video extends Model
 {
-    use Notifiable, SoftDeletes, Searchable, VoteableTrait, OrderableTrait;
+    use Notifiable, SoftDeletes, Searchable, VoteableTrait, OrderableTrait, CrudTrait;
 
     protected $fillable = [
         'unique_id',
@@ -134,5 +136,9 @@ class Video extends Model
 
     public function scopeVisible($query) {
         return $query->processed()->public();
+    }
+
+    public function deleteUploadedFile() {
+        File::delete(storage_path() . '/uploads/' . $this->video_filename);
     }
 }

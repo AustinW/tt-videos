@@ -277,3 +277,17 @@ img {
     font-size: 15px;
     text-align: center;
 }
+
+.video-thumbnail {
+    max-width:200px;
+    max-height:200px;
+    margin:0 auto;
+    display: block;
+    padding: 4px;
+    line-height: 1.6;
+    background-color: #f5f8fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-transition: border 0.2s ease-in-out;
+    transition: border 0.2s ease-in-out;
+}

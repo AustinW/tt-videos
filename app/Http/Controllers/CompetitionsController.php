@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\CompetitionCreatedNotification;
 use App\Score;
 use App\TrampolineScore;
 use App\DoubleMiniScore;
@@ -10,6 +11,7 @@ use App\TumblingScore;
 use Illuminate\Http\Request;
 use Auth;
 use App\Competition;
+use Illuminate\Support\Facades\Notification;
 
 class CompetitionsController extends Controller
 {
@@ -82,6 +84,8 @@ class CompetitionsController extends Controller
                 }
             }
         }
+
+        Notification::send($competition->user->followers()->get(), new CompetitionCreatedNotification($competition));
 
         return response()->json(compact('competition'), 200);
     }

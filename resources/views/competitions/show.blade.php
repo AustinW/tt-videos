@@ -7,28 +7,27 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         {{ $competition->title }}
-                        @if ($competition->user_id === Auth::user()->id)
+                        @can('update', $competition)
                             <a href="{{ route('competitions.edit', $competition->id) }}"
                                class="btn btn-default btn-xs">Edit</a>
-                        @endif
+                        @endcan
                     </div>
                     
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div>
-                                            <i class="glyphicon glyphicon-calendar"></i>
-                                            @if ($competition->dateSpan())
-                                                {{ $competition->dateSpan() }}
-                                            @else
-                                                <i>No date set.</i>
-                                            @endif
-                                        </div>
-                                        <div><i class="glyphicon glyphicon-map-marker"></i> {{ $competition->location }}</div>
-                                    </div>
+                                <div>
+                                    @if (Auth::user()->id !== $competition->user_id)
+                                        <h2>{{ $competition->user()->first()->name }}</h2>
+                                    @endif
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                    @if ($competition->dateSpan())
+                                        {{ $competition->dateSpan() }}
+                                    @else
+                                        <i>No date set.</i>
+                                    @endif
                                 </div>
+                                <div><i class="glyphicon glyphicon-map-marker"></i> {{ $competition->location }}</div>
                                 @if ($competition->trampolineScores()->count())
                                     <div class="row">
                                         <div class="col-md-12">

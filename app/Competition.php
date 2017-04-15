@@ -2,14 +2,20 @@
 
 namespace App;
 
+use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\TrampolineScore;
 use App\DoubleMiniScore;
 use App\TumblingScore;
 use App\User;
+use App\Video;
 
 class Competition extends Model
 {
+    use CrudTrait;
+
+    protected $appends = ['videoCount'];
+
     protected $fillable = [
         'user_id',
         'title',
@@ -39,20 +45,16 @@ class Competition extends Model
         return $this->hasMany(TumblingScore::class);
     }
 
-    public function videoCount() {
+    public function getVideoCountAttribute() {
         $sum = 0;
 
-        $sumExpr = function($score) use($sum) {
-            $sum += ($score->video) ? 1 : 0;
+        $aggregator = function($score) use($sum) {
+            return ($score->video_id) ? 1 : 0;
         };
 
-        $this->trampolineScores()->get()->each($sumExpr);
-
-        $this->doubleMiniScores()->get()->each($sumExpr);
-
-        $this->tumblingScores()->get()->each($sumExpr);
-
-        return $sum;
+        return $this->trampolineScores()->get()->sum($aggregator)
+            + $this->doubleMiniScores()->get()->sum($aggregator)
+            + $this->tumblingScores()->get()->sum($aggregator);
     }
 
     public function dateSpan() {

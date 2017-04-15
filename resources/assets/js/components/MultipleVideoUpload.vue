@@ -122,7 +122,7 @@
             return {
                 queued: false,
                 showQueuedFiles: false,
-                visibility: 'private',
+                visibility: 'public',
 
                 event: 'trampoline',
             }

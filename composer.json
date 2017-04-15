@@ -21,9 +21,9 @@
         "league/flysystem-dropbox": "^1.0",
         "nao-pon/flysystem-google-drive": "~1.1",
         "opencoconut/coconut": "dev-master",
+        "santigarcor/laratrust": "^3.2",
         "spatie/laravel-fractal": "^3.5",
-        "thomaswelton/laravel-gravatar": "^1.1",
-        "zizaco/entrust": "^1.7"
+        "thomaswelton/laravel-gravatar": "^1.1"
     },
     "require-dev": {
         "backpack/generators": "^1.1",

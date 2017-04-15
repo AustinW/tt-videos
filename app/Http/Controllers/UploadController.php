@@ -35,7 +35,7 @@ class UploadController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
+     * @deprecated Use UploadController::storeMultiple()
      * @param UploadFormRequest|Request $request
      * @return \Illuminate\Http\Response
      */

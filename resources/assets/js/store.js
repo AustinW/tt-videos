@@ -53,6 +53,14 @@ const store = new Vuex.Store({
             prelim_pass_2: new TumblingScore(),
             final_pass_3: new TumblingScore(),
             final_pass_4: new TumblingScore(),
+        },
+
+
+        // SHOULD BE NAMESPACED
+        athleteView: {
+            componentTitle: null,
+            shownAthletes: null,
+            allAthletes:null,
         }
     },
 
@@ -99,6 +107,12 @@ const store = new Vuex.Store({
                         stateIndex: 'tumblingPasses',
                     });
                 }
+            });
+        },
+
+        ATHLETE_VIEW_LOAD_ATHLETES: (context) => {
+            return Vue.http.get('/api/athletes').then(Vue.getJson).then((response) => {
+                store.commit('ATHLETE_VIEW_SET_ATHLETES', response.athletes);
             });
         }
     },
@@ -184,6 +198,18 @@ const store = new Vuex.Store({
             state[routines][routineKey].setVideoId(video.id);
             state[routines][routineKey].setVideoFilename(video.title);
 
+        },
+
+        ATHLETE_VIEW_SET_ATHLETES: (state, athletes) => {
+            state.athleteView.allAthletes = athletes;
+        },
+
+        ATHLETE_VIEW_CHANGE_ATHLETE: (state, shown) => {
+            var tempListOfAthletes = state.athleteView.allAthletes.filter((athlete) => {
+                return shown[athlete.id];
+            });
+
+            state.athleteView.shownAthletes = tempListOfAthletes;
         },
     },
 

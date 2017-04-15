@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\DownloadVideo;
-use App\Jobs\UploadVideo;
+use App\Notifications\VideoUploadedNotification;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Notification;
 use Log;
 use App\Video;
 
@@ -43,10 +44,18 @@ class WebhookController extends Controller
             'video_filename' => $transcodedFilename . '.mp4'
         ]);
 
+        $video->deleteUploadedFile();
+
+        Notification::send($video->user->followers()->get(), new VideoUploadedNotification($video));
+
         if (App::environment('local')) {
-            $this->dispatch(new DownloadVideo($video));
+            //TODO: Re-enable
+//            $this->dispatch(new DownloadVideo($video));
         }
 
-        //$this->dispatch(new UploadVideo($video));
+        return response()->json([
+            'status' => 'ok'
+        ], 200);
+
     }
 }

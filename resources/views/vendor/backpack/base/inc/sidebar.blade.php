@@ -20,6 +20,8 @@
           <!-- ==== Recommended place for admin menu items ==== -->
           <!-- ================================================ -->
           <li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/dashboard') }}"><i class="fa fa-dashboard"></i> <span>{{ trans('backpack::base.dashboard') }}</span></a></li>
+          <li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/competition') }}"><i class="fa fa-trophy"></i> <span>Competitions</span></a></li>
+          <li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/video') }}"><i class="fa fa-video-camera"></i> <span>Videos</span></a></li>
 
 
           <!-- ======================================= -->

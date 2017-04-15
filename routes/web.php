@@ -81,6 +81,16 @@ Route::group(['middleware' => ['auth']], function() {
         ]
     ]);
 
+    Route::group(['prefix' => 'api', 'as' => 'api.'], function() {
+        Route::get('athletes', 'Api\\AthletesController@index')->name('athletes.index');
+    });
+
+    Route::get('athletes/search', 'AthletesController@search')->name('athletes.search');
+    Route::get('athletes', 'AthletesController@index')->name('athletes.index');
+    Route::post('athletes/follow', 'AthletesController@follow')->name('athletes.follow');
+    Route::post('athletes/unfollow', 'AthletesController@unfollow')->name('athletes.unfollow');
+    Route::get('athletes/verify-follow/{code}', 'AthletesController@verifyFollow')->name('athletes.verifyFollow');
+
     Route::post('upload/multiple', 'UploadController@storeMultiple')->name('upload.multiple');
 
     Route::resource('videos', 'VideosController', [
@@ -99,4 +109,18 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/videos/{video}/comments', 'VideoCommentController@store');
     Route::delete('/videos/{video}/comments/{comment}', 'VideoCommentController@delete');
 
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin (Backpack) Routes
+|--------------------------------------------------------------------------
+|
+| Routes for Admin section
+|
+*/
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
+    CRUD::resource('competition', 'CompetitionCrudController');
+    CRUD::resource('video', 'VideoCrudController');
 });

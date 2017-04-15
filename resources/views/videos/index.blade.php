@@ -20,7 +20,7 @@
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <a href="/videos/{{ $video->unique_id }}">
-                                                <img src="{{ $video->thumbnailUrl() }}" alt="{{ $video->title }}" class="img-responsive" />
+                                                <img src="{{ $video->thumbnailUrl() }}" alt="{{ $video->title }}" class="img-responsive thumbnail" />
                                             </a>
                                         </div>
                                         <div class="col-sm-9">

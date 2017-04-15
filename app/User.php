@@ -5,14 +5,13 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Thomaswelton\LaravelGravatar\Facades\Gravatar;
-use App\Competition;
 use Backpack\Base\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Laratrust\Traits\LaratrustUserTrait;
 
 class User extends Authenticatable
 {
+    use LaratrustUserTrait;
     use Notifiable;
-    use EntrustUserTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -57,5 +56,50 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function rolesString() {
+        return $this->roles->map(function($role) {
+            return $role->display_name;
+        })->implode(', ');
+    }
+
+    public function linkToAdmin() {
+        if ($this->hasRole(['owner', 'admin'])) {
+            return '/admin/dashboard';
+        } else {
+            return '#';
+        }
+    }
+
+    public function followers() {
+        return $this->belongsToMany(self::class, 'coach_athlete', 'athlete_id', 'coach_id')
+            ->withPivot(['verified', 'verification_code'])->wherePivot('verified', '!=', 'NULL');
+    }
+
+    public function unverifiedFollowers() {
+        return $this->belongsToMany(self::class, 'coach_athlete', 'athlete_id', 'coach_id')
+            ->withPivot(['verified', 'verification_code']);
+    }
+
+    public function followedAthletes()
+    {
+        return $this->belongsToMany(self::class, 'coach_athlete', 'coach_id', 'athlete_id')
+            ->withPivot(['verified', 'verification_code']);
+    }
+
+    public function verifiedFollowedAthletes()
+    {
+        return $this->followedAthletes()->wherePivot('verified', '!=', 'NULL');
+    }
+
+    public function addAthlete(User $athlete)
+    {
+        $this->followedAthletes()->attach($athlete->id);
+    }
+
+    public function removeAthlete(User $athlete)
+    {
+        $this->followedAthletes()->detach($athlete->id);
     }
 }

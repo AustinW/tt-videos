@@ -177,7 +177,7 @@ return [
         Backpack\Base\BaseServiceProvider::class,
         Backpack\CRUD\CrudServiceProvider::class,
         Backpack\Settings\SettingsServiceProvider::class,
-        Zizaco\Entrust\EntrustServiceProvider::class,
+        Laratrust\LaratrustServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -248,7 +248,7 @@ return [
 
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
-        'Entrust' => Zizaco\Entrust\EntrustFacade::class,
+        'Laratrust'   => Laratrust\LaratrustFacade::class,
 
     ],
 
