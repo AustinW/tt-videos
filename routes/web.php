@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Auth::routes();
+
 Route::get('thumbnail/{video}', 'VideosController@thumbnail')->name('thumbnail');
 
 Route::post('webhook', 'WebhookController@inbound');
@@ -32,41 +34,25 @@ Route::get('/videos/{video}/comments', 'VideoCommentController@index');
 
 Route::get('/videos/{video}/votes', 'VideoVoteController@show');
 
-Auth::routes();
-
 Route::get('/videos/event/{event}', 'VideosController@showEvent')->name('videos.showEvent');
 
-Route::get('entrust', function() {
-    $owner = new App\Role();
-    $owner->name         = 'owner';
-    $owner->display_name = 'Project Owner'; // optional
-    $owner->description  = 'User is the owner of a given project'; // optional
-    $owner->save();
+Route::resource('user', 'UserController', [
+    'names' => [
+        'index' => 'user.index',
+        'show' => 'user.show',
+        'edit' => 'user.edit',
+        'update' => 'user.update',
+        'destroy' => 'user.destroy',
+    ],
+    'only' => ['index', 'show', 'edit', 'update', 'destroy']
+]);
 
-    $admin = new App\Role();
-    $admin->name         = 'admin';
-    $admin->display_name = 'User Administrator'; // optional
-    $admin->description  = 'User is allowed to manage and edit other users'; // optional
-    $admin->save();
-});
-
-Route::get('entrust-set-owner', function() {
-    $user = App\User::findOrFail(1);
-
-    $owner = App\Role::findOrFail(1);
-
-// role attach alias
-    $user->attachRole($owner); // parameter can be an Role object, array, or id
-
-// or eloquent's original technique
-    $user->roles()->attach($owner->id); // id only
-});
-
-Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
-    Route::get('/', 'UserController@show')->name('show');
-    Route::get('edit', 'UserController@edit')->name('edit');
-    Route::put('update', 'UserController@update')->name('update');
-});
+//Route::group(['prefix' => 'user', 'as' => 'user.'], function() {
+//    Route::get('/', 'UserController@index')->name('index');
+//    Route::get('{user}', 'UserController@show')->name('show');
+//    Route::get('edit', 'UserController@edit')->name('edit');
+//    Route::put('update', 'UserController@update')->name('update');
+//});
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('upload', 'UploadController');
@@ -109,18 +95,4 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/videos/{video}/comments', 'VideoCommentController@store');
     Route::delete('/videos/{video}/comments/{comment}', 'VideoCommentController@delete');
 
-});
-
-/*
-|--------------------------------------------------------------------------
-| Admin (Backpack) Routes
-|--------------------------------------------------------------------------
-|
-| Routes for Admin section
-|
-*/
-Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
-{
-    CRUD::resource('competition', 'CompetitionCrudController');
-    CRUD::resource('video', 'VideoCrudController');
 });

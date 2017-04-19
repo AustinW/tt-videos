@@ -2,8 +2,10 @@
 
 namespace App;
 
+use Backpack\CRUD\CrudTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Socialite\Facades\Socialite;
 use Thomaswelton\LaravelGravatar\Facades\Gravatar;
 use Backpack\Base\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
 use Laratrust\Traits\LaratrustUserTrait;
@@ -12,6 +14,7 @@ class User extends Authenticatable
 {
     use LaratrustUserTrait;
     use Notifiable;
+    use CrudTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +22,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'image_file'
+        'name', 'email', 'password', 'image_file', 'provider', 'provider_id',
     ];
 
     /**
@@ -38,9 +41,27 @@ class User extends Authenticatable
     public function getImage() {
         if ($this->image_file) {
             return asset('storage/profiles/' . $this->image_file);
-        } else {
-            return Gravatar::src($this->email, 200);
+        } else if ($this->provider_id) {
+            return $this->socialImage();
         }
+
+        return Gravatar::src($this->email, 200);
+    }
+
+    protected function socialImage()
+    {
+        $image = null;
+
+        if (!$this->provider_id)
+            return $image;
+
+        switch ($this->provider) {
+            case 'facebook':
+                $image = 'http://graph.facebook.com/' . $this->provider_id . '/picture?type=large';
+                break;
+        }
+
+        return $image;
     }
 
     public function competitions() {
@@ -91,6 +112,16 @@ class User extends Authenticatable
     public function verifiedFollowedAthletes()
     {
         return $this->followedAthletes()->wherePivot('verified', '!=', 'NULL');
+    }
+
+    /**
+     * Check whether user is following the specified athlete
+     * @param User $athlete
+     * @return bool
+     */
+    public function isFollowing(User $athlete)
+    {
+        return $this->verifiedFollowedAthletes()->wherePivot('athlete_id', $athlete->id)->count() > 0;
     }
 
     public function addAthlete(User $athlete)

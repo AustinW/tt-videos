@@ -29,7 +29,7 @@ class VideoCrudController extends CrudController
         |--------------------------------------------------------------------------
         */
 
-//        $this->crud->setFromDb();
+        $this->crud->setFromDb();
 
         $this->crud->addField([  // Select
             'label' => "User",
@@ -49,6 +49,25 @@ class VideoCrudController extends CrudController
             'attribute' => "name", // foreign key attribute that is shown to user
             'model' => "App\\User", // foreign key model
         ]);
+
+//        $this->crud->addField([  // Select
+//            'label' => "User",
+//            'type' => 'select2',
+//            'name' => 'user_id', // the db column for the foreign key
+//            'entity' => 'user', // the method that defines the relationship in your Model
+//            'attribute' => 'name', // foreign key attribute that is shown to user
+//            'model' => "App\\User" // foreign key model
+//        ], 'update/create/both');
+//
+//        $this->crud->setColumnDetails('user_id', [
+//            // 1-n relationship
+//            'label' => "User", // Table column heading
+//            'type' => "select",
+//            'name' => 'user_id', // the column that contains the ID of that connected entity;
+//            'entity' => 'user', // the method that defines the relationship in your Model
+//            'attribute' => "name", // foreign key attribute that is shown to user
+//            'model' => "App\\User", // foreign key model
+//        ]);
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');

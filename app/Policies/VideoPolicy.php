@@ -13,17 +13,17 @@ class VideoPolicy
 
     public function update(User $user, Video $video)
     {
-        return $this->ownership($user, $video);
+        return $this->authorizationCheck($user, $video);
     }
 
     public function edit(User $user, Video $video)
     {
-        return $this->ownership($user, $video);
+        return $this->authorizationCheck($user, $video);
     }
 
     public function delete(User $user, Video $video)
     {
-        return $this->ownership($user, $video);
+        return $this->authorizationCheck($user, $video);
     }
 
     public function vote(User $user, Video $video)

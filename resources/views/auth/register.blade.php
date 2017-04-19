@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -9,6 +13,15 @@
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
+    
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <a href="{{ route('auth.social', 'twitter') }}" class="btn btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
+                                <a href="{{ route('auth.social', 'facebook') }}" class="btn btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
+                            </div>
+                        </div>
+    
+                        <hr>
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Name</label>
@@ -57,6 +70,17 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                            </div>
+                        </div>
+    
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input id="coach" type="checkbox" name="coach" value="{{ old('coach', 'yes') }}">
+                                        Are you a coach?
+                                    </label>
+                                </div>
                             </div>
                         </div>
 

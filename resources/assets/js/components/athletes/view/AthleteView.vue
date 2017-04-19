@@ -10,7 +10,7 @@
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" v-model="showVideos">
-                        Videos
+                        Videos ({{ athlete.videos.length }})
                     </label>
                 </div>
 
@@ -19,7 +19,7 @@
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" v-model="showCompetitions">
-                        Competitions
+                        Competitions ({{ athlete.competitions.length }})
                     </label>
                 </div>
             </form>
@@ -53,9 +53,9 @@
                                 <td style="width:55%"><a :href="competitionUrl(competition)">{{ competition.title }}</a></td>
                                 <td>
                                     <span v-if="competition.videoCount > 0" class="badge badge-default"><i class="glyphicon glyphicon-facetime-video"></i> {{ competition.videoCount }}</span>
-                                    <span class="label discipline-tra">Trampoline</span>
-                                    <span class="label discipline-dmt">Double Mini</span>
-                                    <span class="label discipline-tum">Tumbling</span>
+                                    <span class="label discipline-tra" v-if="competition.trampoline_scores.length">Trampoline</span>
+                                    <span class="label discipline-dmt" v-if="competition.double_mini_scores.length">Double Mini</span>
+                                    <span class="label discipline-tum" v-if="competition.tumbling_scores.length">Tumbling</span>
                                 </td>
                             </tr>
                         </tbody>

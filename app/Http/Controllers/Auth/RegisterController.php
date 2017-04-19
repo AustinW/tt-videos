@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Notifications\RegistrationNotification;
+use App\Role;
 use App\User;
+use Illuminate\Support\Facades\Notification;
 use Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -33,7 +36,6 @@ class RegisterController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @return void
      */
     public function __construct()
     {
@@ -52,6 +54,7 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'coach' => ''
         ]);
     }
 
@@ -67,10 +70,24 @@ class RegisterController extends Controller
             include(app_path() . '/test.php');
         }
 
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+        if (isset($data['coach'])) {
+            $role = Role::where('name', 'coach')->first();
+        } else {
+            $role = Role::where('name', 'athlete')->first();
+        }
+
+        $user->attachRole($role);
+
+        $notifyOwners = User::whereHas('roles', function($role) { $role->where('name', 'owner'); })->get();
+
+        Notification::send($notifyOwners, new RegistrationNotification($user, $role));
+
+        return $user;
     }
 }

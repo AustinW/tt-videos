@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'USAG Videos',
+    'name' => 'T&T Videos',
 
     /*
     |--------------------------------------------------------------------------
@@ -178,6 +178,8 @@ return [
         Backpack\CRUD\CrudServiceProvider::class,
         Backpack\Settings\SettingsServiceProvider::class,
         Laratrust\LaratrustServiceProvider::class,
+        Backpack\PermissionManager\PermissionManagerServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -249,6 +251,8 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
         'Laratrust'   => Laratrust\LaratrustFacade::class,
+
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Storage;
 use Intervention\Image\Facades\Image;
+use App\User;
 
 class UserController extends Controller
 {
@@ -16,68 +17,55 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display the logged in user's profile
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $user = Auth::user();
+        return view('user.show', compact('user'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Request $request
+     * @param User|null $user
      * @return \Illuminate\Http\Response
+     * @internal param User|int $id
      */
-    public function show()
+    public function show(Request $request, User $user)
     {
-        return view('user.show', ['user' => Auth::user()]);
+        $this->authorize('show', $user);
+
+        return view('user.show', ['user' => $user]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
+     * @param User $user
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function edit()
+    public function edit(User $user)
     {
-        return view('user.edit', ['user' => Auth::user()]);
+        $this->authorize('update', $user);
+
+        return view('user.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param UserUpdateRequest|Request $request
+     * @param User $user
      * @return \Illuminate\Http\Response
      * @internal param int $id
      */
-    public function update(UserUpdateRequest $request) {
-
-        $user = Auth::user();
+    public function update(UserUpdateRequest $request, User $user)
+    {
+        $this->authorize('update', $user);
 
         $updates = [
             'name' => $request->name,
@@ -87,7 +75,7 @@ class UserController extends Controller
         if ($request->file('image')) {
             $fileId = uniqid(true);
 
-            Image::make($request->file('image'))->encode('png')->fit(100, 100, function($c) {
+            Image::make($request->file('image'))->encode('png')->fit(400, 400, function($c) {
                 $c->upsize();
             })->save(storage_path() . '/app/public/profiles/' . $fileId . '.png');
 
@@ -100,7 +88,7 @@ class UserController extends Controller
 
         $user->update($updates);
 
-        return redirect()->route('user.edit')->with([
+        return redirect()->route('user.show', $user->id)->with([
             'message' => [
                 'class' => 'success',
                 'body' => 'User updated.',
@@ -111,11 +99,16 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param User $user
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $this->authorize('delete');
+
+        $user->delete();
+
+        return redirect('/');
     }
 }

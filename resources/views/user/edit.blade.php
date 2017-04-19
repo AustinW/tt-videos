@@ -13,7 +13,7 @@
                 <div class="panel-body">
                     @include('layouts.partials._errors')
                     
-                    <form action="{{ route('user.update') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('user.update', $user->id) }}" method="post" enctype="multipart/form-data">
                         
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="control-label">Name</label>
