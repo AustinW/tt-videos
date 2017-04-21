@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 
 class Handler extends ExceptionHandler
 {
@@ -48,7 +49,32 @@ class Handler extends ExceptionHandler
 
         // Render full exception details in debug mode
         if(config('app.debug')) {
-            return parent::render($request, $e);
+            $whoops = new \Whoops\Run;
+
+            if ($request->ajax()) {
+                $whoops->pushHandler(new \Whoops\Handler\JsonResponseHandler());
+            } else {
+                $handler = new \Whoops\Handler\PrettyPageHandler();
+
+                $handler->setEditor(function ($file, $line) {
+                    // if your development server is not local it's good to map remote files to local
+                    $translations = array('^' . env('SERVER_HOME') => env('LOCAL_HOME')); // change to your path
+                    foreach ($translations as $from => $to) {
+                        $file = rawurlencode(preg_replace('#' . $from . '#', $to, $file, 1));
+                    }
+                    return array(
+                        'url' => "phpstorm://open?file=$file&line=$line",
+                        'ajax' => false
+                    );
+                });
+
+                $handler->addResourcePath(resource_path() . '/assets/sass');
+                $handler->addCustomCss('whoops.css');
+
+                $whoops->pushHandler($handler);
+            }
+
+            return response($whoops->handleException($e), $e->getStatusCode(), $e->getHeaders());
         }
 
         // Redirect if token mismatch error
@@ -91,7 +117,7 @@ class Handler extends ExceptionHandler
 
 
             // try to find right error page for this exception
-            // I have prepared 4 most common errors: 403,404, 500 and 503
+            // I have prepared 4 most common errors: 403, 404, 500 and 503
             $exception = FlattenException::create($e);
             $statusCode = $exception->getStatusCode($exception);
 

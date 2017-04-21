@@ -51,6 +51,7 @@
                             @role('owner', 'admin')
                             <li><a href="{{ url('/admin') }}"><i class="glyphicon glyphicon-lock"></i> Admin</a></li>
                             @endrole
+                            <li role="separator" class="divider"></li>
                             <li>
                                 <a href="{{ route('logout') }}"
                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">

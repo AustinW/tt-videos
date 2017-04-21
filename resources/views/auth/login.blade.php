@@ -68,7 +68,6 @@
     
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <a href="{{ route('auth.social', 'twitter') }}" class="btn btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
                                 <a href="{{ route('auth.social', 'facebook') }}" class="btn btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
                             </div>
                         </div>

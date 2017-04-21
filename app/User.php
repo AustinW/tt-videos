@@ -5,6 +5,7 @@ namespace App;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Config;
 use Laravel\Socialite\Facades\Socialite;
 use Thomaswelton\LaravelGravatar\Facades\Gravatar;
 use Backpack\Base\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
@@ -59,6 +60,13 @@ class User extends Authenticatable
             case 'facebook':
                 $image = 'http://graph.facebook.com/' . $this->provider_id . '/picture?type=large';
                 break;
+            case 'twitter':
+                $user = Socialite::driver('twitter')->userFromTokenAndSecret(
+                    Config::get('services.twitter.access_token'),
+                    Config::get('services.twitter.access_token_secret')
+                );
+
+                return $user->getAvatar();
         }
 
         return $image;

@@ -36,14 +36,17 @@ return [
     ],
 
     'twitter' => [
-        'client_id'     => env('TWITTER_ID'),
-        'client_secret' => env('TWITTER_SECRET'),
-        'redirect'      => env('TWITTER_URL'),
+        'client_id'           => env('TWITTER_ID'),
+        'client_secret'       => env('TWITTER_SECRET'),
+        'access_token'        => env('TWITTER_ACCESS_TOKEN'),
+        'access_token_secret' => env('TWITTER_ACCESS_TOKEN_SECRET'),
+        'redirect'            => env('TWITTER_URL'),
     ],
 
     'facebook' => [
         'client_id'     => env('FACEBOOK_ID'),
         'client_secret' => env('FACEBOOK_SECRET'),
+        'client_token'  => env('FACEBOOK_CLIENT_TOKEN'),
         'redirect'      => env('FACEBOOK_URL'),
     ],
 
