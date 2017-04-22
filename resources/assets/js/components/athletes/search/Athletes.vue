@@ -15,32 +15,37 @@
             </div>
 
             <div class="panel-body">
-                <p v-if="role === 'owner' || role === 'admin' || role === 'national-coach'" style="font-style:italic">
-                    Athletes that you follow will be notified.
-                </p>
-                <p v-if="role === 'coach'" style="font-style:italic">
-                    Athletes that you request to follow will be notified and asked to verify before you can view their
-                    videos and competition results.
-                </p>
+                <div v-if="searched.length">
+                    <p v-if="role === 'owner' || role === 'admin' || role === 'national-coach'" style="font-style:italic">
+                        Athletes that you follow will be notified.
+                    </p>
+                    <p v-if="role === 'coach'" style="font-style:italic">
+                        Athletes that you request to follow will be notified and asked to verify before you can view their
+                        videos and competition results.
+                    </p>
 
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="athlete in searched">
-                            <td>{{ athlete.name }}</td>
-                            <td><a :href="'mailto:' + athlete.email">{{ athlete.email }}</a></td>
-                            <td>
-                                <athlete :athlete-id="athlete.id" :user-id="userId" :is-followed="followed(athlete)"></athlete>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="athlete in searched">
+                                <td>{{ athlete.name }}</td>
+                                <td><a :href="'mailto:' + athlete.email">{{ athlete.email }}</a></td>
+                                <td>
+                                    <athlete :athlete-id="athlete.id" :user-id="userId" :is-followed="followed(athlete)"></athlete>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div v-else>
+                    <span style="font-style:italic">No athletes to display</span>
+                </div>
             </div>
         </div>
     </div>
