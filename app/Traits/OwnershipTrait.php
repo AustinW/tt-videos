@@ -29,7 +29,7 @@ trait OwnershipTrait {
 
     protected function permissionCheck(User $user, Model $model, $permission)
     {
-        if ($this->ownership($user, $model) || $user->hasRole(['owner', 'admin'])) {
+        if ($this->ownership($user, $model) || $user->hasRole(['owner', 'admin', 'national-coach'])) {
             return true;
         } else {
             if ($user->can($permission)) {

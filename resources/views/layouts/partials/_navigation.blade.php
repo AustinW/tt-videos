@@ -42,8 +42,10 @@
                         </a>
                         
                         <ul class="dropdown-menu" role="menu">
+                            @role('athlete')
                             <li><a href="{{ route('competitions.create') }}"><i class="glyphicon glyphicon-edit"></i> Submit Scores</a></li>
                             <li><a href="{{ route('upload.create') }}"><i class="glyphicon glyphicon-facetime-video"></i> Upload a Video</a></li>
+                            @endrole
                             @permission('view-athletes')
                             <li><a href="{{ route('athletes.search') }}"><i class="glyphicon glyphicon-search"></i> Search Athletes</a></li>
                             @endpermission

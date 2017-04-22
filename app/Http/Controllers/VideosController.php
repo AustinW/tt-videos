@@ -31,16 +31,6 @@ class VideosController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param VideoFormRequest|Request $request
@@ -78,7 +68,9 @@ class VideosController extends Controller
      */
     public function show(Video $video)
     {
-        return view('videos.show', ['video' => $video]);
+        $this->authorize('show', $video);
+
+        return view('videos.show', compact('video'));
     }
 
     /**

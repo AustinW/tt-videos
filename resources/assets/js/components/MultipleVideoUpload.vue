@@ -20,9 +20,12 @@
                             <label for="visibility">Visibility</label>
                             <select class="form-control" id="visibility" v-model="visibility">
                                 <option value="private">Private</option>
-                                <option value="unlisted">Unlisted</option>
                                 <option value="public">Public</option>
                             </select>
+                            <p class="help-block">
+                                <i :class="{'glyphicon': true, 'glyphicon-lock': visibility == 'private', 'glyphicon-eye-open': visibility == 'public'}"></i>
+                                {{ visibilityDescription }}
+                            </p>
                         </div>
 
                         <button v-show="!queued" @click="$upload.select('video-upload')" :disabled="$upload.meta('video-upload').status === 'sending'" class="btn btn-default">
@@ -146,6 +149,14 @@
             this.$upload.reset('video-upload', {
                 dropzoneId: null
             });
+        },
+
+        computed: {
+            visibilityDescription() {
+                return (this.visibility === 'private')
+                    ? 'Only coaches who are following you and national coaches will be able to see your video.'
+                    : 'Anyone can see your video.';
+            }
         },
     }
 </script>

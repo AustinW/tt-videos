@@ -15,6 +15,14 @@
             </div>
 
             <div class="panel-body">
+                <p v-if="role === 'owner' || role === 'admin' || role === 'national-coach'" style="font-style:italic">
+                    Athletes that you follow will be notified.
+                </p>
+                <p v-if="role === 'coach'" style="font-style:italic">
+                    Athletes that you request to follow will be notified and asked to verify before you can view their
+                    videos and competition results.
+                </p>
+
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -51,7 +59,8 @@
         props: {
             userId: {
                 required: true,
-            }
+            },
+            role: null,
         },
 
         mounted() {

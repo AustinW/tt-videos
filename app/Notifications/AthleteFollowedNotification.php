@@ -49,8 +49,14 @@ class AthleteFollowedNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        if ($this->coach->hasRole(['owner', 'admin', 'national-coach'])) {
+            $subject = $this->coach->name . ' has followed you.';
+        } else {
+            $subject = $this->coach->name . ' is requesting to follow you.';
+        }
+
         return (new MailMessage)
-            ->subject($this->coach->name . ' is requesting to follow you.')
+            ->subject($subject)
             ->markdown('email.athlete.followed', [
                 'coach' => $this->coach,
                 'athlete' => $this->athlete,

@@ -1,14 +1,27 @@
 @component('mail::message')
-# {{ $coach->name }} has Requested to Follow You
+
+@role(['owner', 'admin', 'national-coach'])
+# {{ $coach->name }} Has Followed You
+@endrole
+@role('coach')
+# {{ $coach->name }} Has Requested to Follow You
+@endrole
 
 Hi {{ $athlete->name }},
 
-Click the button below to allow {{ $coach->name }} to follow your videos and results.
+@role(['owner', 'admin', 'national-coach'])
+We are simply letting you know that {{ $coach->name }} has started following your videos and competition results.
+@endrole
+@role('coach')
+Click the button below to allow {{ $coach->name }} to follow your videos and competition results.
+@endrole
 
+@role('coach')
 @component('mail::button', ['url' => url('/athletes/verify-follow/' . $code)])
 Accept Follow Request
 @endcomponent
+@endrole
 
-Thanks,<br>
+Regards,<br>
 {{ config('app.name') }}
 @endcomponent

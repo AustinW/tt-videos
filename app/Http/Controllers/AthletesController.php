@@ -81,15 +81,23 @@ class AthletesController extends Controller
 
             $verificationCode = uniqid(true);
 
-            $request->user()->followedAthletes()->attach($athlete->id, [
+            $pivotFields = [
                 'verification_code' => $verificationCode
-            ]);
+            ];
 
-            // TODO: IF USER IS NATIONAL COACH, NO VERIFICATION NEEDED
+            $automaticallyVerifiable = $request->user()->hasRole(['owner', 'admin', 'national-coach']);
+
+            if ($automaticallyVerifiable) {
+                $pivotFields['verified'] = Carbon::now();
+            }
+
+            $request->user()->followedAthletes()->attach($athlete->id, $pivotFields);
+
             Notification::send($athlete, new AthleteFollowedNotification($request->user(), $athlete, $verificationCode));
 
             return response()->json([
-                'status' => 'ok'
+                'status' => 'ok',
+                'verified' => $automaticallyVerifiable
             ], 200);
         } else {
             return abort(403);

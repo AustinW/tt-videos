@@ -1,60 +1,28 @@
-<html>
-  <head>
-    <title>{{ config('backpack.base.project_name') }} Error 403</title>
+@extends('layouts.app')
 
-    <link href='//fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
-
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        color: #B0BEC5;
-        display: table;
-        font-weight: 100;
-        font-family: 'Lato';
-      }
-
-      .container {
-        text-align: center;
-        display: table-cell;
-        vertical-align: middle;
-      }
-
-      .content {
-        text-align: center;
-        display: inline-block;
-      }
-
-      .title {
-        font-size: 156px;
-      }
-
-      .quote {
-        font-size: 36px;
-      }
-
-      .explanation {
-        font-size: 24px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="content">
-        <div class="title">403</div>
-        <div class="quote">Forbidden.</div>
-        <div class="explanation">
-          <br>
-          <small>
-            <?php
-              $default_error_message = "Please return to <a href='".url('')."'>our homepage</a>.";
-            ?>
-            {!! isset($exception)? ($exception->getMessage()?$exception->getMessage():$default_error_message): $default_error_message !!}
-         </small>
-       </div>
+@section('content')
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+          <div class="panel-heading">Uh oh</div>
+          
+          <div class="panel-body">
+            <h1>👀</h1>
+            <p>Sorry, you don't have permission to view that resource.</p>
+            
+            @if (isset($exception))
+              <div class="well">
+                Server says...<br />
+                Code: {{ $exception->getStatusCode() }}<br />
+                {{ $exception->getMessage() }}
+              </div>
+            @endif
+            
+            <p><a class="btn btn-primary btn-lg" href="/home" role="button">Home &raquo;</a></p>
+          </div>
+        </div>
       </div>
     </div>
-  </body>
-</html>
+  </div>
+@endsection

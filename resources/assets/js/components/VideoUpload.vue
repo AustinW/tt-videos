@@ -52,9 +52,9 @@
                                 <label for="visibility">Visibility</label>
                                 <select class="form-control" v-model="visibility">
                                     <option value="private">Private</option>
-                                    <option value="unlisted">Unlisted</option>
                                     <option value="public">Public</option>
                                 </select>
+                                <p class="help-block">{{ visibilityDescription }}</p>
                             </div>
 
                             <span class="help-block pull-right">{{ saveStatus }}</span>
@@ -161,8 +161,14 @@
             }
         },
         computed: {
-            videoUrl: function() {
+            videoUrl() {
                 return this.$root.url + '/videos/' + this.unique_id;
+            },
+
+            visibilityDescription() {
+                return (this.visibility === 'private')
+                    ? 'Only coaches who are following you and National Coaches will be able to see your video.'
+                    : 'Anyone can see your video.';
             }
         },
         mounted() {

@@ -43,7 +43,7 @@
                     athleteId: this.athleteId
                 }).then(Vue.getJson).then((response) => {
                     if (response.status == "ok") {
-                        this.followed = 1;
+                        this.followed = (response.verified == true) ? 2 : 1;
                     }
                 })
             },

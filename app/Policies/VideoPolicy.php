@@ -11,19 +11,24 @@ class VideoPolicy
 {
     use HandlesAuthorization, OwnershipTrait;
 
+    public function show(User $user, Video $video)
+    {
+        return $this->permissionCheck($user, $video, 'read-videos');
+    }
+
     public function update(User $user, Video $video)
     {
-        return $this->authorizationCheck($user, $video);
+        return $this->permissionCheck($user, $video, 'update-videos');
     }
 
     public function edit(User $user, Video $video)
     {
-        return $this->authorizationCheck($user, $video);
+        return $this->permissionCheck($user, $video, 'update-videos');
     }
 
     public function delete(User $user, Video $video)
     {
-        return $this->authorizationCheck($user, $video);
+        return $this->permissionCheck($user, $video, 'delete-videos');
     }
 
     public function vote(User $user, Video $video)

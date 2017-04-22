@@ -25,6 +25,10 @@
                                         </div>
                                         <div class="col-sm-9">
                                             <a href="/videos/{{ $video->unique_id }}">{{ $video->title }}</a>
+                                            @if ($video->isPrivate())
+                                            <span class="label label-default">Private</span>
+                                            @endif
+                                            
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <p class="muted">
@@ -35,7 +39,7 @@
                                                         @endif
                                                     </p>
                                                     
-                                                    <form action="/videos/{{ $video->unique_id }}" method="post">
+                                                    <form action="/videos/{{ $video->unique_id }}" method="post" onsubmit="return confirm('Are you sure you would like to delete this video?')">
                                                         <a href="/videos/{{ $video->unique_id }}/edit" class="btn btn-default">Edit</a>
                                                         <button type="submit" class="btn btn-default">Delete</button>
                                                         {{ csrf_field() }}
