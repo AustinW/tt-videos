@@ -55,7 +55,7 @@
     export default {
         data() {
             return {
-                all_athletes: null,
+                all_athletes: [],
                 my_athletes: [],
                 searchQuery: null,
             };
