@@ -69,3 +69,12 @@
 .remove-attachment {
   color: #000;
 }
+
+.media-grid {
+  .thumbnail {
+    a>img, img {
+      max-height:150px;
+      max-width:150px;
+    }
+  }
+}

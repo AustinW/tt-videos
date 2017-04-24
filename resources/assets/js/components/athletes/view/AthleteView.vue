@@ -24,7 +24,7 @@
                 </div>
             </form>
 
-            <div v-if="showVideos && athlete.videos.length" class="row">
+            <div v-if="showVideos && athlete.videos.length" class="row media-grid">
                 <div class="col-md-12"><h4>Videos:</h4></div>
                 <div v-for="video in athlete.videos">
                     <div class="col-sm-6 col-md-4">
