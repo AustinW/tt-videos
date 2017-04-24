@@ -126,7 +126,7 @@ return [
         |
         */
 
-        'role_has_permissions' => 'permission_roles',
+        'role_has_permissions' => 'permission_role',
 
     ],
 

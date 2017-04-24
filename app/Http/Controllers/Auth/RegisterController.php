@@ -90,7 +90,7 @@ class RegisterController extends Controller
         Notification::send($notifyOwners, new RegistrationNotification($user, $role));
 
         if ($role->name === 'athlete') {
-            Notification::send($user->email, new WelcomeNotification($user));
+            Notification::send($user, new WelcomeNotification($user));
         }
 
         return $user;
