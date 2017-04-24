@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Notifications\RegistrationNotification;
+use App\Notifications\WelcomeNotification;
 use App\Role;
 use App\User;
 use Illuminate\Support\Facades\Notification;
@@ -87,6 +88,10 @@ class RegisterController extends Controller
         $notifyOwners = User::whereHas('roles', function($role) { $role->where('name', 'owner'); })->get();
 
         Notification::send($notifyOwners, new RegistrationNotification($user, $role));
+
+        if ($role->name === 'athlete') {
+            Notification::send($user->email, new WelcomeNotification($user));
+        }
 
         return $user;
     }
