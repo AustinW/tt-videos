@@ -1,0 +1,5 @@
+- name: Composer update
+  command: php ~/composer.phar update
+
+- name: Laravel optimize
+  command: php artisan route:cache && php artisan config:cache && php artisan optimize
