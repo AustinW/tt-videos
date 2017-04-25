@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\Debug\Exception\FlattenException;
 
 class Handler extends ExceptionHandler
 {
@@ -109,12 +110,6 @@ class Handler extends ExceptionHandler
         // Http exceptions
         if ($this->isHttpException($e))
         {
-            // redirect to login if not authenticated
-            // I don't want to let unauthenticated users to see error pages
-            if( ! \Auth::check() ){
-                return redirect()->route('auth.login.get');
-            }
-
 
             // try to find right error page for this exception
             // I have prepared 4 most common errors: 403, 404, 500 and 503
@@ -122,7 +117,7 @@ class Handler extends ExceptionHandler
             $statusCode = $exception->getStatusCode($exception);
 
             if (in_array($statusCode, array(403, 404, 500, 503))){
-                return response()->view('app.errors.' . $statusCode, compact('exception'), $statusCode);
+                return response()->view('errors.' . $statusCode, compact('exception'), $statusCode);
             }
         }
 
