@@ -9,5 +9,6 @@ check_run() {
 check_run composer.json "php ~/composer.phar self-update && php ~/composer.phar update"
 
 php ~/composer.phar dump-autoload -o
+php artisan cache:clear
 php artisan optimize
 php artisan migrate --pretend --force
