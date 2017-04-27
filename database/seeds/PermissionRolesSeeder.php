@@ -40,7 +40,7 @@ class PermissionRolesSeeder extends Seeder
         $owner->attachPermissions([$createVideo, $readVideo, $updateVideo, $deleteVideo, $createScores, $readScores, $updateScores, $deleteScores, $viewAthletes, $watchAthlete, $addRole, $removeRole, $makeAdmin, $removeAdmin, $addPermission, $removePermission]);
         $admin->attachPermissions([$createVideo, $readVideo, $updateVideo, $deleteVideo, $createScores, $readScores, $updateScores, $deleteScores, $viewAthletes, $watchAthlete, $addRole, $removeRole, $addPermission, $removePermission]);
         $nationalCoach->attachPermissions([$createVideo, $readVideo, $updateVideo, $deleteVideo, $createScores, $readScores, $updateScores, $deleteScores, $viewAthletes, $watchAthlete]);
-        $coach->attachPermissions([$createVideo, $readVideo, $updateVideo, $deleteVideo, $createScores, $readScores, $updateScores, $deleteScores]);
+        $coach->attachPermissions([$createVideo, $readVideo, $updateVideo, $deleteVideo, $createScores, $readScores, $updateScores, $deleteScores, $viewAthletes, $watchAthlete]);
         $athlete->attachPermissions([$createVideo, $readVideo, $updateVideo, $deleteVideo, $createScores, $readScores, $updateScores, $deleteScores]);
     }
 }

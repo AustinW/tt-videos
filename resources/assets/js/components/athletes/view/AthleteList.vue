@@ -1,9 +1,18 @@
 <template>
-    <ul class="list-group">
-        <li v-for="athlete in athletes" class="list-group-item">
-            <label><input type="checkbox" v-model="shown[athlete.id]" @change="shownAthletes" /> {{ athlete.name }}</label>
-        </li>
-    </ul>
+    <div>
+        <ul class="list-group" v-if="!athletes || athletes.length > 0">
+            <li v-for="athlete in athletes" class="list-group-item">
+                <label><input type="checkbox" v-model="shown[athlete.id]" @change="shownAthletes" /> {{ athlete.name }}</label>
+            </li>
+        </ul>
+
+        <div v-else>
+            <p class="muted">
+                Start <a href="/athletes/search">following athletes</a>.
+            </p>
+        </div>
+    </div>
+
 </template>
 
 <script>
