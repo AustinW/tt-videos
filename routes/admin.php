@@ -15,4 +15,9 @@ Route::group(['middleware' => ['admin', 'auth', 'role:owner|admin|national-coach
     CRUD::resource('user', 'UserCrudController');
     CRUD::resource('role', 'RoleCrudController')->middleware(['permission:add-role,remove-role']);
     CRUD::resource('permission', 'PermissionCrudController')->middleware(['permission:add-permission,remove-permission']);
+
+    Route::group(['prefix' => 'user/{user_id}'], function() {
+        CRUD::resource('videos', 'UserVideoCrudController');
+        CRUD::resource('competitions', 'UserCompetitionsCrudController');
+    });
 });

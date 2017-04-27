@@ -116,6 +116,9 @@ class UserCrudController extends CrudController
             ]);
         }
 
+        $this->crud->addButtonFromView('line', 'user_videos', 'user_videos', 'beginning');
+        $this->crud->addButtonFromView('line', 'user_competitions', 'user_competitions', 'beginning');
+
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');
         // $this->crud->addFields($array_of_arrays, 'update/create/both');
