@@ -28,7 +28,7 @@ Route::get('/home', 'HomeController@index');
 
 Route::post('/videos/{video}/views', 'VideoViewController@create');
 
-Route::get('/search', 'SearchController@index');
+Route::get('/search', 'SearchController@index')->name('search');
 
 Route::get('/videos/{video}/comments', 'VideoCommentController@index');
 

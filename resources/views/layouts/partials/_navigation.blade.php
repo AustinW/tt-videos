@@ -18,6 +18,14 @@
         
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
+    
+            <form action="{{ route('search') }}" method="get" class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="q" placeholder="Search videos..." value="{{ Request::get('q') }}">
+                </div>
+                <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i> Search</button>
+            </form>
+            
             <ul class="nav navbar-nav">
                 @if (!Auth::guest())
                     <li><a href="{{ route('videos.index') }}">My Videos</a></li>
