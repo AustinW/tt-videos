@@ -24,4 +24,9 @@ class UserPolicy
     {
         return ($user->id === $otherUser->id || $user->hasRole(['owner', 'admin']));
     }
+
+    public function chooseRole(User $user)
+    {
+        return $user->roles()->count() === 0;
+    }
 }

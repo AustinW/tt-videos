@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserUpdateRequest;
+use App\Notifications\NationalCoachRequest;
+use App\Notifications\NewNationalCoachRequest;
+use App\Role;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\Notification;
 use Storage;
 use Intervention\Image\Facades\Image;
 use App\User;
@@ -110,5 +114,45 @@ class UserController extends Controller
         $user->delete();
 
         return redirect('/');
+    }
+
+    public function chooseRole()
+    {
+        if (!Auth::check()) {
+            abort(401);
+        }
+
+        $this->authorize('chooseRole', Auth::user());
+
+        return view('user.choose_role');
+    }
+
+    public function chooseRoleStore(Request $request)
+    {
+        if (!Auth::check()) {
+            abort(401);
+        }
+
+        $this->authorize('chooseRole', Auth::user());
+
+        if ($request->has('role')) {
+            if ($request->role === 'athlete' || $request->role === 'coach') {
+                $request->user()->attachRole(Role::where('name', $request->role)->first());
+            } else if ($request->role === 'national-coach') {
+                $request->user()->attachRole(Role::where('name', 'coach')->first());
+
+                User::whereHas('roles', function($role) {
+                    $role->where('name', 'owner')->orWhere('name', 'admin');
+                })->get()->each(function($admin) use($request) {
+                    Notification::send($admin, new NationalCoachRequest($admin, $request->user()));
+                });
+            } else {
+                throw new \Exception('Invalid role specified.');
+            }
+        } else {
+            throw new \Exception('Role must be specified.');
+        }
+
+        return redirect()->route('user.index');
     }
 }

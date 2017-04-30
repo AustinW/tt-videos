@@ -36,6 +36,9 @@ Route::get('/videos/{video}/votes', 'VideoVoteController@show');
 
 Route::get('/videos/event/{event}', 'VideosController@showEvent')->name('videos.showEvent');
 
+Route::get('/user/choose-role', 'UserController@chooseRole')->name('user.choose_role');
+Route::post('/user/choose-role', 'UserController@chooseRoleStore')->name('user.choose_role.store');
+
 Route::resource('user', 'UserController', [
     'names' => [
         'index' => 'user.index',

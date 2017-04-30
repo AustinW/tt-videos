@@ -22,6 +22,7 @@
                                 <h1>{{ $user->name }}</h1>
                                 <h4>{{ $user->rolesString() }}</h4>
                                 <a href="mailto:{{ $user->email }}">{{ $user->email }}</a> ● <span style="font-style:italic">Member since {{ $user->created_at->format('F jS, Y') }}</span>
+                                <br />
     
                                 <div class="row" style="margin-top:25px">
                                     <div class="col-md-12">

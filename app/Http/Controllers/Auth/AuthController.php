@@ -37,6 +37,10 @@ class AuthController extends Controller
 
         Auth::login($authUser, true);
 
+        if (!$authUser->roles()->count()) {
+            return redirect()->route('user.choose_role');
+        }
+
         return redirect()->route('user.index');
     }
 
