@@ -21,19 +21,21 @@
     export default {
         data() {
             return {
-                followed: 0,
+                followed: null,
             }
         },
 
         props: {
             athleteId: {
-                required: true
+                required: true,
+                type: Number
             },
             userId: {
-                required: true
+                required: true,
+                type: Number
             },
             isFollowed: {
-                required: true
+                type: Number
             }
         },
 
@@ -60,7 +62,14 @@
         },
 
         mounted() {
-            this.followed = this.isFollowed;
+            if (!this.isFollowed) {
+                this.$http.get('/athletes/check-follow/' + this.athleteId).then(Vue.getJson).then((response) => {
+                    this.followed = response.followCode;
+                });
+            } else {
+                this.followed = parseInt(this.isFollowed);
+            }
+
         }
     };
 </script>

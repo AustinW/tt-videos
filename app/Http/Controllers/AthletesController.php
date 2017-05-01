@@ -188,4 +188,29 @@ class AthletesController extends Controller
     {
         //
     }
+
+    /**
+     * @param Request $request
+     * @param User $athlete
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function checkFollow(Request $request, User $athlete)
+    {
+        if ($request->user()->can('watch-athlete')) {
+            if ($request->user()->isFollowing($athlete)) {
+                $followCode = 2;
+            } else if ($request->user()->followedAthletes()->where('athlete_id', $athlete->id)->count() > 0) {
+                $followCode = 1;
+            } else {
+                $followCode = 0;
+            }
+
+            return response()->json([
+                'followCode' => $followCode,
+                'athlete' => $athlete
+            ], 200);
+        } else {
+            abort(403);
+        }
+    }
 }

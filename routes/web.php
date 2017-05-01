@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('athletes/follow', 'AthletesController@follow')->name('athletes.follow');
     Route::post('athletes/unfollow', 'AthletesController@unfollow')->name('athletes.unfollow');
     Route::get('athletes/verify-follow/{code}', 'AthletesController@verifyFollow')->name('athletes.verifyFollow');
+    Route::get('athletes/check-follow/{athlete}', 'AthletesController@checkFollow')->name('athletes.checkFollow');
 
     Route::post('upload/multiple', 'UploadController@storeMultiple')->name('upload.multiple');
 

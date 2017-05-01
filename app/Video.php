@@ -112,15 +112,24 @@ class Video extends Model
     }
 
     public function canBeAccessed(User $user = null) {
-        if (!$user && $this->isPrivate()) {
-            return false;
-        }
 
-        if ($user && $this->isPrivate() && ($user->id !== $this->user_id)) {
-            return false;
-        }
+        if ($user->id === $this->user_id || $user->hasRole(['owner', 'admin', 'national-coach'])) {
+            return true;
+        } else if ($this->isPrivate()) {
+            if ($user->can('read-video')) {
+                $followed = DB::table('coach_athlete')
+                    ->where('coach_id', $user->id)
+                    ->where('athlete_id', $this->user_id)
+                    ->whereNotNull('verified')
+                    ->count();
 
-        return true;
+                return $followed > 0;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     public function voteFromUser(User $user) {
