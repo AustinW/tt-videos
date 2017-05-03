@@ -13,7 +13,7 @@ class VideoPolicy
 
     public function show(User $user, Video $video)
     {
-        return $this->permissionCheck($user, $video, 'read-videos');
+        return $video->canBeAccessed($user);
     }
 
     public function update(User $user, Video $video)

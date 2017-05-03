@@ -57,6 +57,8 @@ Route::resource('user', 'UserController', [
 //    Route::put('update', 'UserController@update')->name('update');
 //});
 
+Route::get('videos/{video}', 'VideosController@show')->name('videos.show');
+
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('upload', 'UploadController');
 
@@ -86,11 +88,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('videos', 'VideosController', [
         'names' => [
             'index' => 'videos.index',
-            'show' => 'videos.show',
             'edit' => 'videos.edit',
             'update' => 'videos.update',
             'upload' => 'videos.upload',
-        ]
+        ],
+        'except' => ['show']
     ]);
 
     Route::post('/videos/{video}/votes', 'VideoVoteController@store');

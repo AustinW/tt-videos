@@ -113,7 +113,9 @@ class Video extends Model
 
     public function canBeAccessed(User $user = null) {
 
-        if ($user->id === $this->user_id || $user->hasRole(['owner', 'admin', 'national-coach'])) {
+        if (!$user && $this->isPublic()) {
+            return true;
+        } else if ($user->id === $this->user_id || $user->hasRole(['owner', 'admin', 'national-coach'])) {
             return true;
         } else if ($this->isPrivate()) {
             if ($user->can('read-video')) {
@@ -128,6 +130,7 @@ class Video extends Model
                 return false;
             }
         } else {
+            // Video is public
             return true;
         }
     }

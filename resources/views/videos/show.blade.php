@@ -54,7 +54,7 @@
                             <br />
                             <athlete
                                 :athlete-id="{{ $video->user->id }}"
-                                :user-id="{{ (Auth::check()) ? Auth::user()->id : '' }}">
+                                :user-id="{{ (Auth::check()) ? Auth::user()->id : '0' }}">
                                 {{--is-followed="{{ (Auth::check()) ? Auth::user()->isFollowing($video->user) : '' }}">--}}
                             </athlete>
                         </div>

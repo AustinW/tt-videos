@@ -62,7 +62,7 @@
         },
 
         mounted() {
-            if (!this.isFollowed) {
+            if (!this.isFollowed && this.userId) {
                 this.$http.get('/athletes/check-follow/' + this.athleteId).then(Vue.getJson).then((response) => {
                     this.followed = response.followCode;
                 });

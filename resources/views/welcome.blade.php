@@ -10,13 +10,23 @@
                 </div>
 
                 <div class="panel-body">
+                    <p class="lead">
+                        T&T Videos connects athletes, coaches, and National Coaching Staff together throughout training and
+                        competition. Athletes can upload videos and competition results so that coaches can easily track
+                        their athletes. This allows the National Coaching Staff to view athletes' progress from around the
+                        country and stay connected with the athlete and his or her personal coach over the course of the
+                        athlete's career.
+                    </p>
+                    
                     @if (Auth::guest())
-                        Please <a href="{{ route('login') }}">login</a> or <a href="{{ route('register') }}">register</a> an account to get started.
+                        <a href="{{ route('login') }}" class="btn btn-primary btn-lg">Login</a>
+                        <a href="{{ route('register') }}" class="btn btn-default btn-lg">Register</a>
                     @else
                         @if (Auth::user()->hasRole('athlete'))
-                            You can view your <a href="{{ route('videos.index') }}">videos</a> or <a href="{{ route('competitions.index') }}">scores</a> that you've submitted.
+                            <a href="{{ route('videos.index') }}" class="btn btn-primary btn-lg">Videos</a>
+                            <a href="{{ route('competitions.index') }}" class="btn btn-primary btn-lg">Scores</a>
                         @else
-                            View your <a href="{{ route('athletes.index') }}">athletes' updates</a>.
+                            <a href="{{ route('athletes.index') }}" class="btn btn-primary btn-lg">Athlete Updates</a>
                         @endif
                     @endif
                 </div>

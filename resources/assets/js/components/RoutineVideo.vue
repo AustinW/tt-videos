@@ -11,7 +11,7 @@
 
         <span v-show="uploaded || hasAttachment">
             <i class="glyphicon glyphicon-check"></i> {{ filename }}
-            <a href="#" @click.prevent="removeAttachment" class="remove-attachment"><i class="glyphicon glyphicon-remove-sign"></i></a>
+            <a href="#" @click.prevent="removeAttachment" class="remove-attachment"><i class="glyphicon glyphicon-trash"></i></a>
         </span>
 
         <div class="upload-progress progress" v-show="$upload.meta(uniqueId).status === 'sending'">

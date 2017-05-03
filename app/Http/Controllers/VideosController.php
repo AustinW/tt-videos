@@ -66,11 +66,13 @@ class VideosController extends Controller
      * @return \Illuminate\Http\Response
      * @internal param int $id
      */
-    public function show(Video $video)
+    public function show(Request $request, Video $video)
     {
-        $this->authorize('show', $video);
-
-        return view('videos.show', compact('video'));
+        if ($video->canBeAccessed($request->user())) {
+            return view('videos.show', compact('video'));
+        } else {
+            abort(403);
+        }
     }
 
     /**

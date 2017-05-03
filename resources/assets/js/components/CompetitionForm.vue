@@ -58,10 +58,10 @@
                     <input id="trampoline" type="checkbox" name="trampoline" v-model="trampoline">
                     Trampoline
                     <button v-show="trampoline" @click="trampolineRoutines.showSemiFinal = !trampolineRoutines.showSemiFinal" type="button" class="btn btn-xs btn-default">
-                        <i v-show="trampolineRoutines.showSemiFinal" class="glyphicon glyphicon-ok"></i> Semi-Finals
+                        <i v-show="trampolineRoutines.showSemiFinal" class="glyphicon glyphicon-ok"></i> Show Semi-Finals
                     </button>
                     <button v-show="trampoline" @click="trampolineRoutines.showFinal = !trampolineRoutines.showFinal" type="button" class="btn btn-xs btn-default">
-                        <i v-show="trampolineRoutines.showFinal" class="glyphicon glyphicon-ok"></i> Finals
+                        <i v-show="trampolineRoutines.showFinal" class="glyphicon glyphicon-ok"></i> Show Finals
                     </button>
                 </label>
 
@@ -84,7 +84,7 @@
                     <input id="dmt" type="checkbox" name="dmt" v-model="dmt">
                     Double Mini
                     <button v-show="dmt" @click="doubleMiniPasses.showFinal = !doubleMiniPasses.showFinal" type="button" class="btn btn-xs btn-default">
-                        <i v-show="doubleMiniPasses.showFinal" class="glyphicon glyphicon-ok"></i> Finals
+                        <i v-show="doubleMiniPasses.showFinal" class="glyphicon glyphicon-ok"></i> Show Finals
                     </button>
                 </label>
 
@@ -107,7 +107,7 @@
                     <input id="tumbling" type="checkbox" name="tumbling" v-model="tumbling">
                     Tumbling
                     <button v-show="tumbling" @click="tumblingPasses.showFinal = !tumblingPasses.showFinal" type="button" class="btn btn-xs btn-default">
-                        <i v-show="tumblingPasses.showFinal" class="glyphicon glyphicon-ok"></i> Finals
+                        <i v-show="tumblingPasses.showFinal" class="glyphicon glyphicon-ok"></i> Show Finals
                     </button>
                 </label>
 
@@ -128,7 +128,9 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary" :disabled="errors.any() || !eventsValid">Submit Competition</button>
+        <button type="submit" class="btn btn-primary" :disabled="errors.any() || !eventsValid">
+            {{ buttonText }}
+        </button>
     </form>
 </template>
 
@@ -228,6 +230,10 @@
             tumblingColSize() {
                 return (this.tumblingPasses.showFinal) ? '3' : '6';
             },
+
+            buttonText() {
+                return (this.competitionId) ? 'Edit Competition' : 'Submit Competition';
+            }
         },
 
         methods: {

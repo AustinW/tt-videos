@@ -23,7 +23,7 @@
                                             <a href="/videos/{{ $video->unique_id }}">{{ $video->title }}</a>
                                             
                                             @if ($video->isPrivate())
-                                                <span class="label label-default">Private</span>
+                                                <span class="label label-default"><i class="glyphicon glyphicon-lock"></i> Private</span>
                                             @endif
                                             
                                             @if ($video->description)
