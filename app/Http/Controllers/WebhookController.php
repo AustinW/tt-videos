@@ -49,8 +49,7 @@ class WebhookController extends Controller
         Notification::send($video->user->followers()->get(), new VideoUploadedNotification($video));
 
         if (App::environment('local')) {
-            //TODO: Re-enable
-//            $this->dispatch(new DownloadVideo($video));
+            $this->dispatch(new DownloadVideo($video));
         }
 
         return response()->json([
