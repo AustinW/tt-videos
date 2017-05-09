@@ -114,7 +114,7 @@
                     this.showQueuedFiles = false;
                 },
                 onSuccess(res) {
-                    window.location = '/videos';
+                    window.location = '/videos/' + res.data.data.unique_id + '/edit';
                 },
                 onEnd() {
                 },

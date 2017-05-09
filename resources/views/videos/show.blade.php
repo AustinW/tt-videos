@@ -31,7 +31,15 @@
 
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h4>{{ $video->title }}</h4>
+                    <h4>
+                        {{ $video->title }}
+                        @canAndOwns('update-video', $video)
+                        <a href="{{ route('videos.edit', $video->unique_id) }}" class="btn btn-default btn-sm">
+                            <i class="glyphicon glyphicon-edit"></i>
+                            Edit
+                        </a>
+                        @endOwns
+                    </h4>
 
                     <div class="pull-right">
                         <div class="video__views">

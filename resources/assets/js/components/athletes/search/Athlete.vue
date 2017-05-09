@@ -1,19 +1,21 @@
 <template>
     <div>
-        <!--Not followed-->
-        <button class="btn btn-default" v-if="followed === 0" @click="follow">
-            <i class="glyphicon glyphicon-eye-open"></i> Follow
-        </button>
+        <div v-if="athleteId !== userId">
+            <!--Not followed-->
+            <button class="btn btn-default" v-if="followed === 0" @click="follow">
+                <i class="glyphicon glyphicon-eye-open"></i> Follow
+            </button>
 
-        <!--Needs verification-->
-        <button class="btn btn-default" v-if="followed === 1" disabled>
-            <i class="glyphicon glyphicon-hourglass"></i> Waiting for verification
-        </button>
+            <!--Needs verification-->
+            <button class="btn btn-default" v-if="followed === 1" disabled>
+                <i class="glyphicon glyphicon-hourglass"></i> Waiting for verification
+            </button>
 
-        <!--Verified-->
-        <button class="btn btn-default" v-if="followed === 2" @click="unfollow">
-            <i class="glyphicon glyphicon-eye-close"></i> Unfollow
-        </button>
+            <!--Verified-->
+            <button class="btn btn-default" v-if="followed === 2" @click="unfollow">
+                <i class="glyphicon glyphicon-eye-close"></i> Unfollow
+            </button>
+        </div>
     </div>
 </template>
 

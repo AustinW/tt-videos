@@ -125,7 +125,7 @@ class VideosController extends Controller
         return redirect()->back()->with([
             'message' => [
                 'class' => 'success',
-                'body' => 'Video updated.',
+                'body' => 'Video updated. <a href="' . route('videos.show', $video->unique_id) . '">View video page</a>.',
             ]
         ]);
     }

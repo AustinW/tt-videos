@@ -8,7 +8,10 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Edit video "{{ $video->title }}"</div>
+                <div class="panel-heading">
+                    <a href="{{ route('videos.show', $video->unique_id) }}"><i class="glyphicon glyphicon-circle-arrow-left"></i></a>
+                    Edit video "{{ $video->title }}"
+                </div>
 
                 <div class="panel-body">
                     @if (count($errors) > 0)
