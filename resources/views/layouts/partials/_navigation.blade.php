@@ -28,8 +28,8 @@
             
             <ul class="nav navbar-nav">
                 @if (!Auth::guest())
-                    <li><a href="{{ route('videos.index') }}">My Videos</a></li>
-                    <li><a href="{{ route('competitions.index') }}">My Scores</a></li>
+                    <li><a href="{{ route('videos.create') }}"><i class="glyphicon glyphicon-plus-sign"></i> Upload Video</a></li>
+                    <li><a href="{{ route('competitions.create') }}"><i class="glyphicon glyphicon-plus-sign"></i> Submit Scores</a></li>
                     @permission('watch-athlete')
                         <li><a href="{{ route('athletes.index') }}">My Athletes</a></li>
                     @endpermission
@@ -51,8 +51,8 @@
                         
                         <ul class="dropdown-menu" role="menu">
                             @role('athlete')
-                            <li><a href="{{ route('competitions.create') }}"><i class="glyphicon glyphicon-edit"></i> Submit Scores</a></li>
-                            <li><a href="{{ route('upload.create') }}"><i class="glyphicon glyphicon-facetime-video"></i> Upload a Video</a></li>
+                            <li><a href="{{ route('videos.index') }}"><i class="glyphicon glyphicon-facetime-video"></i> My Videos</a></li>
+                            <li><a href="{{ route('competitions.index') }}"><i class="glyphicon glyphicon-edit"></i> My Scores</a></li>
                             @endrole
                             @permission('view-athletes')
                             <li><a href="{{ route('athletes.search') }}"><i class="glyphicon glyphicon-search"></i> Search Athletes</a></li>
