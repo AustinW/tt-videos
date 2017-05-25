@@ -64,6 +64,10 @@ class Video extends Model
         return $this->morphMany(Comment::class, 'commentable')->whereNull('reply_id');
     }
 
+    public function url() {
+        return url('/videos/' . $this->unique_id);
+    }
+
     public function viewCount()
     {
         return $this->views()->count();

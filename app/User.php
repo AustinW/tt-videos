@@ -39,6 +39,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Video');
     }
 
+    // TODO: Fill this out to easily grab all the user's videos that another user can see
+    public function seeableVideos(User $watcher)
+    {
+
+    }
+
     public function getImage() {
         if ($this->image_file) {
             return asset('storage/profiles/' . $this->image_file);

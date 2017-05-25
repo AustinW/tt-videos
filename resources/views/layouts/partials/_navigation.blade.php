@@ -50,10 +50,8 @@
                         </a>
                         
                         <ul class="dropdown-menu" role="menu">
-                            @role('athlete')
                             <li><a href="{{ route('videos.index') }}"><i class="glyphicon glyphicon-facetime-video"></i> My Videos</a></li>
                             <li><a href="{{ route('competitions.index') }}"><i class="glyphicon glyphicon-edit"></i> My Scores</a></li>
-                            @endrole
                             @permission('view-athletes')
                             <li><a href="{{ route('athletes.search') }}"><i class="glyphicon glyphicon-search"></i> Search Athletes</a></li>
                             @endpermission

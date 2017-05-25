@@ -53,7 +53,7 @@ class Handler extends ExceptionHandler
             $whoops = new \Whoops\Run;
 
             if ($request->ajax()) {
-                $whoops->pushHandler(new \Whoops\Handler\JsonResponseHandler());
+                return parent::render($request, $e);
             } else {
                 $handler = new \Whoops\Handler\PrettyPageHandler();
 

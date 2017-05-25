@@ -34,7 +34,7 @@
                             </div>
                         </div>
                         
-                        @if (Auth::check() && $user->hasRole('athlete') && (Laratrust::owns($user, 'id') || Auth::user()->isFollowing($user)))
+                        @if (Auth::check() && (Laratrust::owns($user, 'id') || Auth::user()->isFollowing($user)))
                             <h3>Videos</h3>
                             @forelse ($user->videos as $video)
                                 @include ('videos.partials._video_result', ['video' => $video])

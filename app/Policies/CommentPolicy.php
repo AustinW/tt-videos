@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Comment;
+use App\User;
+use App\Comment;
 use App\Traits\OwnershipTrait;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
