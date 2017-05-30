@@ -114,6 +114,30 @@ class UserController extends Controller
         return redirect('/');
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        if ($request->ajax()) {
+
+            $athletes = User::where('id', '<>', $request->user()->id)->get();
+
+            $followedAthletes = $request->user()->followedAthletes()->get();
+
+            return response()->json([
+                'all_athletes' => $athletes,
+                'my_athletes' => $followedAthletes,
+            ], 200);
+        } else {
+            return view('user.search')->with(['user' => $request->user()]);
+        }
+
+    }
+
     public function chooseRole()
     {
         if (!Auth::check()) {

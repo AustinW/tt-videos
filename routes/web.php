@@ -39,6 +39,7 @@ Route::get('/videos/event/{event}', 'VideosController@showEvent')->name('videos.
 Route::get('/user/choose-role', 'UserController@chooseRole')->name('user.choose_role');
 Route::post('/user/choose-role', 'UserController@chooseRoleStore')->name('user.choose_role.store');
 
+Route::get('user/search', 'UserController@search')->name('user.search');
 Route::resource('user', 'UserController', [
     'names' => [
         'index' => 'user.index',
@@ -76,7 +77,6 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('athletes', 'Api\\AthletesController@index')->name('athletes.index');
     });
 
-    Route::get('athletes/search', 'AthletesController@search')->name('athletes.search');
     Route::get('athletes', 'AthletesController@index')->name('athletes.index');
     Route::post('athletes/follow', 'AthletesController@follow')->name('athletes.follow');
     Route::post('athletes/unfollow', 'AthletesController@unfollow')->name('athletes.unfollow');

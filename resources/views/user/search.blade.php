@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <athletes user-id="{{ Auth::user()->id }}" role="{{ Auth::user()->roles()->first()->name }}"></athletes>
+                <users :user-id="{{ $user->id }}" role="{{ $user->roles()->first()->name }}"></users>
             </div>
         </div>
     </div>

@@ -2,7 +2,7 @@
     <div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <div class="panel-title pull-left">All Athletes</div>
+                <div class="panel-title pull-left">All Users</div>
                 <div class="panel-title pull-right col-md-4">
                     <div class="input-group add-on">
                         <input class="form-control col-md-4" placeholder="Search" v-model="searchQuery" type="text">
@@ -17,10 +17,10 @@
             <div class="panel-body">
                 <div v-if="searched.length">
                     <p v-if="role === 'owner' || role === 'admin' || role === 'national-coach'" style="font-style:italic">
-                        Athletes that you follow will be notified.
+                        Users that you follow will be notified.
                     </p>
                     <p v-if="role === 'coach'" style="font-style:italic">
-                        Athletes that you request to follow will be notified and asked to verify before you can view their
+                        Users that you request to follow will be notified and asked to verify before you can view their
                         videos and competition results.
                     </p>
 
@@ -33,18 +33,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="athlete in searched">
-                                <td>{{ athlete.name }}</td>
-                                <td><a :href="'mailto:' + athlete.email">{{ athlete.email }}</a></td>
+                            <tr v-for="user in searched">
+                                <td>{{ user.name }}</td>
+                                <td><a :href="'mailto:' + user.email">{{ user.email }}</a></td>
                                 <td>
-                                    <follow :subject-id="athlete.id" :user-id="userId" :is-followed="followed(athlete)"></follow>
+                                    <follow :subject-id="user.id" :user-id="userId" :is-followed="followed(user)"></follow>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div v-else>
-                    <span style="font-style:italic">No athletes to display</span>
+                    <span style="font-style:italic">No users to display</span>
                 </div>
             </div>
         </div>
@@ -64,12 +64,13 @@
         props: {
             userId: {
                 required: true,
+                type: Number
             },
             role: null,
         },
 
         mounted() {
-            this.$http.get('/athletes/search').then(Vue.getJson).then((response) => {
+            this.$http.get('/user/search').then(Vue.getJson).then((response) => {
                 this.all_athletes = response.all_athletes;
                 this.my_athletes = response.my_athletes;
             });

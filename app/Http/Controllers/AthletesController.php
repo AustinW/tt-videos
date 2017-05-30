@@ -18,37 +18,6 @@ class AthletesController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        $user = Auth::user();
-
-        if ($user->can('view-athletes')) {
-            if ($request->ajax()) {
-                $athletes = User::whereHas('roles', function($query){
-                    $query->where('name', 'athlete');
-                })->get();
-
-                $followedAthletes = $user->followedAthletes()->get();
-
-                return response()->json([
-                    'all_athletes' => $athletes,
-                    'my_athletes' => $followedAthletes,
-                ], 200);
-            } else {
-                return view('athletes.search');
-            }
-        } else {
-            return abort(403);
-        }
-
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

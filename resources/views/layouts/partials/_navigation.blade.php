@@ -53,7 +53,7 @@
                             <li><a href="{{ route('videos.index') }}"><i class="glyphicon glyphicon-facetime-video"></i> My Videos</a></li>
                             <li><a href="{{ route('competitions.index') }}"><i class="glyphicon glyphicon-edit"></i> My Scores</a></li>
                             @permission('view-athletes')
-                            <li><a href="{{ route('athletes.search') }}"><i class="glyphicon glyphicon-search"></i> Search Athletes</a></li>
+                            <li><a href="{{ route('user.search') }}"><i class="glyphicon glyphicon-search"></i> Search Users</a></li>
                             @endpermission
                             <li><a href="{{ route('user.index') }}"><i class="glyphicon glyphicon-user"></i> Profile</a></li>
                             @role('owner', 'admin')
