@@ -28,7 +28,7 @@ Vue.component('dmt-score', require('./components/scores/DoubleMiniScore.vue'));
 Vue.component('tumbling-score', require('./components/scores/TumblingScore.vue'));
 Vue.component('small-video', require('./components/SmallVideo.vue'));
 Vue.component('athletes', require('./components/athletes/search/Athletes.vue'));
-Vue.component('athlete', require('./components/athletes/search/Athlete.vue'));
+Vue.component('follow', require('./components/Follow.vue'));
 Vue.component('view-athlete-list', require('./components/athletes/view/AthleteList.vue'));
 Vue.component('view-athlete', require('./components/athletes/view/AthleteView.vue'));
 Vue.component('view-athletes', require('./components/athletes/view/AthletesView.vue'));

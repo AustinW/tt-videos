@@ -1,18 +1,18 @@
 <template>
     <div>
-        <div v-if="athleteId !== userId">
+        <div v-if="subjectId !== userId">
             <!--Not followed-->
-            <button class="btn btn-default" v-if="followed === 0" @click="follow">
+            <button :class="styles" v-if="followed === 0" @click="follow">
                 <i class="glyphicon glyphicon-eye-open"></i> Follow
             </button>
 
             <!--Needs verification-->
-            <button class="btn btn-default" v-if="followed === 1" disabled>
+            <button :class="styles" v-if="followed === 1" disabled>
                 <i class="glyphicon glyphicon-hourglass"></i> Waiting for verification
             </button>
 
             <!--Verified-->
-            <button class="btn btn-default" v-if="followed === 2" @click="unfollow">
+            <button :class="styles" v-if="followed === 2" @click="unfollow">
                 <i class="glyphicon glyphicon-eye-close"></i> Unfollow
             </button>
         </div>
@@ -28,7 +28,7 @@
         },
 
         props: {
-            athleteId: {
+            subjectId: {
                 required: true,
                 type: Number
             },
@@ -38,13 +38,18 @@
             },
             isFollowed: {
                 type: Number
+            },
+            styles: {
+                required: false,
+                type: String,
+                default: 'btn btn-default'
             }
         },
 
         methods: {
             follow() {
                 this.$http.post('/athletes/follow', {
-                    athleteId: this.athleteId
+                    subjectId: this.subjectId
                 }).then(Vue.getJson).then((response) => {
                     if (response.status == "ok") {
                         this.followed = (response.verified == true) ? 2 : 1;
@@ -54,7 +59,7 @@
 
             unfollow() {
                 this.$http.post('/athletes/unfollow', {
-                    athleteId: this.athleteId
+                    subjectId: this.subjectId
                 }).then(Vue.getJson).then((response) => {
                     if (response.status == "ok") {
                         this.followed = 0;
@@ -65,7 +70,7 @@
 
         mounted() {
             if (!this.isFollowed && this.userId) {
-                this.$http.get('/athletes/check-follow/' + this.athleteId).then(Vue.getJson).then((response) => {
+                this.$http.get('/athletes/check-follow/' + this.subjectId).then(Vue.getJson).then((response) => {
                     this.followed = response.followCode;
                 });
             } else {

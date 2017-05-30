@@ -31,7 +31,7 @@
                     <li><a href="{{ route('upload.create') }}"><i class="glyphicon glyphicon-plus-sign"></i> Upload Video</a></li>
                     <li><a href="{{ route('competitions.create') }}"><i class="glyphicon glyphicon-plus-sign"></i> Submit Scores</a></li>
                     @permission('watch-athlete')
-                        <li><a href="{{ route('athletes.index') }}">My Athletes</a></li>
+                        <li><a href="{{ route('athletes.index') }}">Following</a></li>
                     @endpermission
                 @endif
             </ul>

@@ -70,14 +70,14 @@ class AthletesController extends Controller
     }
 
     /**
-     * Connect a user to an athlete
+     * Connect a user to follow another user
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse|void
      */
     public function follow(Request $request)
     {
         if ($request->user()->can('watch-athlete')) {
-            $athlete = User::findOrFail($request->athleteId);
+            $subject = User::findOrFail($request->subjectId);
 
             $verificationCode = uniqid(true);
 
@@ -91,9 +91,9 @@ class AthletesController extends Controller
                 $pivotFields['verified'] = Carbon::now();
             }
 
-            $request->user()->followedAthletes()->attach($athlete->id, $pivotFields);
+            $request->user()->followedAthletes()->attach($subject->id, $pivotFields);
 
-            Notification::send($athlete, new AthleteFollowedNotification($request->user(), $athlete, $verificationCode));
+            Notification::send($subject, new AthleteFollowedNotification($request->user(), $subject, $verificationCode));
 
             return response()->json([
                 'status' => 'ok',
@@ -105,16 +105,16 @@ class AthletesController extends Controller
     }
 
     /**
-     * Connect a user to an athlete
+     * Disconnect a user from following another user
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse|void
      */
     public function unfollow(Request $request)
     {
         if ($request->user()->can('watch-athlete')) {
-            $athleteId = $request->athleteId;
+            $subjectId = $request->subjectId;
 
-            $request->user()->followedAthletes()->detach($athleteId);
+            $request->user()->followedAthletes()->detach($subjectId);
 
             return response()->json([
                 'status' => 'ok'

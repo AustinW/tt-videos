@@ -11,7 +11,7 @@
                             <div class="col-md-3">
                                 <img src="{{ $user->getImage() }}" alt="" class="img-circle profile-img img-responsive">
                                 
-                                @if (Laratrust::owns($user, 'id') || Auth::user()->hasRole(['owner', 'admin']))
+                                @if (!Auth::guest() && (Laratrust::owns($user, 'id') || Auth::user()->hasRole(['owner', 'admin'])))
                                     <div style="margin-top:25px">
                                         <a href="{{ route('user.edit', $user->id) }}" class="btn btn-default"><i class="glyphicon glyphicon-edit"></i> Edit</a>
                                     </div>
@@ -20,7 +20,15 @@
                             </div>
                             <div class="col-md-9">
                                 <h1>{{ $user->name }}</h1>
-                                <h4>{{ $user->rolesString() }}</h4>
+                                <h4>
+                                    {{ $user->rolesString() }}
+                                    <follow
+                                        :subject-id="{{ $user->id }}"
+                                        :user-id="{{ (Auth::check()) ? Auth::user()->id : '0' }}"
+                                        :styles="'btn btn-default btn-xs'"
+                                        style="display:inline-block">
+                                    </follow>
+                                </h4>
                                 <a href="mailto:{{ $user->email }}">{{ $user->email }}</a> ● <span style="font-style:italic">Member since {{ $user->created_at->format('F jS, Y') }}</span>
                                 <br />
     
@@ -34,14 +42,12 @@
                             </div>
                         </div>
                         
-                        @if (Auth::check() && (Laratrust::owns($user, 'id') || Auth::user()->isFollowing($user)))
-                            <h3>Videos</h3>
-                            @forelse ($user->videos as $video)
-                                @include ('videos.partials._video_result', ['video' => $video])
-                            @empty
-                                <p>No videos found.</p>
-                            @endforelse
-                        @endif
+                        <h3>Videos</h3>
+                        @forelse ($user->seeableVideos(Auth::user()) as $video)
+                            @include ('videos.partials._video_result', ['video' => $video])
+                        @empty
+                            <p>No videos found.</p>
+                        @endforelse
                         
                         
                     </div>

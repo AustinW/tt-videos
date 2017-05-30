@@ -40,9 +40,14 @@ class User extends Authenticatable
     }
 
     // TODO: Fill this out to easily grab all the user's videos that another user can see
-    public function seeableVideos(User $watcher)
+    public function seeableVideos(User $watcher = null)
     {
-
+        return $this->videos()
+            ->where('processed', 1)
+            ->get()
+            ->filter(function($video) use($watcher) {
+                return $video->canBeAccessed($watcher);
+            });
     }
 
     public function getImage() {

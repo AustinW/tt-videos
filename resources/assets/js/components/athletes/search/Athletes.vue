@@ -37,7 +37,7 @@
                                 <td>{{ athlete.name }}</td>
                                 <td><a :href="'mailto:' + athlete.email">{{ athlete.email }}</a></td>
                                 <td>
-                                    <athlete :athlete-id="athlete.id" :user-id="userId" :is-followed="followed(athlete)"></athlete>
+                                    <follow :subject-id="athlete.id" :user-id="userId" :is-followed="followed(athlete)"></follow>
                                 </td>
                             </tr>
                         </tbody>

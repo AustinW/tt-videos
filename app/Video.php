@@ -117,8 +117,8 @@ class Video extends Model
 
     public function canBeAccessed(User $user = null) {
 
-        if (!$user && $this->isPublic()) {
-            return true;
+        if (!$user) {
+            return $this->isPublic();
         } else if ($user->id === $this->user_id || $user->hasRole(['owner', 'admin', 'national-coach'])) {
             return true;
         } else if ($this->isPrivate()) {

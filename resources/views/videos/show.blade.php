@@ -60,11 +60,10 @@
                         <div class="media-body">
                             <a href="/user/{{ $video->user->id}}" class="media-heading">{{ $video->user->name }}</a>
                             <br />
-                            <athlete
-                                :athlete-id="{{ $video->user->id }}"
+                            <follow
+                                :subject-id="{{ $video->user->id }}"
                                 :user-id="{{ (Auth::check()) ? Auth::user()->id : '0' }}">
-                                {{--is-followed="{{ (Auth::check()) ? Auth::user()->isFollowing($video->user) : '' }}">--}}
-                            </athlete>
+                            </follow>
                         </div>
                     </div>
                 </div>
