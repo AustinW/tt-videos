@@ -1,6 +1,6 @@
 <div class="row video-result">
     <div class="col-sm-3">
-        <a href="/videos/{{ $video->uid }}">
+        <a href="/videos/{{ $video->unique_id }}">
             <img src="{{ $video->thumbnailUrl() }}" alt="{{ $video->title }}" class="thumbnail img-responsive">
         </a>
     </div>
