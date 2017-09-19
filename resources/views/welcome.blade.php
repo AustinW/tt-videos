@@ -10,6 +10,8 @@
                 </div>
 
                 <div class="panel-body">
+                    <img src="img/bulgaria.jpg" alt="2017 World Age Group Championships in Sofia, Bulgaria" class="thumbnail center-block" style="max-height:200px">
+                    <hr>
                     <p class="lead">
                         T&T Videos connects athletes, coaches, and National Coaching Staff together throughout training and
                         competition. Athletes can upload videos and competition results so that coaches can easily track
