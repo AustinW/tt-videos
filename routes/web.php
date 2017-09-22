@@ -101,4 +101,16 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/videos/{video}/comments', 'VideoCommentController@store');
     Route::delete('/videos/{video}/comments/{comment}', 'VideoCommentController@delete');
 
+    Route::get('feed', function() {
+
+        $users = Auth::user()->verifiedFollowedAthletes()->get()->pluck('id');
+
+        $videos = App\Video::with('user')->whereIn('user_id', $users->toArray())->get();
+        $competitions = App\Competition::with('user')->whereIn('user_id', $users->toArray())->get();
+
+        $combined = $videos->merge($competitions)->sortByDesc('created_at')->all();
+
+        return view('feed', ['feed' => $combined]);
+    })->name('feed');
+
 });

@@ -28,11 +28,21 @@
             
             <ul class="nav navbar-nav">
                 @if (!Auth::guest())
-                    <li><a href="{{ route('upload.create') }}"><i class="glyphicon glyphicon-plus-sign"></i> Upload Video</a></li>
-                    <li><a href="{{ route('competitions.create') }}"><i class="glyphicon glyphicon-plus-sign"></i> Submit Scores</a></li>
-                    @permission('watch-athlete')
-                        <li><a href="{{ route('athletes.index') }}">Following</a></li>
-                    @endpermission
+                    <li><a href="{{ route('feed') }}">Updates</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Video <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ route('upload.create') }}"><i class="glyphicon glyphicon-plus-sign"></i> Upload</a></li>
+                            <li><a href="{{ route('videos.index') }}"><i class="glyphicon glyphicon-facetime-video"></i> Your Videos</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Competitions <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ route('competitions.create') }}"><i class="glyphicon glyphicon-plus-sign"></i> Scores</a></li>
+                            <li><a href="{{ route('competitions.index') }}"><i class="glyphicon glyphicon-pencil"></i> Your Scores</a></li>
+                        </ul>
+                    </li>
                 @endif
             </ul>
             
@@ -50,8 +60,9 @@
                         </a>
                         
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ route('videos.index') }}"><i class="glyphicon glyphicon-facetime-video"></i> My Videos</a></li>
-                            <li><a href="{{ route('competitions.index') }}"><i class="glyphicon glyphicon-edit"></i> My Scores</a></li>
+                            @permission('watch-athlete')
+                            <li><a href="{{ route('athletes.index') }}"><i class="glyphicon glyphicon-list-alt"></i> Following</a></li>
+                            @endpermission
                             @permission('view-athletes')
                             <li><a href="{{ route('user.search') }}"><i class="glyphicon glyphicon-search"></i> Search Users</a></li>
                             @endpermission
