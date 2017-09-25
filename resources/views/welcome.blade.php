@@ -28,7 +28,7 @@
                             <a href="{{ route('videos.index') }}" class="btn btn-primary btn-lg">Videos</a>
                             <a href="{{ route('competitions.index') }}" class="btn btn-primary btn-lg">Scores</a>
                         @else
-                            <a href="{{ route('athletes.index') }}" class="btn btn-primary btn-lg">Athlete Updates</a>
+                            <a href="{{ route('feed') }}" class="btn btn-primary btn-lg">News Feed</a>
                         @endif
                     @endif
                 </div>
