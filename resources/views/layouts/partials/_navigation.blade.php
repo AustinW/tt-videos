@@ -67,6 +67,7 @@
                             <li><a href="{{ route('user.search') }}"><i class="glyphicon glyphicon-search"></i> Search Users</a></li>
                             @endpermission
                             <li><a href="{{ route('user.index') }}"><i class="glyphicon glyphicon-user"></i> Profile</a></li>
+                            <li><a href="{{ route('change-password') }}"><i class="glyphicon glyphicon-cog"></i> Change Password</a></li>
                             @role('owner', 'admin')
                             <li><a href="{{ url('/admin') }}"><i class="glyphicon glyphicon-lock"></i> Admin</a></li>
                             @endrole
