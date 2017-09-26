@@ -61,6 +61,10 @@ Route::resource('user', 'UserController', [
 Route::get('videos/{video}', 'VideosController@show')->name('videos.show');
 
 Route::group(['middleware' => ['auth']], function() {
+
+    Route::get('change-password', function() { return view('user.change-password'); })->name('change-password');
+    Route::post('change-password', 'Auth\ChangePasswordController@update');
+
     Route::resource('upload', 'UploadController');
 
     Route::resource('competitions', 'CompetitionsController', [
